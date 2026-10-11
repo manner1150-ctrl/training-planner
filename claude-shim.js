@@ -83,9 +83,9 @@
   function patchText() {
     try {
       if (typeof L === 'undefined') return;
-      Object.assign(L.th, { toSheet: 'ดาวน์โหลด CSV (เปิดใน Google Sheets)', sheetMaking: 'กำลังสร้างไฟล์ CSV…', sheetDoneNoLink: 'ดาวน์โหลดแล้ว: เปิด Google Sheets → ไฟล์ → นำเข้า แล้วเลือกไฟล์ชื่อ', sheetNoMcp: 'เข้าสู่ระบบด้วย Google ก่อน แล้วลองอีกครั้ง' });
-      Object.assign(L.en, { toSheet: 'Download CSV (open in Google Sheets)', sheetMaking: 'Creating CSV file…', sheetDoneNoLink: 'Downloaded. In Google Sheets choose File → Import and pick the file named', sheetNoMcp: 'Sign in with Google first, then try again' });
-      Object.assign(L.zh, { toSheet: '下载 CSV(可在 Google Sheets 打开)', sheetMaking: '正在生成 CSV 文件…', sheetDoneNoLink: '已下载:在 Google Sheets 选择 文件 → 导入,并选择文件', sheetNoMcp: '请先使用 Google 登录后再试' });
+      Object.assign(L.th, { toSheet: 'ดาวน์โหลด CSV (เปิดใน Google Sheets)', sheetMaking: 'กำลังสร้างไฟล์ CSV…', sheetDoneNoLink: 'ดาวน์โหลดแล้ว: เปิด Google Sheets → ไฟล์ → นำเข้า แล้วเลือกไฟล์ชื่อ', sheetNoMcp: 'เข้าสู่ระบบด้วย Google ก่อน แล้วลองอีกครั้ง', sheetNote: 'กด "ดาวน์โหลด CSV" ได้ไฟล์คะแนน ณ เวลานั้น แล้วเปิด Google Sheets → ไฟล์ → นำเข้า เพื่อเปิดเป็นชีต ถ้าต้องการเพิ่มลงชีตเดิม ใช้ "คัดลอกเป็นตาราง" แล้ววางต่อท้าย' });
+      Object.assign(L.en, { toSheet: 'Download CSV (open in Google Sheets)', sheetMaking: 'Creating CSV file…', sheetDoneNoLink: 'Downloaded. In Google Sheets choose File → Import and pick the file named', sheetNoMcp: 'Sign in with Google first, then try again', sheetNote: '"Download CSV" saves the scores at that moment. Open it in Google Sheets via File → Import. To add to an existing sheet, use "Copy as table" and paste below the last row' });
+      Object.assign(L.zh, { toSheet: '下载 CSV(可在 Google Sheets 打开)', sheetMaking: '正在生成 CSV 文件…', sheetDoneNoLink: '已下载:在 Google Sheets 选择 文件 → 导入,并选择文件', sheetNoMcp: '请先使用 Google 登录后再试', sheetNote: '"下载 CSV"保存当时的成绩,可在 Google Sheets 通过 文件 → 导入 打开。如需追加到已有表格,请用"复制为表格"后粘贴到末行下方' });
     } catch (e) {}
   }
   // ปุ่มเข้าสู่ระบบ/ออกจากระบบ บนแถบหัว
