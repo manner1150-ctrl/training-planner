@@ -23,7 +23,8 @@
       var user = await new Promise(function (res) { var off = authMod.onAuthStateChanged(auth, function (u) { off(); res(u); }); });
       window.__tpAuth = {
         user: user,
-        signIn: function () { return authMod.signInWithPopup(auth, new authMod.GoogleAuthProvider()).then(function () { location.reload(); }); },
+        // ให้ขึ้นหน้าเลือกบัญชีทุกครั้ง (เครื่องที่ใช้ร่วมกัน/ทดสอบหลายบัญชี) ไม่ล็อกอินบัญชีล่าสุดให้อัตโนมัติ
+        signIn: function () { var pv = new authMod.GoogleAuthProvider(); pv.setCustomParameters({ prompt: 'select_account' }); return authMod.signInWithPopup(auth, pv).then(function () { location.reload(); }); },
         signOut: function () { return authMod.signOut(auth).then(function () { location.reload(); }); }
       };
       return { fs: fs, db: db, user: user };
