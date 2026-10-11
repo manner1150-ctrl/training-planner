@@ -535,6 +535,38 @@ span.gsb{cursor:default;right:4px}
   .work:not(.noside) .tools-head h2{font-size:1rem}
   .work:not(.noside) #toolsHint{font-size:.76rem}
 }
+/* ฟอร์มข้อมูลนักกีฬาแบบกระชับ: เมาส์ (pointer:fine) = ช่องเตี้ย ระดับ 1–5 เป็นปุ่มกลมเล็ก; นิ้ว (pointer:coarse) = ลดระยะห่าง แต่ช่องแตะสูงอย่างน้อย 40px */
+@media (pointer:fine){
+  .mc-title{font-size:1.1rem;padding:3px 12px;line-height:1.25}
+  .mc-fold{min-height:26px;padding:1px 10px;font-size:.8rem}
+  .mc-title small{font-size:.72rem}
+  .mc-row>*{padding:6px 10px;gap:4px}
+  .mc .fld{gap:1px}
+  .mc .fld label,.mc .fld .lab{font-size:.74rem}
+  .mc .fld input,.mc .fld select{padding:3px 8px;font-size:.88rem;min-height:30px}
+  .sexseg button{min-height:30px;padding:2px 12px;font-size:.88rem}
+  .mc-row2>.lv{padding:5px 10px}
+  .lv-head{margin-bottom:2px}.lv-head h3{font-size:.82rem}
+  .lvt th{font-size:.8rem;padding:0 8px 0 0;line-height:1.2}
+  .lvt td{padding:1px 3px;line-height:1}
+  .lvt thead td{font-size:.64rem}
+  .lvb{width:18px;min-width:18px;height:18px;border-radius:50%;font-size:.6rem;padding:0;vertical-align:middle}
+  .mc-side .cyc{padding:5px 10px;gap:2px}
+  .pair{gap:6px}
+  .sigma{flex:none}
+  .sigma div{padding:3px 6px;gap:0}.sigma span{font-size:.8rem}.sigma strong{font-size:.95rem}
+}
+@media (pointer:coarse){
+  .mc-title{padding:4px 12px;font-size:1.15rem}
+  .mc-row>*{padding:6px 10px;gap:5px}
+  .mc .fld{gap:1px}
+  .mc .fld input,.mc .fld select{min-height:40px}
+  .sexseg button{min-height:40px}
+  .mc-row2>.lv{padding:6px 10px}
+  .lvb{height:40px}
+  .mc-side .cyc{padding:6px 10px;gap:4px}
+  .sigma div{padding:5px 6px}
+}
 .mc-title{position:relative}
 .mc-fold{position:absolute;right:10px;top:50%;transform:translateY(-50%)}
 .mc-sum{display:flex;align-items:center;gap:10px;padding:8px 14px;flex-wrap:wrap}
