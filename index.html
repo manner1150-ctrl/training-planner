@@ -1,4 +1,4 @@
-<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><script src="firebase-config.js?v=202610121109" charset="utf-8"></script><script src="claude-shim.js?v=202610121109" charset="utf-8"></script><style>body{margin:0}.export-row .fld{display:none}</style></head><body><title>ตารางวางแผนการฝึก 7 วัน</title>
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><script src="firebase-config.js?v=202610121158" charset="utf-8"></script><script src="claude-shim.js?v=202610121158" charset="utf-8"></script><style>body{margin:0}.export-row .fld{display:none}</style></head><body><title>ตารางวางแผนการฝึก 7 วัน</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;500;600&family=Noto+Sans+SC:wght@400;600;700&display=swap">
 <style>
@@ -506,6 +506,8 @@ span.gsb{cursor:default;right:4px}
 .spdf .mb{display:flex;flex:1;height:17px;border-radius:3px;overflow:hidden}
 .spdf .mb i{display:flex;align-items:center;justify-content:center;color:#fff;font-style:normal;font-weight:600;font-size:10.5px;white-space:nowrap;overflow:hidden}
 .spdf .leg{font-size:11.5px;color:#5e6862}
+.pdfs .ckp{display:flex;flex-wrap:wrap;gap:2px 14px;font-size:10.5px}
+.pdfs .ckp b.v-y{color:#2f8a3e}.pdfs .ckp b.v-m{color:#b7791f}.pdfs .ckp b.v-n{color:#c2402f}.pdfs .ckp b.v-x{color:#9aa49d}
 .pdfs .pf{display:flex;justify-content:space-between;color:#5e6862;border-top:1px solid #d5dad1;padding-top:4px;font-size:10.5px}
 /* ===== Sandbox: แถบขั้นตอน + แผงเครื่องมือด้านข้าง + ป้ายเตือน ===== */
 .wrap{max-width:1640px}
@@ -634,6 +636,33 @@ span.gsb{cursor:default;right:4px}
 .sw-evi{flex:0 0 auto;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--warn);background:transparent;color:var(--warn);font-weight:700;font-size:.8rem;line-height:1;cursor:pointer;padding:0;display:grid;place-items:center}
 .sw-evi:hover,.sw-evi:focus-visible{background:var(--warn);color:var(--surface)}
 @media (pointer:coarse){.sw-evi{width:32px;height:32px}}
+/* Microcycle checklist (อนุมัติจากตัวอย่าง 2026-10-12) */
+.ckl{margin-top:14px;border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:12px 14px}
+.ckl-hd{display:flex;justify-content:space-between;align-items:baseline;gap:6px 12px;flex-wrap:wrap}
+.ckl-hd h3{font-family:var(--f-display);font-size:1.05rem;margin:0}.ckl-hd span{font-size:.78rem;color:var(--muted)}
+.ckl>.hint{margin:2px 0 6px}
+.ckl-it{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:5px 10px;padding:9px 0;border-top:1px solid var(--line);align-items:start}
+.ckl-n{width:22px;height:22px;border-radius:50%;background:var(--cell);border:1px solid var(--line);display:grid;place-items:center;font-size:.78rem;color:var(--muted)}
+.ckl-q{font-size:.92rem;line-height:1.45}.ckl-q small{display:block;font-size:.8rem;color:var(--muted)}
+.ckl-seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.ckl-seg button{border:0;background:var(--surface);color:var(--muted);font:inherit;font-size:.82rem;padding:5px 10px;cursor:pointer;min-height:30px}
+.ckl-seg button+button{border-left:1px solid var(--line)}
+.ckl-seg button.v-y[aria-pressed="true"]{background:#EAF3DE;color:#27500A;font-weight:600}
+.ckl-seg button.v-m[aria-pressed="true"]{background:#FAEEDA;color:#633806;font-weight:600}
+.ckl-seg button.v-n[aria-pressed="true"]{background:#FCEBEB;color:#791F1F;font-weight:600}
+.ckl-sys{grid-column:2/4;justify-self:start;font-size:.8rem;padding:3px 8px;border-radius:5px}
+.ckl-sys.ok{background:#EAF3DE;color:#27500A}.ckl-sys.warn{background:#FAEEDA;color:#633806}
+.ckl-ord{grid-column:2/4;display:flex;flex-wrap:wrap;gap:4px;align-items:center;font-size:.76rem}
+.ckl-ord span{padding:2px 7px;border-radius:4px;background:var(--cell);border:1px solid var(--line);color:var(--muted)}.ckl-ord b{color:var(--muted);font-weight:400}
+.ckl-ft{display:flex;justify-content:space-between;gap:6px 12px;flex-wrap:wrap;margin-top:8px;font-size:.82rem;color:var(--muted)}
+@media (max-width:640px){.ckl-it{grid-template-columns:24px minmax(0,1fr)}.ckl-seg{grid-column:2}}
+@media (pointer:coarse){.ckl-seg button{min-height:40px;padding:6px 14px}}
+.ckt b.v-y{color:var(--good)}.ckt b.v-m{color:var(--warn)}.ckt b.v-n{color:var(--bad)}.ckt b.v-x{color:var(--muted)}
+.sw-crit{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:1px 9px 1px 3px;font:inherit;font-size:.8rem;cursor:pointer;min-height:24px}
+.sw-crit i{display:grid;place-items:center;width:17px;height:17px;border-radius:50%;border:1.5px solid var(--warn);color:var(--warn);font-style:normal;font-weight:700;font-size:.72rem}
+.sw-crit:hover,.sw-crit:focus-visible{border-color:var(--warn)}
+@media (pointer:coarse){.sw-crit{min-height:32px}}
+.sw-evt.sw-crt th{text-align:left;width:46%;color:var(--muted);font-weight:600}.sw-evt.sw-crt td{text-align:left;font-weight:600}
 .sw-evd{width:min(640px,100%);font-size:.92rem;line-height:1.55}
 .sw-evd h4{font-family:var(--f-display);font-size:1rem;margin:0 0 4px}
 .sw-evd ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
@@ -680,15 +709,19 @@ span.gsb{cursor:default;right:4px}
 .sw-sub{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
 .sw-tv{display:flex;flex-direction:column;gap:6px;margin:8px 0}
 .sw-tvr{border:1px solid var(--line);border-radius:6px;padding:6px 8px;background:var(--surface);display:flex;flex-direction:column;gap:3px;font-size:.88rem}
-/* ตารางชิ้นงานต้องกว้างอย่างน้อย ~1200px (ช่องชีพจร 120-140 ต้องอ่านครบ) (11 คอลัมน์) ต่ำกว่านั้นใช้แบบการ์ดซ้อน */
+/* แท็บเล็ต/มือถือ (อาจารย์ขอ 2026-10-12): ใช้ตารางแบบเดียวกับจอคอม เลื่อนซ้าย-ขวาในกรอบตาราง คอลัมน์ "ประเภท" ตรึงไว้ซ้าย
+   ตารางต้องกว้างอย่างน้อย ~1060px ช่องชีพจร 120-140 จึงอ่านครบ; บรรทัดผลตรวจ/สูตรใต้แถวตรึงซ้ายและตัดบรรทัดให้อยู่ในจอ */
+.sw-swipe{display:none;font-size:.8rem;color:var(--muted);margin:0 0 4px}
 @media (max-width:1199px){
-  .sw-hrow,.sw-band{display:none}
-  .sw-row{grid-template-columns:repeat(3,minmax(0,1fr));align-items:end}
-  .sw-row .c::before{display:block}
-  .sw-row .c.t,.sw-row .c.ex,.sw-row .c.es,.sw-row .c.nt{grid-column:span 3}
-  .sw-row .sw-del{grid-column:3;justify-self:end}
+  .sw-grid{overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;padding-bottom:4px}
+  .sw-grid>*{min-width:1060px}
+  .sw-row .c.t{position:sticky;left:0;z-index:2;background:var(--surface);box-shadow:4px 0 6px -4px rgba(0,0,0,.25)}
+  .sw-hrow>span:first-child{position:sticky;left:7px;z-index:2}
+  .sw-item>.sw-nt,.sw-item>.sw-fb,.sw-item>.sw-mix{position:sticky;left:0;max-width:calc(100vw - 72px)}
+  .sw-swipe{display:block}
 }
-@media (pointer:coarse){.sw-row input,.sw-row select,.sw-nt input{min-height:40px}}
+/* มือถือ: คอลัมน์ประเภทกว้างเกือบครึ่งจอ จึงไม่ตรึง ให้ทั้งตารางเลื่อนไปด้วยกัน */
+@media (max-width:640px){.sw-row .c.t,.sw-hrow>span:first-child{position:static;box-shadow:none}}@media (pointer:coarse){.sw-row input,.sw-row select,.sw-nt input{min-height:40px}}
 .mc-title{position:relative}
 .mc-fold{position:absolute;right:10px;top:50%;transform:translateY(-50%)}
 .mc-sum{display:flex;align-items:center;gap:10px;padding:8px 14px;flex-wrap:wrap}
@@ -1283,7 +1316,7 @@ function saveLocal(){try{localStorage.setItem(KEY,JSON.stringify(local))}catch(e
 function cur(){return local.mode==='group'?group.plan:local.mode==='teacher'?null:local.indiv}
 function lib(){const p=cur();return BASE_LIB.map(baseView).concat(((p&&p.custom)||[]).map(c=>({...c,cat:'mine'})))}
 function contentFrom(id){if(BASE[id])return{ref:id};const c=((cur()||{}).custom||[]).find(x=>x.id===id);return c?{ref:null,name:c.name,items:[...c.items]}:null}
-const indivPayload=()=>({student:local.indiv.student||'',context:local.indiv.context||'',profile:local.indiv.profile,days:local.indiv.days,custom:local.indiv.custom||[]});
+const indivPayload=()=>({student:local.indiv.student||'',context:local.indiv.context||'',profile:local.indiv.profile,days:local.indiv.days,custom:local.indiv.custom||[],ck:local.indiv.ck||{}});
 
 /* ================= sync ================= */
 let writing=false,pending=false,debounceT=null;
@@ -1310,7 +1343,7 @@ function syncLabel(){
   const m={live:['live','syncLive'],saving:['live','syncSaving'],error:['off','syncError'],denied:['off','syncDenied'],off:['off','syncOff']}[syncState];
   return `<span class="dot ${m[0]}"></span>${t(m[1])}`;
 }
-function groupFromDoc(d){return{name:d.name||'',members:d.members||'',context:d.context||'',custom:d.custom||[],days:normDays(d.days),profile:normProfile(d.profile)}}
+function groupFromDoc(d){return{name:d.name||'',members:d.members||'',context:d.context||'',custom:d.custom||[],days:normDays(d.days),profile:normProfile(d.profile),ck:d.ck||{}}}
 function joinGroup(code){
   code=code.trim().toUpperCase();
   if(!/^[A-Z0-9][A-Z0-9_-]{0,39}$/.test(code)){toast(t('codeBad'));return}
@@ -2004,9 +2037,69 @@ function renderEval(){
   const ev=evaluate(p),el=document.getElementById('eval'),G=t('grades'),s=ev.score;
   const grade=s>=85?G[0]:s>=70?G[1]:s>=50?G[2]:G[3];
   el.innerHTML=`<div><div class="score" style="color:${scoreCol(s)}">${s}<small>/100</small></div><div class="grade">${grade}</div></div>
-    <div style="min-width:0"><h2>${t('evalT')}</h2>${evalLists(ev)}</div>`;
+    <div style="min-width:0"><h2>${t('evalT')}</h2>${evalLists(ev)}<div id="ckBox">${ckHTML(p)}</div></div>`;
   el.hidden=false;renderSteps();
 }
+
+/* ================= Microcycle checklist (G. Lange, World Athletics (WA) CECS Level I) =================
+   นักศึกษาตอบเองทุกข้อ (ใช่/ไม่แน่ใจ/ไม่ใช่) เก็บใน plan.ck = {1..6:'y'|'m'|'n'} ส่งไปพร้อมแผน
+   "ระบบช่วยดู" แสดงเฉพาะข้อที่คำนวณได้ (1 ช่วงการฝึก G/S, 4 Load ติดกัน, 5 ความหลากหลายของ Load, 6 ลำดับในมื้อ) ไม่ตอบแทนนักศึกษา */
+const CK_N=[1,2,3,4,5,6],CK_V=['y','m','n'];
+const CK_L={
+  th:{title:'Microcycle checklist',src:'World Athletics (WA) CECS Level I · G. Lange',sub:'ตรวจแผนของตัวเองก่อนส่ง ตอบทุกข้อด้วยตัวเอง ระบบช่วยดูเฉพาะข้อที่คำนวณได้',
+    q:{1:['เนื้อหาเหมาะกับช่วงการฝึก (Period / Phase) หรือไม่','เช่น ช่วงเตรียมทั่วไปควรมีงานทั่วไป (G) ไม่น้อยกว่างานเฉพาะ (S)'],2:['วิธีการและความหนักเหมาะกับเป้าหมายหรือไม่',''],3:['เหมาะกับอายุและระดับของนักกีฬาหรือไม่',''],
+      4:['Load กับการฟื้นตัวสมดุลกันหรือไม่','ไม่ให้ระบบเดียวกันรับ Load สูงมากติดกัน · Load สูงต้องการพัก 24–48 ชม.'],5:['มีความหลากหลาย (Principle of variation) ทั้งในวันและระหว่างวันหรือไม่',''],
+      6:['จัดลำดับหน่วยฝึกตามความต้องการการฟื้นตัวของแต่ละความสามารถหรือไม่','']},
+    ans:{y:'ใช่',m:'ไม่แน่ใจ',n:'ไม่ใช่'},ord:['เทคนิค/ประสานงาน','ความเร็ว · พลังระเบิด · แข็งแรงสูงสุด','ความเร็วอดทน · แข็งแรงอดทน','Conditioning','อดทนทั่วไป'],
+    sys:'ระบบช่วยดู',done:(a,b)=>`ตอบแล้ว ${a}/${b} ข้อ`,note:'คำตอบส่งไปพร้อมแผน อาจารย์เห็นตอนให้คะแนน และแสดงใน PDF',
+    h1:(ph,g,s)=>`${ph}: G ${g} · S ${s}`,h1none:'ยังไม่ได้เลือกช่วงการฝึก',h4pair:x=>`วันที่ ${x} Load สูงติดกัน`,h4ok:n=>`ไม่มีวัน Load สูงติดกัน · วันพัก ${n} วัน`,
+    h5mono:'Load เหมือนกันเกือบทุกวัน',h5ok:n=>`Load ${n} ระดับในสัปดาห์`,h6ok:'ทุกมื้อเรียงลำดับถูก',none:'ยังไม่ได้ตอบ',pdf:'Microcycle checklist (นักศึกษาตอบเอง)'},
+  en:{title:'Microcycle checklist',src:'World Athletics (WA) CECS Level I · G. Lange',sub:'Check your own plan before submitting. Answer every item yourself; the system only helps where it can calculate',
+    q:{1:['Is the content appropriate to the period / phase?','e.g. the general preparation phase should have at least as much general (G) as specific (S) work'],2:['Are the chosen methods (intensity) appropriate to the goals?',''],3:['Are the methods appropriate to the athlete\'s age and level?',''],
+      4:['Is there a balance between Load and recovery?','No very high demands on the same system in successive units · 24–48 h recovery after high Load'],5:['Is the principle of variation applied, within and between days?',''],
+      6:['Are the units arranged to meet the recovery needs of each ability?','']},
+    ans:{y:'Yes',m:'Not sure',n:'No'},ord:['Technique/coordination','Speed · power · max strength','Speed endurance · strength endurance','Conditioning','General endurance'],
+    sys:'System check',done:(a,b)=>`${a}/${b} answered`,note:'Your answers are submitted with the plan, shown to the instructor and printed in the PDF',
+    h1:(ph,g,s)=>`${ph}: G ${g} · S ${s}`,h1none:'No phase selected yet',h4pair:x=>`High Load on consecutive days ${x}`,h4ok:n=>`No consecutive high-Load days · ${n} rest day(s)`,
+    h5mono:'Almost every day has the same Load',h5ok:n=>`${n} Load levels this week`,h6ok:'Every session is in a sound order',none:'Not answered',pdf:'Microcycle checklist (student\'s answers)'},
+  zh:{title:'Microcycle checklist',src:'World Athletics (WA) CECS Level I · G. Lange',sub:'提交前检查自己的计划。每项都由你自己回答;系统只在能计算的项目上提供参考',
+    q:{1:['内容是否符合训练时期 / 阶段?','例如一般准备期的一般训练 (G) 不应少于专项训练 (S)'],2:['所选方法(强度)是否符合目标?',''],3:['是否符合运动员的年龄和水平?',''],
+      4:['负荷与恢复是否平衡?','同一系统不应连续承受很高负荷 · 高负荷后需恢复 24–48 小时'],5:['是否在日内和日间体现变化原则?',''],
+      6:['训练单元的安排是否符合各项能力的恢复需求?','']},
+    ans:{y:'是',m:'不确定',n:'否'},ord:['技术/协调','速度 · 爆发力 · 最大力量','速度耐力 · 力量耐力','体能','一般耐力'],
+    sys:'系统参考',done:(a,b)=>`已回答 ${a}/${b} 项`,note:'答案随计划一起提交,老师评分时可见,并显示在 PDF 中',
+    h1:(ph,g,s)=>`${ph}:G ${g} · S ${s}`,h1none:'尚未选择训练阶段',h4pair:x=>`第 ${x} 天连续高负荷`,h4ok:n=>`没有连续高负荷日 · 休息 ${n} 天`,
+    h5mono:'几乎每天的负荷都相同',h5ok:n=>`本周有 ${n} 种负荷水平`,h6ok:'每节课的顺序都合理',none:'未回答',pdf:'Microcycle checklist(学生自评)'}};
+const ckT=k=>(CK_L[lang]||CK_L.th)[k];
+function ckHints(p){
+  const ds=p.days,pr=p.profile||normProfile(),C=ckT,h={},Ld=ds.map(d=>d.load);
+  // 1: ช่วงการฝึกกับสัดส่วน G/S (เกณฑ์เดียวกับ evaluate)
+  const all=ds.flatMap(dayBlocks),nS=all.filter(b=>blkGS(b)==='S').length,nG=all.filter(b=>blkGS(b)==='G').length;
+  if(!pr.phase)h[1]=['warn',C('h1none')];
+  else if(nS+nG>=3){const bad=(pr.phase==='gp'&&nG<nS)||((pr.phase==='pc'||pr.phase==='c')&&nG>nS);h[1]=[bad?'warn':'ok',C('h1')(t('phases')[pr.phase],nG,nS)]}
+  // 4: Load สูงติดกัน
+  if(Ld.filter(Boolean).length>=2){const pairs=[];for(let i=0;i<6;i++)if(Ld[i]==='hi'&&Ld[i+1]==='hi')pairs.push(`${i+1}–${i+2}`);
+    h[4]=pairs.length?['warn',C('h4pair')(pairs.join(', '))]:['ok',C('h4ok')(Ld.filter(l=>l==='rest').length)]}
+  // 5: ความหลากหลายของ Load
+  const filled=Ld.filter(Boolean);if(filled.length>=5){const n=new Set(filled).size;h[5]=n===1?['warn',C('h5mono')]:['ok',C('h5ok')(n)]}
+  // 6: ลำดับเป้าหมายในมื้อ (RANK เดียวกับ evaluate)
+  {let multi=0,msg=null;ds.forEach((d,i)=>SESS.forEach(s=>{if(msg)return;const seq=d[s].goals.filter(g=>RANK[g]!=null);if(seq.length<2)return;multi++;
+    for(let a=0;a<seq.length&&!msg;a++)for(let b=a+1;b<seq.length;b++)if(RANK[seq[b]]<RANK[seq[a]]){msg=t('orderWarn',sLab(i,s),gT(seq[b]),gT(seq[a]));break}}));
+   if(msg)h[6]=['warn',msg];else if(multi)h[6]=['ok',C('h6ok')]}
+  return h}
+function ckHTML(p){
+  const ck=p.ck||{},C=ckT,Q=C('q'),A=C('ans'),H=ckHints(p),n=CK_N.filter(k=>ck[k]).length;
+  return `<div class="ckl"><div class="ckl-hd"><h3>${esc(C('title'))}</h3><span>${esc(C('src'))}</span></div><p class="hint">${esc(C('sub'))}</p>
+    ${CK_N.map(k=>`<div class="ckl-it"><span class="ckl-n">${k}</span><div class="ckl-q">${esc(Q[k][0])}${Q[k][1]?`<small>${esc(Q[k][1])}</small>`:''}</div>
+      <div class="ckl-seg" role="group" aria-label="${esc(Q[k][0])}">${CK_V.map(v=>`<button type="button" data-ck="${k}" data-cv="${v}" class="v-${v}" aria-pressed="${ck[k]===v}">${esc(A[v])}</button>`).join('')}</div>
+      ${k===6?`<div class="ckl-ord">${C('ord').map(x=>`<span>${esc(x)}</span>`).join('<b aria-hidden="true">→</b>')}</div>`:''}
+      ${H[k]?`<span class="ckl-sys ${H[k][0]}">${esc(C('sys'))} ${H[k][0]==='ok'?'✓':'!'} ${esc(H[k][1])}</span>`:''}</div>`).join('')}
+    <div class="ckl-ft"><span>${esc(C('done')(n,CK_N.length))}</span><span>${esc(C('note'))}</span></div></div>`}
+// คำตอบแบบย่อ (อาจารย์/PDF)
+function ckSummary(ck){const A=ckT('ans');return CK_N.map(k=>`${k} ${ck&&ck[k]?A[ck[k]]:'–'}`).join(' · ')}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-ck]');if(!b)return;const p=cur();if(!p)return;
+  p.ck={...(p.ck||{})};const k=b.dataset.ck,v=b.dataset.cv;if(p.ck[k]===v)delete p.ck[k];else p.ck[k]=v;
+  commit({noRender:true});const box=document.getElementById('ckBox');if(box)box.innerHTML=ckHTML(p)});
 
 /* ================= PDF: A4 แนวนอน 1 หน้า (สร้างไฟล์จริง เพราะหน้าต่างพิมพ์ถูกปิดในกรอบ claude.ai) ================= */
 const PDF_LOAD={hi:'#9a7cf2',mid:'#f2884b',lo:'#5fd0de',rest:'#b4b8b5'};
@@ -2036,6 +2129,7 @@ function pdfSheet(p){
     <div class="sc">${esc(t('pdfScore'))} <b style="color:${s>=70?'#2f8a3e':s>=50?'#b7791f':'#c2402f'}">${s}</b>/100 · ${esc(grade)}<br>S ${nS} · G ${nG}${sums.length?' · '+sums.join(' · '):''}</div></div>
     <div class="pg">${g}</div>
     ${adv?`<div class="adv"><h2>${esc(t('pdfAdvice'))}</h2><ul>${adv}</ul></div>`:''}
+    <div class="adv ckp"><b>${esc(ckT('pdf'))}:</b> ${CK_N.map(k=>`<span>${k}. ${esc(ckT('q')[k][0])} <b class="v-${p.ck&&p.ck[k]||'x'}">${p.ck&&p.ck[k]?esc(ckT('ans')[p.ck[k]]):'–'}</b></span>`).join('')}</div>
     <div class="pf"><span>${esc(t('copyright'))} · World Athletics (WA)</span><span>${esc(t('pdfPrinted'))} ${esc(dt)} · A4</span></div></div>`;
 }
 const loadJs=src=>new Promise((ok,no)=>{if(document.querySelector(`script[src="${src}"]`)){ok();return}const sc=document.createElement('script');sc.src=src;sc.onload=ok;sc.onerror=no;document.head.appendChild(sc)});
@@ -2223,8 +2317,8 @@ function planText(){
 
 /* ================= teacher ================= */
 function teacherRows(tab=tv.tab){
-  if(tab==='groups')return groupsList.map(g=>({key:'g:'+g.code,kind:'g',id:g.code,title:g.name||t('noName'),sub:g.members||t('noMembers'),members:g.members||'',profile:g.profile,days:g.days,time:g.updatedAt,grade:tData.ggrades[g.code]||null}));
-  return tData.indiv.map(x=>({key:'i:'+x.id,kind:'i',id:x.id,title:x.student||t('noName'),sub:x.context||'',members:'',profile:x.profile,days:x.days,time:x.submittedAt,grade:tData.grades[x.id]||null}));
+  if(tab==='groups')return groupsList.map(g=>({key:'g:'+g.code,kind:'g',id:g.code,title:g.name||t('noName'),sub:g.members||t('noMembers'),members:g.members||'',profile:g.profile,days:g.days,ck:g.ck||{},time:g.updatedAt,grade:tData.ggrades[g.code]||null}));
+  return tData.indiv.map(x=>({key:'i:'+x.id,kind:'i',id:x.id,title:x.student||t('noName'),sub:x.context||'',members:'',profile:x.profile,days:x.days,ck:x.ck||{},time:x.submittedAt,grade:tData.grades[x.id]||null}));
 }
 function enrich(r){const ev=evaluate(r),auto=ev.score;return{...r,ev,auto,rub:rubricPct(r.grade),fin:finalScore(auto,r.grade),
   placed:r.days.filter(hasTraining).length,gN:r.days.filter(d=>dayGoals(d).length).length,lN:r.days.filter(d=>d.load).length,
@@ -2301,7 +2395,8 @@ function miniPlan(r){
       ${SESS.map(s=>sessCell(d,i,s,false)).join('')}
       ${d.load?`<div class="mload" data-load="${d.load}">${lT(d.load)}</div>`:'<div class="mload none">—</div>'}
       <div class="mv">${VOLS.map(k=>`${vU(k)} ${d.vol[k]??'–'}`).join(' · ')}</div></div>`).join('')}</div></div>
-    <div class="eval" style="grid-template-columns:1fr"><div style="min-width:0">${evalLists(r.ev)}</div></div>`;
+    <div class="eval" style="grid-template-columns:1fr"><div style="min-width:0">${evalLists(r.ev)}</div></div>
+    <div class="pinfo ckt"><span><b>${esc(ckT('title'))}</b></span>${CK_N.map(k=>`<span title="${esc(ckT('q')[k][0])}">${k}. ${esc(ckT('q')[k][0])} <b class="v-${r.ck&&r.ck[k]||'x'}">${r.ck&&r.ck[k]?esc(ckT('ans')[r.ck[k]]):'–'}</b></span>`).join('')}</div>`;
 }
 function rubricForm(r,labels=t('rub')){
   const d=draftFor(r.key),ok=d.r.every(v=>v>=1),pct=ok?Math.round(d.r.reduce((a,b)=>a+b,0)/20*100):null;
@@ -2365,7 +2460,7 @@ document.getElementById('btnDone').onclick=()=>{if(!cur()){toast(t('joinEval'));
 document.getElementById('btnSample').onclick=()=>{const p=cur();if(!p)return;SAMPLE.forEach((id,i)=>{p.days[i].am.blocks=[{ref:id}]});commit();toast(t('sampled'))};
 document.getElementById('btnReset').onclick=e=>{
   const b=e.currentTarget,p=cur();if(!p)return;
-  if(b.dataset.armed){p.days=emptyDays();delete b.dataset.armed;b.textContent=t('reset');document.getElementById('eval').hidden=true;commit();toast(local.mode==='group'?t('clearedG'):t('cleared'));return}
+  if(b.dataset.armed){p.days=emptyDays();p.ck={};delete b.dataset.armed;b.textContent=t('reset');document.getElementById('eval').hidden=true;commit();toast(local.mode==='group'?t('clearedG'):t('cleared'));return}
   b.dataset.armed=1;b.textContent=local.mode==='group'?t('resetCG'):t('resetC');
   setTimeout(()=>{delete b.dataset.armed;b.textContent=t('reset')},3000);
 };
@@ -2399,7 +2494,7 @@ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(queueLine);
    นักศึกษากรอกเองทั้งหมด ระบบแสดงสูตรสากล/อ่านสูตรระหว่างกรอก และตรวจตามเกณฑ์เมื่อกด "ตรวจชิ้นงาน" เท่านั้น */
 const SPD={
   acc:{d:[1,30],i:[95,100],reps:[3,4],r:[1,3],sets:[3,4],sr:[6,8],sv:[80,120],tot:[300,400],es:['pc']},
-  max:{d:[40,60],i:[95,100],reps:[3,4],r:[4,6],sets:[3,4],sr:[8,10],sv:[80,200],tot:[400,600],es:['pc']},
+  max:{d:[40,60],i:[95,100],reps:[3,4],r:[4,6],sets:[3,4],sr:[8,10],sv:[80,200],tot:[400,600],es:['pc','pcl']}, // 2026-10-12 อาจารย์อนุมัติให้รับ ATP-PC + Lactic ด้วย (40–60 ม. ใช้เวลา 6–8 วินาที เกินช่วง ATP-PC เด่น ≤6 วินาที)
   agi:{d:[20,40],i:[95,100],reps:[3,4],r:[1,3],sets:[3,4],sr:[6,8],sv:[80,160],tot:[400,600],es:['pc']},
   sei:{d:[60,150],i:[95,100],reps:[2,5],r:[2,5],sets:[2,3],sr:[8,10],sv:[150,300],tot:[300,1200],es:['pcl','lh']},
   sse:{d:[150,300],i:[95,100],reps:[1,5],r:[10,20],sets:[1,1],sr:null,sv:null,tot:[300,1200],es:['lh']},
@@ -2432,6 +2527,18 @@ function openMixRef(d){const m=document.getElementById('modal'),E=sT('ev'),near=
   const close=()=>{m.hidden=true;m.onclick=null;document.removeEventListener('keydown',esc_)},esc_=e=>{if(e.key==='Escape')close()};
   m.hidden=false;m.onclick=e=>{if(e.target===m)close()};document.addEventListener('keydown',esc_);const b=document.getElementById('evx');b.onclick=close;b.focus({preventScroll:true});m.querySelector('.dialog').scrollTop=0}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-mixref]');if(b)openMixRef(sNum(b.dataset.mixref))});
+// หน้าเกณฑ์ของประเภทความเร็ว (ตัวเลขจาก SPD ซึ่งมาจากสไลด์ของอาจารย์)
+function openCrit(tp){const c=SPD[tp];if(!c)return;const m=document.getElementById('modal'),C=sT('crit'),ES=sT('es'),T=sT('t');
+  const rg=(x,u)=>!x?'—':(x[0]===x[1]?x[0]:x[0]+'–'+x[1])+(u?' '+u:'');
+  const rows=[[C.d,rg(c.d,C.m)],[C.i,rg(c.i,c.hr?'%HRmax':'%')],[C.reps,rg(c.reps)],[C.r,c.hr?C.rHR(rg(c.rhr)):rg(c.r,C.min)],[C.sets,rg(c.sets)],[C.sr,c.sr?rg(c.sr,C.min):C.none],[C.sv,c.sv?rg(c.sv,C.m):'—'],[C.tot,rg(c.tot,C.m)],[C.es,c.es.map(k=>ES[k]).join(' / ')]];
+  m.innerHTML=`<div class="dialog sw-evd" role="dialog" aria-modal="true" aria-labelledby="crh"><h3 id="crh">${esc(C.title(T[tp]||tp))}</h3>
+    <table class="sw-evt sw-crt"><tbody>${rows.map(([k,v])=>`<tr><th scope="row">${esc(k)}</th><td>${esc(String(v))}</td></tr>`).join('')}</tbody></table>
+    <section><h4>${esc(C.nT)}</h4><ul>${(c.hr?C.nHR:C.nSp).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>
+    <p class="sw-evs">${esc(C.src[tp]||'')}</p>
+    <div class="dlg-actions"><button class="btn primary" id="crx">${esc(t('close'))}</button></div></div>`;
+  const close=()=>{m.hidden=true;m.onclick=null;document.removeEventListener('keydown',k_)},k_=e=>{if(e.key==='Escape')close()};
+  m.hidden=false;m.onclick=e=>{if(e.target===m)close()};document.addEventListener('keydown',k_);const b=document.getElementById('crx');b.onclick=close;b.focus({preventScroll:true});m.querySelector('.dialog').scrollTop=0}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-crit]');if(b)openCrit(b.dataset.crit)});
 const SPD_EX={acc:['Block start','Crouch start','3-point start','Hill sprint','Sled sprint'],max:['Flying 30m','Ins and outs','Sprint from rolling start'],agi:['Shuttle run','Zig-zag sprint','Reaction start','T-drill'],sei:['Intensive interval','Extensive interval','Speed endurance run'],sse:['Special endurance','Time trial'],exs:['Extensive interval 200m','Extensive interval 400m','Tempo run'],exl:['Extensive interval 600m','Extensive interval 1000m']};
 // ชีพจร/ช่วงตัวเลข: "120-140", "HR120", "120 bpm" → [ต่ำสุด, สูงสุด]
 function sRange(v){const m=String(v||'').match(/\d+(?:\.\d+)?/g);if(!m)return null;const a=+m[0],b=m.length>1?+m[1]:a;return [Math.min(a,b),Math.max(a,b)]}
@@ -2536,6 +2643,24 @@ Object.assign(SL.zh,{submit:'提交给老师',resubmit:'再次提交(修改版)'
 Object.assign(SL.th,{pdf:{lv:'ระดับ',auto:'คะแนนอัตโนมัติ',noChk:'ยังไม่ได้กด "ตรวจชิ้นงาน" เอกสารนี้จึงไม่มีผลตรวจ',leg:'สีหัวตาราง: V ปริมาณ · I ความหนัก · R การพัก — สีระบบพลังงานไล่จากแดง (ATP-PC: จ่ายพลังงานเร็ว เข้มข้นสูง) ถึงเขียว (Aerobic: ทนนาน) · ✓ ผ่านเกณฑ์  ! ควรทบทวน  ✕ ไม่ตรงเกณฑ์'}});
 Object.assign(SL.en,{pdf:{lv:'Level',auto:'Auto score',noChk:'"Check task" was not pressed, so this document has no check results',leg:'Header colors: V volume · I intensity · R recovery — energy system colors run from red (ATP-PC: fastest, most intense) to green (aerobic: longest) · ✓ meets criteria  ! review  ✕ does not meet criteria'}});
 Object.assign(SL.zh,{pdf:{lv:'水平',auto:'自动评分',noChk:'尚未点击"检查作业",本文件不含检查结果',leg:'表头颜色:V 训练量 · I 强度 · R 休息 — 能量系统颜色由红(ATP-PC:供能最快、强度最高)到绿(有氧:持续最久) · ✓ 符合标准  ! 需复查  ✕ 不符合标准'}});
+Object.assign(SL.th,{swipe:'⇆ เลื่อนตารางซ้าย-ขวาเพื่อกรอกให้ครบทุกช่อง'});Object.assign(SL.en,{swipe:'⇆ Swipe the table left and right to reach every column'});Object.assign(SL.zh,{swipe:'⇆ 左右滑动表格以填写所有栏目'});
+// หน้าเกณฑ์ของแต่ละประเภท (ปุ่ม ! เกณฑ์)
+const CRIT_SRC=L=>({acc:L.sr,max:L.sr,agi:L.sr,sei:L.sei,sse:L.sse,exs:L.ex,exl:L.ex});
+Object.assign(SL.th,{crit:{btn:'เกณฑ์',btnL:x=>`ดูเกณฑ์ของ ${x}`,title:x=>`เกณฑ์: ${x}`,m:'ม.',min:'นาที',none:'— (ฝึก 1 เซ็ต)',rHR:x=>`พักจนชีพจรลดลงถึง ${x} ครั้ง/นาที`,
+  d:'ระยะทางต่อเที่ยว',i:'ความหนัก',reps:'จำนวนเที่ยวต่อเซ็ต',r:'พักระหว่างเที่ยว (R)',sets:'จำนวนเซ็ต',sr:'พักระหว่างเซ็ต (SR)',sv:'ระยะรวมต่อเซ็ต',tot:'ระยะรวมทั้งหมด',es:'ระบบพลังงาน',
+  nT:'ข้อควรรู้',nSp:['ระยะรวมต่อเซ็ต = จำนวนเที่ยว × ระยะทาง และระยะรวมทั้งหมด = ระยะต่อเซ็ต × จำนวนเซ็ต','ระบบประมาณเวลาทำงานต่อเที่ยวจากสถิติ 100 ม.: ไม่เกิน 6 วินาที ATP-PC เด่น · 6–10 วินาที ATP-PC หรือ ATP-PC + Lactic · 10–20 วินาที ผสม · เกิน 20 วินาที Lactic (แบบจำลองเพื่อการเรียน ไม่ใช่การวัดจริง)','ลำดับการเขียนสูตร: ปริมาณ → ความหนัก % → R → SR (\' = นาที, \'\' = วินาที)'],
+  nHR:['ความหนักเป็นเปอร์เซ็นต์ของชีพจรสูงสุด (%HRmax)','พักระหว่างเที่ยวจนชีพจรลดลงถึงค่าที่กำหนด (ครั้ง/นาที) แล้วจึงเริ่มเที่ยวถัดไป','ลำดับการเขียนสูตร: ปริมาณ → %HRmax → R HR… → SR'],
+  src:CRIT_SRC({sr:'ที่มา: สไลด์ "Speed Repetition" (เอกสารประกอบการสอนของรายวิชา)',sei:'ที่มา: สไลด์ "Intensive Interval: speed endurance" (เอกสารประกอบการสอนของรายวิชา)',sse:'ที่มา: สไลด์ "Intensive Interval: special speed endurance" (เอกสารประกอบการสอนของรายวิชา)',ex:'ที่มา: สไลด์ "Extensive Interval" (เอกสารประกอบการสอนของรายวิชา)'})}});
+Object.assign(SL.en,{crit:{btn:'Criteria',btnL:x=>`Criteria for ${x}`,title:x=>`Criteria: ${x}`,m:'m',min:'min',none:'— (one set)',rHR:x=>`rest until HR drops to ${x} bpm`,
+  d:'Distance per rep',i:'Intensity',reps:'Reps per set',r:'Rest between reps (R)',sets:'Sets',sr:'Rest between sets (SR)',sv:'Volume per set',tot:'Total volume',es:'Energy system',
+  nT:'Good to know',nSp:['Volume per set = reps × distance; total volume = volume per set × sets','Work time per rep is estimated from the 100 m best: up to 6 s ATP-PC dominant · 6–10 s ATP-PC or ATP-PC + Lactic · 10–20 s mixed · over 20 s Lactic (a teaching model, not a measurement)','Notation order: volume → intensity % → R → SR (\' = min, \'\' = s)'],
+  nHR:['Intensity is a percentage of maximum heart rate (%HRmax)','Rest between reps until heart rate drops to the target (bpm), then start the next rep','Notation order: volume → %HRmax → R HR… → SR'],
+  src:CRIT_SRC({sr:'Source: "Speed Repetition" slide (course handout)',sei:'Source: "Intensive Interval: speed endurance" slide (course handout)',sse:'Source: "Intensive Interval: special speed endurance" slide (course handout)',ex:'Source: "Extensive Interval" slide (course handout)'})}});
+Object.assign(SL.zh,{crit:{btn:'标准',btnL:x=>`查看 ${x} 的标准`,title:x=>`标准:${x}`,m:'米',min:'分钟',none:'—(只练 1 组)',rHR:x=>`休息至心率降到 ${x} 次/分`,
+  d:'每次距离',i:'强度',reps:'每组次数',r:'次间休息 (R)',sets:'组数',sr:'组间休息 (SR)',sv:'每组距离',tot:'总距离',es:'能量系统',
+  nT:'须知',nSp:['每组距离 = 次数 × 距离;总距离 = 每组距离 × 组数','每次做功时间按 100 米成绩估算:6 秒以内 ATP-PC 为主 · 6–10 秒 ATP-PC 或 ATP-PC + 乳酸 · 10–20 秒 混合 · 超过 20 秒 乳酸(教学模型,并非实测)','写法顺序:训练量 → 强度 % → R → SR(\' = 分钟,\'\' = 秒)'],
+  nHR:['强度为最大心率百分比 (%HRmax)','次间休息至心率降到规定值(次/分)后再开始下一次','写法顺序:训练量 → %HRmax → R HR… → SR'],
+  src:CRIT_SRC({sr:'来源:"Speed Repetition" 幻灯片(课程讲义)',sei:'来源:"Intensive Interval: speed endurance" 幻灯片(课程讲义)',sse:'来源:"Intensive Interval: special speed endurance" 幻灯片(课程讲义)',ex:'来源:"Extensive Interval" 幻灯片(课程讲义)'})}});
 let mySpd=null,mySpdG=null;
 const sT=k=>(SL[lang]||SL.th)[k];
 local.ws=local.ws==='speed'?'speed':'plan';
@@ -2600,7 +2725,8 @@ function sCheck(r,pro=local.level!=='new',pb=local.spd.pb){const c=SPD[r.t]||SPD
   if(pro){const p=sParse(r.nt,c.hr);add(p&&!sNtDiff(r,p).length,'warn',p===null?M.miss(sT('nt')):p===false?sT('ntBad'):sT('ntDiff')(sNtDiff(r,p).join(', ')))}
   if(!out.length)out.push(['ok',M.ok+(pro?' · '+M.ntOk:'')]);return{out,pass,total}}
 function sRowDerived(r,idx){const pro=local.level!=='new',hr=isHR(r),wt=hr?null:sWork(r),n=sNum(r.reps),d=sNum(r.d),S=sNum(r.sets)||1,vol=n&&d?n*d*S:null;
-  let h='';
+  // ปุ่ม ! เกณฑ์ของประเภทนี้ (เปิดตารางเกณฑ์และที่มา)
+  let h=`<button type="button" class="sw-crit" data-crit="${esc(r.t)}" aria-label="${esc(sT('crit').btnL(sT('t')[r.t]||r.t))}"><i aria-hidden="true">!</i>${esc(sT('crit').btn)}</button>`;
   // ชำนาญ: บอกว่าระบบอ่านสูตรที่พิมพ์ได้ว่าอะไร และตรงกับช่องหรือไม่ (สูตรอยู่ในคอลัมน์ "สูตรสากล" ของแถว)
   if(pro){const p=sParse(r.nt,hr),df=p?sNtDiff(r,p):[];
     h+=p?`<span class="${df.length?'warn':'ok'}">${df.length?'! '+esc(sT('ntDiff')(df.join(', '))):'✓ '+esc(sT('ntRead'))+': '+esc(`${p.sets>1?p.sets+' × ':''}${p.reps} × ${p.d} m${p.i!=null?' · '+rngTxt(p.i)+(hr?'%HRmax':'%'):''}${p.r?' · R '+fmtRow(r,p.r):''}${p.sr?' · SR '+fmtR(p.sr):''}`)}</span>`:p===false?`<span class="warn">! ${esc(sT('ntBad'))}</span>`:'';
@@ -2634,6 +2760,7 @@ function renderSpeed(){
   keepTyping(()=>{el.innerHTML=`<div class="sw-head"><div><h2>${esc(sT('title'))}</h2><p>${esc(sT('sub'))}</p></div>
       <div class="sw-fields"><div class="fld"><label for="sw-name">${esc(sT('name'))}</label><input id="sw-name" value="${esc(local.indiv.student||'')}" autocomplete="name"></div>
       <div class="fld"><label for="sw-pb">${esc(sT('pb'))}</label><input id="sw-pb" value="${esc(sp.pb)}" inputmode="decimal" placeholder="${esc(sT('pbPh'))}"></div></div></div>
+    <p class="sw-swipe">${esc(sT('swipe'))}</p>
     <div class="sw-grid"><div class="sw-band" aria-hidden="true"><span class="v">${esc(sT('bandV'))}</span><span class="i">${esc(sT('bandI'))}</span><span class="r">${esc(sT('bandR'))}</span></div><div class="sw-hrow" aria-hidden="true"><span>${esc(sT('hType'))}</span><span>${esc(sT('hEx'))}</span><span class="v">${esc(sT('hD'))}<small>${esc(sT('sD'))}</small></span><span class="v">${esc(sT('hReps'))}<small>${esc(sT('sReps'))}</small></span><span class="v">${esc(sT('hSets'))}<small>${esc(sT('sSets')||'')}</small></span><span class="i">${esc(sT('hI'))}<small>${esc(sT('sI'))}</small></span><span class="r">${esc(sT('hR'))}<small>${esc(sT('sR'))}</small></span><span class="r">${esc(sT('hSR'))}<small>${esc(sT('sSR'))}</small></span><span>${esc(sT('nt'))} (Format)<small>${esc(local.level!=='new'?sT('ntSelf'):sT('ntAuto'))}</small></span><span>${esc(sT('hEs'))}</span><span></span></div>${rows}</div>
     ${dl}
     <div class="sw-foot"><div class="sw-tot" id="sw-tot"></div>
