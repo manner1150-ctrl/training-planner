@@ -1,4 +1,4 @@
-<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><script src="firebase-config.js?v=202610112245" charset="utf-8"></script><script src="claude-shim.js?v=202610112245" charset="utf-8"></script><style>body{margin:0}.export-row .fld{display:none}</style></head><body><title>ตารางวางแผนการฝึก 7 วัน</title>
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><script src="firebase-config.js?v=202610121109" charset="utf-8"></script><script src="claude-shim.js?v=202610121109" charset="utf-8"></script><style>body{margin:0}.export-row .fld{display:none}</style></head><body><title>ตารางวางแผนการฝึก 7 วัน</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;500;600&family=Noto+Sans+SC:wght@400;600;700&display=swap">
 <style>
@@ -9,6 +9,10 @@
   --accent:#8fcf3c; --accent-ink:#1d2a0c; --bar:#ffffff; --bar-ink:#1d2321; --bar-line:#e2e5df; --brand-g:#5d9a1c;
   --hi:#9a7cf2; --hi-ink:#2a1a63; --mid:#f2884b; --mid-ink:#5a2508; --lo:#5fd0de; --lo-ink:#08454d; --rest:#b4b8b5; --rest-ink:#2e3230;
   --good:#2f8a3e; --warn:#b7791f; --bad:#c2402f;
+  /* ชิ้นงาน: สีกลุ่ม V ปริมาณ / I ความหนัก / R การพัก (ไม่ซ้ำสีเป้าหมายการฝึก) — เข้ม / พื้นอ่อน / ตัวอักษรบนพื้น / ตัวอักษรในสูตร */
+  --vv:#1D9E75; --vv-bg:#E1F5EE; --vv-ink:#085041; --vv-t:#0F6E56;
+  --vi:#D85A30; --vi-bg:#FAECE7; --vi-ink:#712B13; --vi-t:#993C1D;
+  --vr:#7F77DD; --vr-bg:#EEEDFE; --vr-ink:#3C3489; --vr-t:#534AB7;
   --f-display:"Kanit","Noto Sans SC",system-ui,sans-serif; --f-body:"Sarabun","Noto Sans SC",system-ui,sans-serif;
   color-scheme:light;
 }
@@ -16,12 +20,14 @@
   --bg:#141816; --surface:#1d2220; --cell:#232926; --ink:#e8ece6; --muted:#9aa49d; --line:#333b37;
   --accent:#9bd84a; --accent-ink:#14200a; --bar:#0b0e0d; --bar-ink:#e8ece6; --bar-line:#0b0e0d; --brand-g:#9bd84a;
   --hi:#8f74e6; --hi-ink:#f0ebff; --mid:#e57c40; --mid-ink:#fff1e8; --lo:#3fb5c4; --lo-ink:#e6fbfd; --rest:#6c726f; --rest-ink:#f2f4f3;
-  --good:#5fc36e; --warn:#e0a84a; --bad:#ef6e5c; color-scheme:dark}}
+  --good:#5fc36e; --warn:#e0a84a; --bad:#ef6e5c; color-scheme:dark;
+  --vv-bg:#085041; --vv-ink:#E1F5EE; --vv-t:#5DCAA5; --vi-bg:#712B13; --vi-ink:#FAECE7; --vi-t:#F0997B; --vr-bg:#3C3489; --vr-ink:#EEEDFE; --vr-t:#AFA9EC}}
 :root[data-theme="dark"]{
   --bg:#141816; --surface:#1d2220; --cell:#232926; --ink:#e8ece6; --muted:#9aa49d; --line:#333b37;
   --accent:#9bd84a; --accent-ink:#14200a; --bar:#0b0e0d; --bar-ink:#e8ece6; --bar-line:#0b0e0d; --brand-g:#9bd84a;
   --hi:#8f74e6; --hi-ink:#f0ebff; --mid:#e57c40; --mid-ink:#fff1e8; --lo:#3fb5c4; --lo-ink:#e6fbfd; --rest:#6c726f; --rest-ink:#f2f4f3;
-  --good:#5fc36e; --warn:#e0a84a; --bad:#ef6e5c; color-scheme:dark}
+  --good:#5fc36e; --warn:#e0a84a; --bad:#ef6e5c; color-scheme:dark;
+  --vv-bg:#085041; --vv-ink:#E1F5EE; --vv-t:#5DCAA5; --vi-bg:#712B13; --vi-ink:#FAECE7; --vi-t:#F0997B; --vr-bg:#3C3489; --vr-ink:#EEEDFE; --vr-t:#AFA9EC}
 
 *{box-sizing:border-box}[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
@@ -476,6 +482,30 @@ span.gsb{cursor:default;right:4px}
 .pdfs .adv ul{columns:2;column-gap:22px;margin:0;padding:0;list-style:none}
 .pdfs .adv li{break-inside:avoid;margin:0 0 2px;padding-left:12px;position:relative}
 .pdfs .adv li b{position:absolute;left:0;top:0}
+.spdf{font-size:13px}.spdf .ph .meta{font-size:13px}
+.spdf .st{width:100%;border-collapse:separate;border-spacing:0 0;table-layout:fixed;font-size:13.5px}
+.spdf .st th{background:#3d3dc4;color:#fff;font-family:var(--f-display);font-weight:600;padding:4px 3px;text-align:center;border:2px solid #fff;border-radius:4px;line-height:1.2}
+.spdf .st th small{display:block;font-weight:400;font-size:11px}
+.spdf .st tr.band th{border-radius:4px 4px 0 0;padding:3px;font-size:12.5px}
+.spdf .st tr.band th:not([class]){background:transparent}
+.spdf .st th.bv{background:#1D9E75}.spdf .st th.bi{background:#D85A30}.spdf .st th.br{background:#7F77DD}
+.spdf .st th.v{background:#E1F5EE;color:#085041}.spdf .st th.i{background:#FAECE7;color:#712B13}.spdf .st th.r{background:#EEEDFE;color:#3C3489}
+.spdf .st td{border-bottom:1px solid #d5dad1;padding:8px 4px;text-align:center;vertical-align:middle;overflow-wrap:anywhere}
+.spdf .st td small{display:block;font-size:10.5px;color:#5e6862}
+.spdf .st td.ty{font-family:var(--f-display);font-weight:600;text-align:left}
+.spdf .st td.no{color:#5e6862}
+.spdf .st td.v{border-bottom:2px solid #1D9E75}.spdf .st td.i{border-bottom:2px solid #D85A30}.spdf .st td.r{border-bottom:2px solid #7F77DD}
+.spdf .st td.nt{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;text-align:left}
+.spdf .nv{color:#0F6E56;font-weight:700}.spdf .ni{color:#993C1D;font-weight:700}.spdf .nr{color:#534AB7;font-weight:700}
+.spdf .ntbad{background:#FAEEDA;border-radius:3px;padding:0 2px}.spdf b.x{color:#b7791f}
+.spdf .es{display:inline-block;border:1.5px solid;border-radius:4px;padding:3px 7px;font-weight:600;font-size:12.5px}
+.spdf tr.sub td{text-align:left;border-bottom:1px solid #d5dad1;padding:2px 4px 6px;background:#fafbf9}
+.spdf .fb{margin:0;padding:0;list-style:none;font-size:12px}
+.spdf .fb li{break-inside:avoid;padding-left:12px;position:relative;margin:0 0 1px}.spdf .fb li b{position:absolute;left:0}
+.spdf .mix{display:flex;align-items:center;gap:8px;margin-top:4px;font-size:11.5px;color:#5e6862}
+.spdf .mb{display:flex;flex:1;height:17px;border-radius:3px;overflow:hidden}
+.spdf .mb i{display:flex;align-items:center;justify-content:center;color:#fff;font-style:normal;font-weight:600;font-size:10.5px;white-space:nowrap;overflow:hidden}
+.spdf .leg{font-size:11.5px;color:#5e6862}
 .pdfs .pf{display:flex;justify-content:space-between;color:#5e6862;border-top:1px solid #d5dad1;padding-top:4px;font-size:10.5px}
 /* ===== Sandbox: แถบขั้นตอน + แผงเครื่องมือด้านข้าง + ป้ายเตือน ===== */
 .wrap{max-width:1640px}
@@ -567,6 +597,98 @@ span.gsb{cursor:default;right:4px}
   .mc-side .cyc{padding:6px 10px;gap:4px}
   .sigma div{padding:5px 6px}
 }
+/* ===== ชิ้นงาน: โปรแกรมการพัฒนาความเร็ว (หัวตารางสีน้ำเงินตามใบงานของอาจารย์) ===== */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.sw{display:flex;flex-direction:column;gap:12px}
+.sw-head{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end;justify-content:space-between}
+.sw-head h2{font-size:1.25rem}
+.sw-head p{margin:2px 0 0;color:var(--muted);font-size:.86rem}
+.sw-fields{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.sw-fields .fld{flex:0 1 200px}
+.sw-grid{display:flex;flex-direction:column;gap:6px}
+.sw-band,.sw-hrow,.sw-row{display:grid;grid-template-columns:168px minmax(92px,1.25fr) repeat(6,minmax(48px,.58fr)) minmax(158px,1.7fr) minmax(150px,1.1fr) 28px;gap:4px;align-items:center}
+/* แบบ ก (อนุมัติ 2026-10-12): แถบกลุ่ม V-I-R เหนือหัวตาราง + หัวคอลัมน์สีอ่อนตามกลุ่ม + เส้นสีใต้ช่องกรอก + สีในสูตรสากล */
+.sw-band{padding:0 7px;margin-bottom:-6px}
+.sw-band span{border-radius:6px 6px 0 0;padding:3px 4px;text-align:center;color:#fff;font-family:var(--f-display);font-weight:600;font-size:.8rem}
+.sw-band .v{grid-column:3/span 3;background:var(--vv)}.sw-band .i{grid-column:6;background:var(--vi)}.sw-band .r{grid-column:7/span 2;background:var(--vr)}
+.sw-hrow span.v{background:var(--vv-bg);color:var(--vv-ink)}.sw-hrow span.i{background:var(--vi-bg);color:var(--vi-ink)}.sw-hrow span.r{background:var(--vr-bg);color:var(--vr-ink)}
+.sw-hrow span.v,.sw-hrow span.i,.sw-hrow span.r{border-radius:5px;padding:4px 2px;align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+.sw-row .c.v input{box-shadow:inset 0 -2px 0 var(--vv)}.sw-row .c.i input{box-shadow:inset 0 -2px 0 var(--vi)}.sw-row .c.r input{box-shadow:inset 0 -2px 0 var(--vr)}
+.sw-row .c.v::before{color:var(--vv-t)}.sw-row .c.i::before{color:var(--vi-t)}.sw-row .c.r::before{color:var(--vr-t)}
+/* ระบบพลังงาน 6 ระดับ (อนุมัติ 2026-10-12, แบบ ก): แดง ATP-PC → เขียว Aerobic lipolysis ตามอัตราการจ่ายพลังงาน */
+.sw-row select.sw-es.es-pc{--eb:#FCEBEB;--ed:#A32D2D;--ei:#791F1F}.sw-row select.sw-es.es-pcl{--eb:#FAECE7;--ed:#D85A30;--ei:#712B13}
+.sw-row select.sw-es.es-lh{--eb:#FAEEDA;--ed:#BA7517;--ei:#633806}.sw-row select.sw-es.es-ll{--eb:#FAEEDA;--ed:#EF9F27;--ei:#633806}
+.sw-row select.sw-es.es-ag{--eb:#EAF3DE;--ed:#639922;--ei:#27500A}.sw-row select.sw-es.es-al{--eb:#EAF3DE;--ed:#27500A;--ei:#173404}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .sw-row select.sw-es.es-pc{--eb:#501313;--ed:#E24B4A;--ei:#FCEBEB}:root:not([data-theme="light"]) .sw-row select.sw-es.es-pcl{--eb:#4A1B0C;--ed:#F0997B;--ei:#FAECE7}
+  :root:not([data-theme="light"]) .sw-row select.sw-es.es-lh{--eb:#412402;--ed:#EF9F27;--ei:#FAEEDA}:root:not([data-theme="light"]) .sw-row select.sw-es.es-ll{--eb:#412402;--ed:#FAC775;--ei:#FAEEDA}
+  :root:not([data-theme="light"]) .sw-row select.sw-es.es-ag{--eb:#173404;--ed:#97C459;--ei:#EAF3DE}:root:not([data-theme="light"]) .sw-row select.sw-es.es-al{--eb:#173404;--ed:#639922;--ei:#EAF3DE}}
+:root[data-theme="dark"] .sw-row select.sw-es.es-pc{--eb:#501313;--ed:#E24B4A;--ei:#FCEBEB}:root[data-theme="dark"] .sw-row select.sw-es.es-pcl{--eb:#4A1B0C;--ed:#F0997B;--ei:#FAECE7}
+:root[data-theme="dark"] .sw-row select.sw-es.es-lh{--eb:#412402;--ed:#EF9F27;--ei:#FAEEDA}:root[data-theme="dark"] .sw-row select.sw-es.es-ll{--eb:#412402;--ed:#FAC775;--ei:#FAEEDA}
+:root[data-theme="dark"] .sw-row select.sw-es.es-ag{--eb:#173404;--ed:#97C459;--ei:#EAF3DE}:root[data-theme="dark"] .sw-row select.sw-es.es-al{--eb:#173404;--ed:#639922;--ei:#EAF3DE}
+.sw-row select.sw-es[class*="es-"]{background:var(--eb);border:2px solid var(--ed);color:var(--ei);font-weight:600}
+.sw-row select.sw-es option,.sw-row select.sw-es optgroup{background:var(--surface);color:var(--ink);font-weight:400}
+.sw-mix{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:.8rem;color:var(--muted);padding:0 2px}
+.sw-mix-b{display:flex;flex:1 1 260px;height:20px;border-radius:5px;overflow:hidden;font-size:.72rem;color:#fff;font-weight:600}
+.sw-mix-b span{display:flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden;min-width:0}
+.sw-evi{flex:0 0 auto;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--warn);background:transparent;color:var(--warn);font-weight:700;font-size:.8rem;line-height:1;cursor:pointer;padding:0;display:grid;place-items:center}
+.sw-evi:hover,.sw-evi:focus-visible{background:var(--warn);color:var(--surface)}
+@media (pointer:coarse){.sw-evi{width:32px;height:32px}}
+.sw-evd{width:min(640px,100%);font-size:.92rem;line-height:1.55}
+.sw-evd h4{font-family:var(--f-display);font-size:1rem;margin:0 0 4px}
+.sw-evd ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.sw-evd p{margin:0}
+.sw-evt-wrap{overflow-x:auto}
+.sw-evt{border-collapse:collapse;width:100%;font-size:.86rem;font-variant-numeric:tabular-nums}
+.sw-evt th,.sw-evt td{border-bottom:1px solid var(--line);padding:4px 8px;text-align:center}
+.sw-evt th:first-child,.sw-evt td:first-child{text-align:left}
+.sw-evt th{font-family:var(--f-display);font-weight:600;color:var(--muted)}
+.sw-evt tr.hl td{background:color-mix(in srgb,var(--warn) 18%,transparent);font-weight:700}
+.sw-evs{font-size:.82rem;color:var(--muted);border-top:1px solid var(--line);padding-top:8px}
+.es-f-pc{background:#A32D2D}.es-f-lh{background:#BA7517}.es-f-ag{background:#3B6D11}
+.nv{color:var(--vv-t)}.ni{color:var(--vi-t)}.nr{color:var(--vr-t)}
+.sw-ntv .nv,.sw-ntv .ni,.sw-ntv .nr{font-weight:600}
+.sw-row .nt input{text-align:left;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.84rem}
+/* สูตรที่พิมพ์เอง (โหมดชำนาญ): ขึ้นบรรทัดใหม่ได้ ไม่ต้องเลื่อนดูในช่อง; Enter ไม่ขึ้นบรรทัด */
+.sw-row .nt textarea{width:100%;min-height:34px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--ink);padding:7px 8px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.84rem;line-height:1.35;resize:none;overflow:hidden;field-sizing:content;min-width:0}
+@media (pointer:coarse){.sw-row .nt textarea{min-height:40px}}
+.sw-ntv{display:block;min-height:34px;border:1px dashed var(--line);border-radius:5px;padding:7px 8px;background:var(--cell);color:var(--ink);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.84rem;white-space:normal;overflow-wrap:anywhere;line-height:1.35;min-width:0}
+.sw-hrow{padding:0 7px;font-family:var(--f-display);font-weight:500;font-size:.78rem;text-align:center;line-height:1.25}
+.sw-hrow span{background:#3d3dc4;color:#fff;border-radius:5px;padding:4px 2px;align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+.sw-hrow span:empty{background:transparent}
+.sw-hrow span small{display:block;font-weight:400;opacity:.85}
+.sw-item{border:1px solid var(--line);border-radius:8px;padding:6px;background:var(--surface);display:flex;flex-direction:column;gap:5px}
+.sw-row .c{display:flex;flex-direction:column;gap:2px;min-width:0}
+.sw-row .c::before{content:attr(data-l);display:none;font-size:.72rem;color:var(--muted);font-weight:600}
+.sw-row input,.sw-row select{width:100%;min-height:34px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--ink);padding:4px 6px;font:inherit;font-size:.88rem;text-align:center;min-width:0}
+.sw-row .ex input{text-align:left}
+.sw-row .c.v input,.sw-row .c.i input,.sw-row .c.r input{padding-left:3px;padding-right:3px}
+.sw-row select.sw-t{font-family:var(--f-display);font-weight:600;text-align:left}
+.sw-del{border:0;background:transparent;color:var(--muted);font-size:1.1rem;cursor:pointer;min-height:32px}
+.sw-nt{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;font-size:.82rem;color:var(--muted);padding:0 2px}
+.sw-nt code,.sw-nt input{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.84rem;color:var(--ink)}
+.sw-nt input{flex:1 1 260px;min-height:32px;border:1px solid var(--line);border-radius:5px;background:var(--bg);padding:3px 8px}
+.sw-nt .ok{color:var(--good)}.sw-nt .warn{color:var(--warn)}
+.sw-fb{margin:0;padding:0 2px;list-style:none;font-size:.84rem;display:flex;flex-direction:column;gap:2px}
+.sw-fb li::before{margin-right:6px;font-weight:700}
+.sw-fb li.ok::before{content:"✓";color:var(--good)}.sw-fb li.warn::before{content:"!";color:var(--warn)}.sw-fb li.bad::before{content:"✕";color:var(--bad)}
+.sw-foot{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px}
+.sw-tot{display:flex;flex-wrap:wrap;gap:4px 16px;color:var(--muted);font-size:.9rem}.sw-tot b{color:var(--ink);font-variant-numeric:tabular-nums}
+.sw-btns{display:flex;flex-wrap:wrap;gap:8px}
+.sw-score{font-family:var(--f-display);font-weight:600;font-size:1.05rem}
+.sw-ref{font-size:.8rem;color:var(--muted)}
+.sw-sub{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.sw-tv{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.sw-tvr{border:1px solid var(--line);border-radius:6px;padding:6px 8px;background:var(--surface);display:flex;flex-direction:column;gap:3px;font-size:.88rem}
+/* ตารางชิ้นงานต้องกว้างอย่างน้อย ~1200px (ช่องชีพจร 120-140 ต้องอ่านครบ) (11 คอลัมน์) ต่ำกว่านั้นใช้แบบการ์ดซ้อน */
+@media (max-width:1199px){
+  .sw-hrow,.sw-band{display:none}
+  .sw-row{grid-template-columns:repeat(3,minmax(0,1fr));align-items:end}
+  .sw-row .c::before{display:block}
+  .sw-row .c.t,.sw-row .c.ex,.sw-row .c.es,.sw-row .c.nt{grid-column:span 3}
+  .sw-row .sw-del{grid-column:3;justify-self:end}
+}
+@media (pointer:coarse){.sw-row input,.sw-row select,.sw-nt input{min-height:40px}}
 .mc-title{position:relative}
 .mc-fold{position:absolute;right:10px;top:50%;transform:translateY(-50%)}
 .mc-sum{display:flex;align-items:center;gap:10px;padding:8px 14px;flex-wrap:wrap}
@@ -646,6 +768,7 @@ span.gsb{cursor:default;right:4px}
       <div class="seg" role="group" id="langSeg">
         <button data-lang="th">ไทย</button><button data-lang="en">EN</button><button data-lang="zh">中文</button>
       </div>
+      <div class="seg" role="group" id="wsSeg"><button data-ws="plan"></button><button data-ws="speed"></button></div>
       <div class="seg" role="group" id="thmSeg"><button data-thm="light">☀<span class="tl"></span></button><button data-thm="dark">☾<span class="tl"></span></button><button data-thm="auto">⚙<span class="tl"></span></button></div>
       <div class="seg" role="group" id="lvlSeg"><button data-lvl="new"></button><button data-lvl="pro"></button></div>
       <div class="seg" role="group" id="modeSeg">
@@ -666,6 +789,7 @@ span.gsb{cursor:default;right:4px}
   </header>
   <div class="sbx" id="sbx" hidden></div>
   <nav class="steps" id="steps"></nav>
+  <section class="panel sw" id="wsSpeed" hidden></section>
 
   <section class="panel who" id="who"></section>
   <section class="panel fb" id="fb" hidden></section>
@@ -1146,7 +1270,7 @@ let group={code:local.groupCode||'',plan:null};
 let db=null,userCap=null,uid=null,canTeach=false,capsReady=false;
 let unsubGroup=null,unsubGGrade=null,groupsList=[],syncState='off';
 let mySub=null,myGrade=null,groupGrade=null;
-let tData={indiv:[],grades:{},ggrades:{}};
+let tData={indiv:[],grades:{},ggrades:{},spd:[],spdg:{}};
 let selected=null;
 const tv={tab:local.tTab||'groups',sort:local.tSort||'code',open:new Set(),delArm:null,drafts:{}};
 const narrowMQ=window.matchMedia('(max-width: 900px)');
@@ -1916,30 +2040,61 @@ function pdfSheet(p){
 }
 const loadJs=src=>new Promise((ok,no)=>{if(document.querySelector(`script[src="${src}"]`)){ok();return}const sc=document.createElement('script');sc.src=src;sc.onload=ok;sc.onerror=no;document.head.appendChild(sc)});
 let pdfBusy=false;
-async function makePdf(){
+async function makePdf(kind){
   if(pdfBusy)return;pdfBusy=true;toast(t('pdfMaking'));
-  const host=document.createElement('div');
+  const host=document.createElement('div'),SPDK=kind==='speed';
   try{
     await loadJs('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
     await loadJs('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
-    host.className='pdfhost';host.innerHTML=pdfSheet(cur());document.body.appendChild(host);
+    host.className='pdfhost';host.innerHTML=SPDK?spdPdfSheet():pdfSheet(cur());document.body.appendChild(host);
     const sh=host.firstElementChild,R=210/297;
     // ขยายความกว้างจนเนื้อหาทั้งหมดพอดีสัดส่วน A4 แนวนอน แล้วย่อลงหน้าเดียว
-    let W=1123;for(let k=0;k<14;k++){sh.style.width=W+'px';if(sh.scrollHeight<=W*R)break;W=Math.round(W*1.12)}
+    // ชิ้นงานความเร็วมีไม่กี่แถว: เริ่มจากความกว้างน้อยกว่าเพื่อให้ตัวอักษรใหญ่เต็มหน้า แล้วค่อยขยายทีละ 4%
+    let W=SPDK?940:1123;for(let k=0;k<40;k++){sh.style.width=W+'px';if(sh.scrollHeight<=W*R)break;W=Math.round(W*(SPDK?1.04:1.12))}
+    // ชิ้นงานที่มีเนื้อหาน้อย (เช่น ยังไม่ได้ตรวจ): ลดความกว้างลงจนเต็มหน้า ตัวอักษรจึงใหญ่ขึ้น (ไม่แคบกว่า 860px เพื่อให้คอลัมน์ไม่เบียด)
+    if(SPDK)for(let k=0;k<10&&W>860;k++){const w2=Math.max(860,Math.round(W*0.96));sh.style.width=w2+'px';if(sh.scrollHeight<=w2*R)W=w2;else{sh.style.width=W+'px';break}}
     sh.style.height=Math.round(W*R)+'px';
     try{await document.fonts.ready}catch(e){}
     const cv=await window.html2canvas(sh,{scale:3200/W,backgroundColor:'#ffffff',logging:false,useCORS:true,width:W,height:Math.round(W*R),windowWidth:W});
     const doc=new window.jspdf.jsPDF({orientation:'landscape',unit:'mm',format:'a4',compress:true});
     doc.addImage(cv.toDataURL('image/jpeg',0.9),'JPEG',0,0,297,210);
-    const blob=doc.output('blob'),p=cur();
-    const base=(local.mode==='group'?group.code+'-'+(p.name||''):local.indiv.student||'').trim().replace(/[\\/:*?"<>|\s]+/g,'-').replace(/^-+|-+$/g,'');
-    const fn=`microcycle${base?'-'+base:''}-${new Date().toISOString().slice(0,10)}.pdf`;
+    const blob=doc.output('blob'),p=SPDK?null:cur();
+    const base=(SPDK||local.mode!=='group'?local.indiv.student||'':group.code+'-'+(p.name||'')).trim().replace(/[\\/:*?"<>|\s]+/g,'-').replace(/^-+|-+$/g,'');
+    const fn=`${SPDK?'speed-program':'microcycle'}${base?'-'+base:''}-${new Date().toISOString().slice(0,10)}.pdf`;
     let dl=null;try{dl=window.claude?await window.claude.use('downloads'):null}catch(e){}
     if(dl){try{await dl.save({filename:fn,data:blob});toast(t('pdfSaved'))}catch(e){if(!e||e.code!=='declined')toast(t('pdfFail'))}}
     else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);toast(t('pdfSaved'))}
   }catch(e){toast(t('pdfFail'))}
   host.remove();pdfBusy=false;
 }
+// PDF ชิ้นงานความเร็ว: A4 แนวนอน 1 หน้า ใช้สี V-I-R และสีระบบพลังงานแบบเดียวกับหน้าจอ (ธีมสว่างเสมอ); ผลตรวจใส่เฉพาะเมื่อกด "ตรวจชิ้นงาน" แล้ว
+const PDF_ES={pc:['#FCEBEB','#A32D2D','#791F1F'],pcl:['#FAECE7','#D85A30','#712B13'],lh:['#FAEEDA','#BA7517','#633806'],ll:['#FAEEDA','#EF9F27','#633806'],ag:['#EAF3DE','#639922','#27500A'],al:['#EAF3DE','#27500A','#173404']};
+function spdPdfSheet(){
+  const sp=local.spd,pro=local.level!=='new',chk=sp.checked,T=sT('t'),ES=sT('es'),P=sT('pdf');
+  let pass=0,total=0,tot=0,rest=0;
+  const rows=sp.rows.map((r,i)=>{
+    const n=sNum(r.reps),d=sNum(r.d),S=sNum(r.sets)||1,vol=n&&d?n*d*S:null;if(vol)tot+=vol;
+    const rr=isHR(r)?null:sRest(r.r),sr=sRest(r.sr);if(n&&rr)rest+=((rr[0]+rr[1])/2)*Math.max(0,n-1)*S;if(S>1&&sr)rest+=((sr[0]+sr[1])/2)*(S-1);
+    const res=chk?sCheck(r):null;if(res){pass+=res.pass;total+=res.total}
+    const pp=sNtParts(r),auto=pp?[[pp.v,'nv'],[pp.i,'ni'],[pp.r,'nr']].filter(x=>x[0]).map(([x,c])=>`<span class="${c}">${esc(x)}</span>`).join(' '):'—';
+    let nt=auto;if(pro){const q=sParse(r.nt,isHR(r)),ok=q&&!sNtDiff(r,q).length;nt=r.nt?`<span class="${chk&&!ok?'ntbad':''}">${esc(r.nt)}</span>${chk&&!ok?` <b class="x">!</b>`:''}`:'—'}
+    const e=esN(r.es),ec=PDF_ES[e],esC=e?`<span class="es" style="background:${ec[0]};border-color:${ec[1]};color:${ec[2]}">${esc(ES[e])}</span>`:'—';
+    const hr=isHR(r),ic={ok:['✓','#2f8a3e'],warn:['!','#b7791f'],bad:['✕','#c2402f']};
+    const fb=res?`<ul class="fb">${res.out.map(([k,m])=>`<li><b style="color:${ic[k][1]}">${ic[k][0]}</b>${esc(m)}</li>`).join('')}</ul>`:'';
+    const mx=chk&&pro&&!hr?esMix(r.d):null,L=sT('mixL'),cl=['#A32D2D','#BA7517','#3B6D11'];
+    const mix=mx?`<div class="mix"><span>${esc(sT('mixT')(d))}</span><div class="mb">${mx.map((v,j)=>v>0?`<i style="flex:${v} 1 0;background:${cl[j]}">${v>=12?esc(L[j])+' ':''}${v>=6?v+'%':''}</i>`:'').join('')}</div></div>`:'';
+    return `<tr><td class="no">${i+1}</td><td class="ty">${esc(T[r.t]||r.t)}</td><td>${esc(r.ex||'—')}</td><td class="v">${esc(r.d||'—')}</td><td class="v">${esc(r.reps||'—')}</td><td class="v">${esc(r.sets||'—')}</td><td class="i">${esc(r.i||'—')}${hr&&r.i?'<small>%HRmax</small>':''}</td><td class="r">${esc(hr?(r.r?fmtRH(r.r):'—'):(fmtR(r.r)||'—'))}</td><td class="r">${esc(fmtR(r.sr)||'—')}</td><td class="nt">${nt}</td><td>${esC}</td></tr>${fb||mix?`<tr class="sub"><td></td><td colspan="10">${fb}${mix}</td></tr>`:''}`}).join('');
+  const auto=chk?speedAuto(sp.rows,pro,sp.pb):null;
+  let dt='';try{dt=new Date().toLocaleDateString(HTML_LANG[lang],{dateStyle:'medium'})}catch(e){dt=new Date().toLocaleDateString()}
+  const meta=[local.indiv.student,`${sT('pb')}: ${sp.pb||'—'}`,`${P.lv}: ${pro?sT('lvPro'):sT('lvNew')}`].filter(x=>x&&String(x).trim());
+  return `<div class="pdfs spdf"><div class="ph"><div><h1>Speed Development Program · ${esc(sT('title'))}</h1><div class="meta">${meta.map(esc).join(' · ')}</div></div>
+    <div class="sc">${chk?`${esc(P.auto)} <b style="color:${auto>=70?'#2f8a3e':auto>=50?'#b7791f':'#c2402f'}">${auto}</b>/100 · ${esc(sT('score')(pass,total))}`:esc(P.noChk)}<br>${esc(sT('totAll'))} ${tot} m · ${esc(sT('restAll'))} ${Math.round(rest)} ${esc(sT('min'))}</div></div>
+    <table class="st"><colgroup><col style="width:3%"><col style="width:12%"><col style="width:11%"><col style="width:7%"><col style="width:6%"><col style="width:6%"><col style="width:8%"><col style="width:8%"><col style="width:7%"><col style="width:19%"><col style="width:13%"></colgroup>
+    <thead><tr class="band"><th colspan="3"></th><th colspan="3" class="bv">${esc(sT('bandV'))}</th><th class="bi">${esc(sT('bandI'))}</th><th colspan="2" class="br">${esc(sT('bandR'))}</th><th colspan="2"></th></tr>
+    <tr><th>#</th><th>${esc(sT('hType'))}</th><th>${esc(sT('hEx'))}</th><th class="v">${esc(sT('hD'))}<small>${esc(sT('sD'))}</small></th><th class="v">${esc(sT('hReps'))}<small>${esc(sT('sReps'))}</small></th><th class="v">${esc(sT('hSets'))}<small>${esc(sT('sSets')||'')}</small></th><th class="i">${esc(sT('hI'))}<small>${esc(sT('sI'))}</small></th><th class="r">${esc(sT('hR'))}<small>${esc(sT('sR'))}</small></th><th class="r">${esc(sT('hSR'))}<small>${esc(sT('sSR'))}</small></th><th>${esc(sT('nt'))} (Format)<small>${esc(pro?sT('ntSelf'):sT('ntAuto'))}</small></th><th>${esc(sT('hEs'))}</th></tr></thead>
+    <tbody>${rows}</tbody></table>
+    <div class="leg">${esc(P.leg)}</div>
+    <div class="pf"><span>${esc(t('copyright'))} · ${esc(sT('ref'))}</span><span>${esc(t('pdfPrinted'))} ${esc(dt)} · A4</span></div></div>`}
 
 /* ================= Sandbox: ขั้นตอน 5 ขั้น + ป้ายเตือนในช่อง ================= */
 let LW={};
@@ -2077,7 +2232,7 @@ function enrich(r){const ev=evaluate(r),auto=ev.score;return{...r,ev,auto,rub:ru
 function renderTeacher(){
   const el=document.getElementById('teacher');
   if(!db){el.innerHTML=`<div class="t-head"><h2>${t('tTitle')}</h2></div><p class="hint">${t('tNoDb')}</p>`;return}
-  const rows=teacherRows().map(enrich);
+  const SP=tv.tab==='speed',rows=SP?spdRows():teacherRows().map(enrich);
   const sorters={code:(a,b)=>String(a.kind==='g'?a.id:a.title).localeCompare(String(b.kind==='g'?b.id:b.title)),score:(a,b)=>b.auto-a.auto,low:(a,b)=>a.auto-b.auto,
     final:(a,b)=>(b.fin??-1)-(a.fin??-1),upd:(a,b)=>(b.time||0)-(a.time||0)};
   rows.sort(sorters[tv.sort]||sorters.code);
@@ -2086,7 +2241,7 @@ function renderTeacher(){
   const sortKeys={code:'sortCode',score:'sortScore',low:'sortLow',final:'sortFinal',upd:'sortUpd'};
   keepTyping(()=>{
   el.innerHTML=`<div class="t-head"><div><h2>${t('tTitle')}</h2><p class="hint"><span class="dot live"></span>${t('tLive')} · ${t('formula')}</p></div>
-      <div class="tabs" role="tablist"><button role="tab" data-tab="groups" aria-selected="${tv.tab==='groups'}">${t('tabGroups')} (${groupsList.length})</button><button role="tab" data-tab="indiv" aria-selected="${tv.tab==='indiv'}">${t('tabIndiv')} (${tData.indiv.length})</button></div></div>
+      <div class="tabs" role="tablist"><button role="tab" data-tab="groups" aria-selected="${tv.tab==='groups'}">${t('tabGroups')} (${groupsList.length})</button><button role="tab" data-tab="indiv" aria-selected="${tv.tab==='indiv'}">${t('tabIndiv')} (${tData.indiv.length})</button><button role="tab" data-tab="speed" aria-selected="${SP}">${esc(sT('tTab'))} (${tData.spd.length})</button></div></div>
     <div class="stats"><div class="stat"><span>${t('tCount')}</span><strong>${n}</strong></div>
       <div class="stat"><span>${t('tAvg')}</span><strong>${n?avg:'-'}</strong></div>
       <div class="stat"><span>${t('tGraded')}</span><strong>${graded}/${n}</strong></div>
@@ -2097,8 +2252,8 @@ function renderTeacher(){
       <p class="hint">${t('sheetNote')}</p><div id="sheetStatus" aria-live="polite">${tv.sheetMsg||''}</div></section>
     <div class="t-tools"><label for="tSort">${t('tSort')}</label><select id="tSort">${Object.keys(sortKeys).map(k=>`<option value="${k}"${tv.sort===k?' selected':''}>${t(sortKeys[k])}</option>`).join('')}</select>
       <button class="btn small" id="tToggleAll">${n&&rows.every(r=>tv.open.has(r.key))?t('tCollapseAll'):t('tExpandAll')}</button></div>
-    ${n?'':`<p class="hint">${tv.tab==='groups'?t('tEmptyG'):t('tEmptyI')}</p>`}
-    ${rows.map(r=>teacherRow(r,bar)).join('')}`;
+    ${n?'':`<p class="hint">${SP?esc(sT('tEmpty')):tv.tab==='groups'?t('tEmptyG'):t('tEmptyI')}</p>`}
+    ${rows.map(r=>SP?teacherRowS(r):teacherRow(r,bar)).join('')}`;
   });
   el.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tv.tab=b.dataset.tab;local.tTab=tv.tab;saveLocal();renderTeacher()});
   document.getElementById('tSort').onchange=e=>{tv.sort=e.target.value;local.tSort=tv.sort;saveLocal();renderTeacher()};
@@ -2111,14 +2266,14 @@ function renderTeacher(){
     const k=b.dataset.delg;
     if(tv.delArm!==k){tv.delArm=k;renderTeacher();setTimeout(()=>{if(tv.delArm===k){tv.delArm=null;renderTeacher()}},3000);return}
     tv.delArm=null;const kind=k.slice(0,1),id=k.slice(2);
-    try{await db.doc((kind==='g'?'groups/':'indiv/')+id).delete();tv.open.delete(k);toast(t('tDeleted'))}catch(e){toast(t('syncError'))}
+    try{await db.doc((kind==='g'?'groups/':kind==='s'?'wsspeed/':'indiv/')+id).delete();tv.open.delete(k);toast(t('tDeleted'))}catch(e){toast(t('syncError'))}
   });
   el.querySelectorAll('[data-rk]').forEach(b=>b.onclick=()=>{const d=draftFor(b.dataset.rk);d.r[+b.dataset.ri]=+b.dataset.rv;renderTeacher()});
   el.querySelectorAll('[data-cm]').forEach(a=>a.oninput=()=>{draftFor(a.dataset.cm).comment=a.value});
   el.querySelectorAll('[data-save]').forEach(b=>b.onclick=()=>saveGrade(b.dataset.save,rows.find(r=>r.key===b.dataset.save)));
 }
 function draftFor(key){
-  if(!tv.drafts[key]){const r=teacherRows('groups').concat(teacherRows('indiv')).find(x=>x.key===key),g=r&&r.grade;tv.drafts[key]={r:g&&Array.isArray(g.r)?[...g.r]:[0,0,0,0],comment:(g&&g.comment)||''}}
+  if(!tv.drafts[key]){const r=teacherRows('groups').concat(teacherRows('indiv'),spdRows()).find(x=>x.key===key),g=r&&r.grade;tv.drafts[key]={r:g&&Array.isArray(g.r)?[...g.r]:[0,0,0,0],comment:(g&&g.comment)||''}}
   return tv.drafts[key];
 }
 const safeId=k=>k.replace(/[^A-Za-z0-9_-]/g,'_');
@@ -2148,21 +2303,24 @@ function miniPlan(r){
       <div class="mv">${VOLS.map(k=>`${vU(k)} ${d.vol[k]??'–'}`).join(' · ')}</div></div>`).join('')}</div></div>
     <div class="eval" style="grid-template-columns:1fr"><div style="min-width:0">${evalLists(r.ev)}</div></div>`;
 }
-function rubricForm(r){
+function rubricForm(r,labels=t('rub')){
   const d=draftFor(r.key),ok=d.r.every(v=>v>=1),pct=ok?Math.round(d.r.reduce((a,b)=>a+b,0)/20*100):null;
   return `<div class="rub"><h4>${t('rubT')}</h4>
-    ${t('rub').map((c,i)=>`<div class="rub-row"><span>${i+1}. ${c}</span><div class="rub-opts" role="group" aria-label="${esc(c)}">${[1,2,3,4,5].map(v=>`<button data-rk="${esc(r.key)}" data-ri="${i}" data-rv="${v}" aria-pressed="${d.r[i]===v}">${v}</button>`).join('')}</div></div>`).join('')}
+    ${labels.map((c,i)=>`<div class="rub-row"><span>${i+1}. ${c}</span><div class="rub-opts" role="group" aria-label="${esc(c)}">${[1,2,3,4,5].map(v=>`<button data-rk="${esc(r.key)}" data-ri="${i}" data-rv="${v}" aria-pressed="${d.r[i]===v}">${v}</button>`).join('')}</div></div>`).join('')}
     <div class="fld"><label for="cm-${safeId(r.key)}">${t('comment')}</label><textarea id="cm-${safeId(r.key)}" data-cm="${esc(r.key)}">${esc(d.comment)}</textarea></div>
     <div class="rub-foot"><span>${t('teachS')} <b>${pct??'–'}</b> · ${t('finalS')} <b>${pct!=null?Math.round(r.auto*0.4+pct*0.6):'–'}</b> · ${t('formula')}</span>
       <button class="btn primary small" data-save="${esc(r.key)}">${t('saveGrade')}</button></div></div>`;
 }
 async function saveGrade(key,r){
   const d=draftFor(key);if(!d.r.every(v=>v>=1)){toast(t('rubNeed'));return}
-  const path=(r.kind==='g'?'ggrades/':'grades/')+r.id;
+  const path=(r.kind==='g'?'ggrades/':r.kind==='s'?'wsgspeed/':'grades/')+r.id;
   try{await db.doc(path).set({r:[...d.r],comment:d.comment.trim(),auto:r.auto,at:Date.now()});delete tv.drafts[key];toast(t('gradeSaved'))}
   catch(e){toast(t('gradeFail'))}
 }
 function exportRows(){
+  // แท็บชิ้นงานความเร็ว: ส่งออกเฉพาะชิ้นงานนี้
+  if(tv.tab==='speed')return [sT('cols'),...spdRows().map(r=>{const g=r.grade||{};return[r.title,r.id.slice(0,8),r.x.pb||'',r.pro?sT('lvPro'):sT('lvNew'),(r.x.rows||[]).length,spdTotal(r.x.rows),r.auto,
+    ...(Array.isArray(g.r)?g.r:['','','','']),r.rub??'',r.fin??'',g.comment||'',fmtTime(r.time),g.at?fmtTime(g.at):'']})];
   const all=[];
   ['groups','indiv'].forEach(tab=>teacherRows(tab).map(enrich).forEach(r=>{const pr=r.profile,g=r.grade||{};
     all.push([r.kind==='g'?t('group'):t('indiv'),r.kind==='g'?r.id:r.id.slice(0,8),r.title,r.members,pr.event,pr.sex?(pr.sex==='M'?t('male'):t('female')):'',pr.phase?t('phases')[pr.phase]:'',pr.micro,
@@ -2176,7 +2334,7 @@ async function exportSheet(){
   let mcp=null;try{mcp=window.claude?await window.claude.use('mcp'):null}catch(e){}
   if(!mcp){setMsg(t('sheetNoMcp'));return}
   const csv=exportRows().map(r=>r.map(csvCell).join(',')).join('\n');
-  const title=t('sheetTitle',new Date().toLocaleString(HTML_LANG[lang],{dateStyle:'medium',timeStyle:'short'}));
+  const title=(tv.tab==='speed'?sT('tTab')+' · ':'')+t('sheetTitle',new Date().toLocaleString(HTML_LANG[lang],{dateStyle:'medium',timeStyle:'short'}));
   const fs=(local.sheetFolder||'').trim(),fm=fs.match(/folders\/([A-Za-z0-9_-]+)/)||fs.match(/^([A-Za-z0-9_-]{15,})$/);
   const input={title,textContent:csv,contentMimeType:'text/csv'};if(fm)input.parentId=fm[1];
   btn.disabled=true;setMsg(t('sheetMaking'));
@@ -2235,14 +2393,346 @@ let lineT=null;const queueLine=()=>{clearTimeout(lineT);lineT=setTimeout(drawLoa
 if(window.ResizeObserver)new ResizeObserver(queueLine).observe(document.getElementById('boardWrap'));else window.addEventListener('resize',queueLine);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(queueLine);
 
+/* ================= ชิ้นงาน: โปรแกรมการพัฒนาความเร็ว =================
+   เกณฑ์จากตารางของอาจารย์: "โปรแกรมการฝึก Speed Repetition" (อัตราเร่ง/สูงสุด/คล่องแคล่ว) และ
+   "Intensive Interval เพื่อพัฒนาความเร็วอดทน" + "…ความเร็วอดทนพิเศษ"
+   นักศึกษากรอกเองทั้งหมด ระบบแสดงสูตรสากล/อ่านสูตรระหว่างกรอก และตรวจตามเกณฑ์เมื่อกด "ตรวจชิ้นงาน" เท่านั้น */
+const SPD={
+  acc:{d:[1,30],i:[95,100],reps:[3,4],r:[1,3],sets:[3,4],sr:[6,8],sv:[80,120],tot:[300,400],es:['pc']},
+  max:{d:[40,60],i:[95,100],reps:[3,4],r:[4,6],sets:[3,4],sr:[8,10],sv:[80,200],tot:[400,600],es:['pc']},
+  agi:{d:[20,40],i:[95,100],reps:[3,4],r:[1,3],sets:[3,4],sr:[6,8],sv:[80,160],tot:[400,600],es:['pc']},
+  sei:{d:[60,150],i:[95,100],reps:[2,5],r:[2,5],sets:[2,3],sr:[8,10],sv:[150,300],tot:[300,1200],es:['pcl','lh']},
+  sse:{d:[150,300],i:[95,100],reps:[1,5],r:[10,20],sets:[1,1],sr:null,sv:null,tot:[300,1200],es:['lh']},
+  // Extensive Interval (ตารางของอาจารย์): ความหนักเป็น %ชีพจรสูงสุด (%HRmax) และพักระหว่างเที่ยวจนชีพจรลดลงถึงค่าที่กำหนด (ครั้ง/นาที)
+  exs:{hr:true,d:[100,400],i:[80,85],reps:[6,30],rhr:[120,140],sets:[2,4],sr:[2,5],sv:[600,2000],tot:[2000,8000],es:['ag','ll']},
+  exl:{hr:true,d:[100,1000],i:[85,90],reps:[5,16],rhr:[120,120],sets:[2,3],sr:[5,10],sv:[3000,6000],tot:[6000,12000],es:['ag','ll']}
+};
+const SPD_TYPES=['acc','max','agi','sei','sse','exs','exl'],ES_KEYS=['pc','pcl','lh','ll','ag','al'];
+// ระบบพลังงาน 6 ระดับ (สไลด์ Energy-supply in human skeletal muscle): Anoxidative = pc/pcl/lh/ll, Oxidative = ag/al; 'ox' เดิม (Aerobic) = ag
+const ES_ANOX=['pc','pcl','lh','ll'],ES_OX=['ag','al'],esN=v=>v==='ox'?'ag':v;
+// สัดส่วนพลังงาน (%) ATP-PC / Anaerobic lactic / Aerobic ตามระยะทางเมื่อทำเต็มที่ (ตาราง The intensity and energy systems ของอาจารย์)
+const ES_MIX=[[30,80,19,1],[60,55,43,2],[100,25,70,5],[200,15,60,25],[400,12,43,45],[800,10,30,60],[1500,8,20,72],[3000,5,15,80],[5000,4,10,86],[10000,2.5,10,87.5],[42195,0,3.5,96.5]];
+function esMix(d){d=sNum(d);if(!d)return null;const T=ES_MIX;if(d<=T[0][0])return T[0].slice(1);if(d>=T[T.length-1][0])return T[T.length-1].slice(1);
+  const k=T.findIndex(x=>x[0]>=d),a=T[k-1],b=T[k],f=(d-a[0])/(b[0]-a[0]);const m=[1,2,3].map(j=>a[j]+(b[j]-a[j])*f);
+  const r=m.map(Math.round);r[1]=100-r[0]-r[2];return r}
+// ตัวเลขตามต้นฉบับในสไลด์ (ใช้แสดงในหน้าหลักฐานอ้างอิง)
+const ES_SRC=[['30m','80','19','01'],['60m','55','43','02'],['100m','25','70','05'],['200m','15','60','25'],['400m','12','43','45'],['800m','10','30','60'],['1500m','08','20','72'],['3000m','05','15','80'],['5000m','04','10','86'],['10000m','02-03','08-12','85-90'],['marathon','00','02-05','95-98']];
+// แถบสัดส่วนพลังงาน (ข้อมูลขั้นสูง): เฉพาะโหมดชำนาญ หลังกด "ตรวจชิ้นงาน" (นักศึกษาเลือกระบบพลังงานเองก่อน); ไม่แสดงกับ Extensive interval เพราะตารางเป็นการวิ่งเต็มที่
+function esMixBar(r){if(isHR(r))return '';const m=esMix(r.d);if(!m)return '';const L=sT('mixL'),cl=['pc','lh','ag'];
+  return `<div class="sw-mix"><span class="sw-mix-t">${esc(sT('mixT')(sNum(r.d)))}</span><div class="sw-mix-b" role="img" aria-label="${esc(m.map((v,j)=>L[j]+' '+v+'%').join(', '))}">${m.map((v,j)=>v>0?`<span class="es-f-${cl[j]}" style="flex:${v} 1 0">${v>=12?esc(L[j])+' ':''}${v>=6?v+'%':''}</span>`:'').join('')}</div><button type="button" class="sw-evi" data-mixref="${esc(String(sNum(r.d)))}" aria-label="${esc(sT('evT'))}" title="${esc(sT('evT'))}">!</button></div>`}
+// หน้าหลักฐานและหลักการอ้างอิงของแถบสัดส่วนพลังงาน
+function openMixRef(d){const m=document.getElementById('modal'),E=sT('ev'),near=(()=>{const k=ES_MIX.findIndex(x=>x[0]>=d);return k<=0?[0]:k<0?[ES_MIX.length-1]:ES_MIX[k][0]===d?[k]:[k-1,k]})();
+  m.innerHTML=`<div class="dialog sw-evd" role="dialog" aria-modal="true" aria-labelledby="evh"><h3 id="evh">${esc(sT('evT'))}</h3>
+    <section><h4>${esc(E.pT)}</h4><ul>${E.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>
+    <section><h4>${esc(E.tT)}</h4><div class="sw-evt-wrap"><table class="sw-evt"><thead><tr>${E.cols.map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${ES_SRC.map((r,i)=>`<tr${near.includes(i)?' class="hl"':''}>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>${d?`<p class="hint">${esc(E.near(d))}</p>`:''}</section>
+    <section><h4>${esc(E.hT)}</h4><p>${esc(E.how)}</p></section>
+    <section><h4>${esc(E.lT)}</h4><ul>${E.lim.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>
+    <p class="sw-evs">${esc(E.src)}</p>
+    <div class="dlg-actions"><button class="btn primary" id="evx">${esc(t('close'))}</button></div></div>`;
+  const close=()=>{m.hidden=true;m.onclick=null;document.removeEventListener('keydown',esc_)},esc_=e=>{if(e.key==='Escape')close()};
+  m.hidden=false;m.onclick=e=>{if(e.target===m)close()};document.addEventListener('keydown',esc_);const b=document.getElementById('evx');b.onclick=close;b.focus({preventScroll:true});m.querySelector('.dialog').scrollTop=0}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-mixref]');if(b)openMixRef(sNum(b.dataset.mixref))});
+const SPD_EX={acc:['Block start','Crouch start','3-point start','Hill sprint','Sled sprint'],max:['Flying 30m','Ins and outs','Sprint from rolling start'],agi:['Shuttle run','Zig-zag sprint','Reaction start','T-drill'],sei:['Intensive interval','Extensive interval','Speed endurance run'],sse:['Special endurance','Time trial'],exs:['Extensive interval 200m','Extensive interval 400m','Tempo run'],exl:['Extensive interval 600m','Extensive interval 1000m']};
+// ชีพจร/ช่วงตัวเลข: "120-140", "HR120", "120 bpm" → [ต่ำสุด, สูงสุด]
+function sRange(v){const m=String(v||'').match(/\d+(?:\.\d+)?/g);if(!m)return null;const a=+m[0],b=m.length>1?+m[1]:a;return [Math.min(a,b),Math.max(a,b)]}
+const rngTxt=x=>!x?'':x[0]===x[1]?String(x[0]):`${x[0]}-${x[1]}`;
+const rngIn=(x,[a,b])=>x&&x[0]>=a-1e-9&&x[1]<=b+1e-9;
+const rngEq=(x,y)=>(!x&&!y)||(x&&y&&Math.abs(x[0]-y[0])<.01&&Math.abs(x[1]-y[1])<.01);
+const isHR=r=>!!(SPD[r.t]&&SPD[r.t].hr);
+const SL={
+  th:{wsPlan:'แผน 7 วัน',wsSpeed:'ชิ้นงาน: ความเร็ว',title:'โปรแกรมการพัฒนาความเร็ว',sub:'กรอกโปรแกรมของแต่ละประเภทความเร็วเอง แล้วกด "ตรวจชิ้นงาน" ระบบจะตรวจตามเกณฑ์ของรายวิชา',
+    name:'ชื่อนักศึกษา / รหัส',pb:'สถิติ 100 ม. ของนักกีฬา (วินาที)',pbPh:'เช่น 10.85',
+    hType:'ประเภทความเร็ว',hEx:'ตัวอย่างแบบฝึก',hD:'ระยะทาง',hReps:'จำนวน',hSets:'จำนวน',hR:'เวลาพัก',hSR:'เวลาพัก',hI:'ระดับความหนัก',hEs:'ระบบพลังงาน',
+    sReps:'เที่ยว',sSets:'เซ็ต',/* ใช้ทั้งหัวตารางและป้ายบนมือถือ */sR:'เที่ยว',sSR:'เซ็ต',sD:'(ม.)',sI:'(%)',
+    t:{acc:'ความเร็วอัตราเร่ง',max:'ความเร็วสูงสุด',agi:'ความคล่องแคล่วว่องไว',sei:'ความเร็วอดทน',sse:'ความเร็วอดทนพิเศษ',exs:'Extensive (ระยะสั้น)',exl:'Extensive (ระยะไกล)'},
+    bandV:'V ปริมาณ',bandI:'I ความหนัก',bandR:'R การพัก',iHR:'(%HRmax)',iHRph:'เช่น 80-85',rHRph:'ชีพจร เช่น 120-140',ntPhHR:"เช่น 3x10x200m 80-85%HRmax R HR120-140 SR3'",
+    es:{'':'— เลือก —',pc:'ATP-PC (Alactic)',pcl:'ATP-PC + Lactic',lh:'Lactic (high)',ll:'Lactic (low)',ag:'Aerobic glycolysis',al:'Aerobic lipolysis'},
+    esAnox:'Anoxidative (ไม่ใช้ออกซิเจน)',esOx:'Oxidative (ใช้ออกซิเจน)',mixT:d=>`สัดส่วนพลังงานเมื่อวิ่ง ${d} ม. เต็มที่ ≈`,mixL:['ATP-PC','Lactic','Aerobic'],
+    evT:'หลักฐานและหลักการอ้างอิง: สัดส่วนระบบพลังงาน',
+    ev:{pT:'หลักการ',p:['ร่างกายใช้ระบบพลังงานทั้งสามระบบพร้อมกันเสมอ ระบบที่ "เด่น" ขึ้นกับความหนักและระยะเวลาของงาน: งานสั้นและหนักมากใช้ระบบไม่ใช้ออกซิเจนเป็นหลัก งานยาวและหนักน้อยกว่าใช้ระบบแอโรบิกเป็นหลัก',
+        'ระยะเวลาที่แต่ละแหล่งพลังงานรองรับได้ (Energy-supply in human skeletal muscle): ATP ≈ 1 วินาที · CP (Anaerobic alactic) ≈ 3 วินาที โดยเป็นระบบเด่นของงานที่ใช้เวลาไม่เกินประมาณ 6 วินาที · Anaerobic glycolysis (lactic) ≈ 1 นาที · Aerobic glycolysis 30–40 นาที · Aerobic lipolysis หลายชั่วโมง',
+        'ตัวเลขในตารางคือสัดส่วนโดยประมาณเมื่อวิ่งระยะนั้น "เต็มที่" (all-out) หนึ่งครั้ง'],
+      tT:'ตาราง The intensity and energy systems',cols:['ระยะ','ATP / CP %','Anaerobic-lac %','Aerobic %'],near:d=>`แถวที่ไฮไลต์คือแถวที่ใช้ประมาณค่าของระยะ ${d} ม.`,
+      hT:'วิธีประมาณค่าในชิ้นงานนี้',how:'ถ้าระยะตรงกับแถวในตาราง ระบบใช้ตัวเลขนั้น ถ้าระยะอยู่ระหว่างสองแถว ระบบประมาณแบบเส้นตรงจากสองแถวที่ใกล้ที่สุด เช่น 120 ม. อยู่ห่างจาก 100 ม. เป็น 20% ของช่วง 100–200 ม. จึงได้ ATP-PC ≈ 25 − 0.2 × (25 − 15) = 23% ช่วงในตาราง เช่น 02-03 ใช้ค่ากลาง',
+      lT:'ข้อจำกัดที่ต้องคิดประกอบ',lim:['การฝึกเป็นเที่ยวและเป็นเซ็ต สัดส่วนจะเปลี่ยนตามเวลาพัก: ถ้าพักสั้น เที่ยวหลัง ๆ จะพึ่งระบบ Lactic และแอโรบิกมากขึ้น เพราะ CP ฟื้นตัวไม่ทัน','ถ้าความหนักต่ำกว่าเต็มที่ สัดส่วนของระบบแอโรบิกจะมากกว่าตัวเลขในตาราง','ใช้แถบนี้ประกอบการให้เหตุผลเรื่องระบบพลังงาน ไม่ใช่คำตอบตายตัว'],
+      src:'ที่มา: เอกสารประกอบการสอนของรายวิชา สไลด์ "The intensity and energy systems" และ "Exercise physiology: Energy-supply in human skeletal muscle"'},
+    restPh:"เช่น 2' 1'30'' 8-10'",nt:'สูตรสากล',ntSelf:'(เขียนเอง)',ntAuto:'(ระบบจัดให้)',ntPh:"เช่น 3x4x30m 100% R1'30'' SR6-8'",ntRead:'ระบบอ่านได้',ntBad:"อ่านสูตรไม่ได้ ลำดับ: ปริมาณ → ความหนัก % → R → SR เช่น 3x4x30m 100% R1'30'' SR6-8' (' = นาที, '' = วินาที)",ntDiff:f=>`สูตรไม่ตรงกับช่องที่กรอก: ${f}`,
+    vol:'ระยะรวม',work:'ทำงาน ≈',sec:'วินาที/เที่ยว',add:'+ เพิ่มแบบฝึก',check:'ตรวจชิ้นงาน',copy:'คัดลอกโปรแกรม',clear:'ล้างชิ้นงาน',clearC:'กดอีกครั้งเพื่อยืนยัน',
+    totAll:'ระยะรวมทั้งมื้อ',restAll:'เวลาพักรวม ≈',min:'นาที',score:(a,b)=>`ผ่าน ${a}/${b} ข้อ`,copied:'คัดลอกโปรแกรมแล้ว',pbNote:'ยังไม่กรอกสถิติ 100 ม. ระบบใช้ 12.0 วินาทีในการประมาณเวลาทำงาน',
+    ref:'เกณฑ์: โปรแกรมการฝึก Speed Repetition, Intensive Interval และ Extensive Interval (เอกสารประกอบการสอน) · Extensive interval ใช้ %ชีพจรสูงสุด (%HRmax) และพักจนชีพจรลดลงถึงค่าที่กำหนด (ครั้ง/นาที)',
+    m:{miss:f=>`ยังกรอกไม่ครบ: ${f}`,d:(v,a,b)=>`ระยะทาง ${v} ม. ควรอยู่ระหว่าง ${a}–${b} ม.`,i:(v,a,b)=>`ความหนัก ${v}% ควรอยู่ระหว่าง ${a}–${b}%`,reps:(v,a,b)=>`จำนวนเที่ยว ${v} ควรอยู่ระหว่าง ${a}–${b} เที่ยว/เซ็ต`,sets:(v,a,b)=>a===b?`จำนวนเซ็ต ${v} ควรเป็น ${a} เซ็ต`:`จำนวนเซ็ต ${v} ควรอยู่ระหว่าง ${a}–${b} เซ็ต`,
+      r:(v,a,b)=>`พักระหว่างเที่ยว ${v} นาที ควรอยู่ระหว่าง ${a}–${b} นาที`,sr:(v,a,b)=>`พักระหว่างเซ็ต ${v} นาที ควรอยู่ระหว่าง ${a}–${b} นาที`,srNone:'ประเภทนี้ฝึก 1 เซ็ต ไม่ต้องมีเวลาพักระหว่างเซ็ต',
+      sv:(v,a,b)=>`ระยะรวมต่อเซ็ต ${v} ม. ควรอยู่ระหว่าง ${a}–${b} ม.`,tot:(v,a,b)=>`ระยะรวมทั้งหมด ${v} ม. ควรอยู่ระหว่าง ${a}–${b} ม.`,
+      es:(s,e)=>`ระบบพลังงาน "${s}" ไม่ตรงกับประเภทนี้ (ควรเป็น ${e})`,esT:(t,e)=>`เวลาทำงาน ≈ ${t} วินาทีต่อเที่ยว ระบบพลังงานหลักควรเป็น ${e}`,
+      iHR:(v,a,b)=>`ความหนัก ${v}%HRmax ควรอยู่ระหว่าง ${a}–${b}%HRmax`,rhr:(v,a,b)=>a===b?`พักระหว่างเที่ยวจนชีพจรลดลงถึง ${v} ครั้ง/นาที ควรเป็น ${a} ครั้ง/นาที`:`พักระหว่างเที่ยวจนชีพจรลดลงถึง ${v} ครั้ง/นาที ควรอยู่ระหว่าง ${a}–${b} ครั้ง/นาที`,rhrBad:'ประเภทนี้พักระหว่างเที่ยวด้วยชีพจร ให้กรอกเป็นครั้ง/นาที เช่น 120-140',
+      ok:'ระยะทาง ความหนัก จำนวน เวลาพัก และระบบพลังงาน สอดคล้องกับเกณฑ์',ntOk:'เขียนสูตรสากลถูกต้องและตรงกับโปรแกรม'}},
+  en:{wsPlan:'7-day plan',wsSpeed:'Task: Speed',title:'Speed development program',sub:'Fill in a program for each speed type, then press "Check task". It is checked against the course criteria',
+    name:'Student name / ID',pb:'Athlete 100 m best (s)',pbPh:'e.g. 10.85',
+    hType:'Speed type',hEx:'Example drill',hD:'Distance',hReps:'Reps',hSets:'Sets',hR:'Rest',hSR:'Rest',hI:'Intensity',hEs:'Energy system',
+    sReps:'per set',sSets:'',sR:'reps',sSR:'sets',sD:'(m)',sI:'(%)',
+    t:{acc:'Acceleration',max:'Maximum speed',agi:'Agility',sei:'Speed endurance',sse:'Special endurance',exs:'Extensive (short)',exl:'Extensive (long)'},
+    bandV:'V Volume',bandI:'I Intensity',bandR:'R Recovery',iHR:'(%HRmax)',iHRph:'e.g. 80-85',rHRph:'HR e.g. 120-140',ntPhHR:"e.g. 3x10x200m 80-85%HRmax R HR120-140 SR3'",
+    es:{'':'— choose —',pc:'ATP-PC (Alactic)',pcl:'ATP-PC + Lactic',lh:'Lactic (high)',ll:'Lactic (low)',ag:'Aerobic glycolysis',al:'Aerobic lipolysis'},
+    esAnox:'Anoxidative (no oxygen)',esOx:'Oxidative (uses oxygen)',mixT:d=>`Energy share for an all-out ${d} m ≈`,mixL:['ATP-PC','Lactic','Aerobic'],
+    evT:'Evidence and principles: energy system shares',
+    ev:{pT:'Principles',p:['The body always uses all three energy systems at once. Which one dominates depends on the intensity and duration of the work: short, very hard work relies mainly on the anaerobic systems; longer, easier work relies mainly on the aerobic system',
+        'How long each energy source lasts (Energy-supply in human skeletal muscle): ATP ≈ 1 s · CP (anaerobic alactic) ≈ 3 s, dominant for work of up to about 6 s · Anaerobic glycolysis (lactic) ≈ 1 min · Aerobic glycolysis 30–40 min · Aerobic lipolysis hours',
+        'The table gives approximate shares for one all-out run over each distance'],
+      tT:'Table: The intensity and energy systems',cols:['Distance','ATP / CP %','Anaerobic-lac %','Aerobic %'],near:d=>`Highlighted rows are the ones used to estimate ${d} m`,
+      hT:'How this task estimates the shares',how:'If the distance is in the table, its numbers are used. Between two rows, the value is estimated on a straight line between the two nearest rows. For example, 120 m is 20% of the way from 100 m to 200 m, so ATP-PC ≈ 25 − 0.2 × (25 − 15) = 23%. Ranges such as 02-03 use the middle value',
+      lT:'Limits to keep in mind',lim:['With reps and sets, the shares change with rest: short rest makes later reps rely more on the lactic and aerobic systems because CP has not recovered','Below all-out intensity, the aerobic share is larger than the table shows','Use this bar to support your reasoning about energy systems, not as a fixed answer'],
+      src:'Source: course handout slides "The intensity and energy systems" and "Exercise physiology: Energy-supply in human skeletal muscle"'},
+    restPh:"e.g. 2' 1'30'' 8-10'",nt:'Notation',ntSelf:'(write it)',ntAuto:'(auto)',ntPh:"e.g. 3x4x30m 100% R1'30'' SR6-8'",ntRead:'Read as',ntBad:"Can't read this. Order: volume → intensity % → R → SR, e.g. 3x4x30m 100% R1'30'' SR6-8' (' = min, '' = s)",ntDiff:f=>`Notation doesn't match the fields: ${f}`,
+    vol:'Volume',work:'Work ≈',sec:'s per rep',add:'+ Add drill',check:'Check task',copy:'Copy program',clear:'Clear task',clearC:'Press again to confirm',
+    totAll:'Session total',restAll:'Total rest ≈',min:'min',score:(a,b)=>`${a}/${b} checks passed`,copied:'Program copied',pbNote:'No 100 m best yet, so 12.0 s is used to estimate work time',
+    ref:'Criteria: Speed Repetition, Intensive Interval and Extensive Interval guidelines (course handout) · Extensive interval uses %HRmax and rests until HR drops to the target (bpm)',
+    m:{miss:f=>`Missing: ${f}`,d:(v,a,b)=>`Distance ${v} m should be ${a}–${b} m`,i:(v,a,b)=>`Intensity ${v}% should be ${a}–${b}%`,reps:(v,a,b)=>`${v} reps should be ${a}–${b} per set`,sets:(v,a,b)=>a===b?`${v} sets should be ${a}`:`${v} sets should be ${a}–${b}`,
+      r:(v,a,b)=>`Rest between reps ${v} min should be ${a}–${b} min`,sr:(v,a,b)=>`Rest between sets ${v} min should be ${a}–${b} min`,srNone:'This type is one set, so no rest between sets is needed',
+      sv:(v,a,b)=>`Volume per set ${v} m should be ${a}–${b} m`,tot:(v,a,b)=>`Total volume ${v} m should be ${a}–${b} m`,
+      es:(s,e)=>`Energy system "${s}" doesn't fit this type (expected ${e})`,esT:(t,e)=>`Work ≈ ${t} s per rep, so the main energy system should be ${e}`,
+      iHR:(v,a,b)=>`Intensity ${v}%HRmax should be ${a}–${b}%HRmax`,rhr:(v,a,b)=>a===b?`Rest between reps until HR ${v} bpm should be ${a} bpm`:`Rest between reps until HR ${v} bpm should be ${a}–${b} bpm`,rhrBad:'This type rests between reps by heart rate. Enter bpm, e.g. 120-140',
+      ok:'Distance, intensity, volume, rest and energy system fit the criteria',ntOk:'Notation is correct and matches the program'}},
+  zh:{wsPlan:'7天计划',wsSpeed:'作业:速度',title:'速度发展训练计划',sub:'自行填写每种速度类型的训练计划,然后点击"检查作业",系统按课程标准检查',
+    name:'学生姓名 / 学号',pb:'运动员 100 米成绩(秒)',pbPh:'例如 10.85',
+    hType:'速度类型',hEx:'示例练习',hD:'距离',hReps:'次数',hSets:'组数',hR:'休息',hSR:'休息',hI:'强度',hEs:'能量系统',
+    sReps:'每组',sSets:'',sR:'次间',sSR:'组间',sD:'(米)',sI:'(%)',
+    t:{acc:'加速能力',max:'最大速度',agi:'灵敏性',sei:'速度耐力',sse:'专项速度耐力',exs:'Extensive(短距离)',exl:'Extensive(长距离)'},
+    bandV:'V 训练量',bandI:'I 强度',bandR:'R 休息',iHR:'(%HRmax)',iHRph:'例如 80-85',rHRph:'心率 例如 120-140',ntPhHR:"例如 3x10x200m 80-85%HRmax R HR120-140 SR3'",
+    es:{'':'— 选择 —',pc:'ATP-PC(非乳酸)',pcl:'ATP-PC + 乳酸',lh:'无氧乳酸(高乳酸)',ll:'乳酸(低乳酸)',ag:'有氧糖酵解',al:'有氧脂肪分解'},
+    esAnox:'Anoxidative(无氧)',esOx:'Oxidative(有氧)',mixT:d=>`全力跑 ${d} 米的能量比例 ≈`,mixL:['ATP-PC','乳酸','有氧'],
+    evT:'依据与原理:能量系统比例',
+    ev:{pT:'原理',p:['人体始终同时使用三种能量系统。哪一种占主导取决于运动的强度和持续时间:短时间、极高强度以无氧系统为主;时间较长、强度较低以有氧系统为主',
+        '各能量来源可维持的时间(Energy-supply in human skeletal muscle):ATP ≈ 1 秒 · CP(无氧非乳酸)≈ 3 秒,在约 6 秒以内的运动中占主导 · 无氧糖酵解(乳酸)≈ 1 分钟 · 有氧糖酵解 30–40 分钟 · 有氧脂肪分解 数小时',
+        '表中数字为全力跑该距离一次时的大致比例'],
+      tT:'表:The intensity and energy systems',cols:['距离','ATP / CP %','无氧乳酸 %','有氧 %'],near:d=>`高亮行为估算 ${d} 米时所用的行`,
+      hT:'本作业的估算方法',how:'距离与表中某行相同时直接使用该行数字;位于两行之间时,按最近两行做直线估算。例如 120 米位于 100–200 米区间的 20% 处,所以 ATP-PC ≈ 25 − 0.2 × (25 − 15) = 23%。表中的范围(如 02-03)取中间值',
+      lT:'需要同时考虑的限制',lim:['分次分组训练时,比例会随休息时间改变:休息短时,后面几次更依赖乳酸和有氧系统,因为 CP 尚未恢复','强度低于全力时,有氧比例会高于表中数字','此比例条用于支持你对能量系统的推理,并非固定答案'],
+      src:'来源:课程讲义幻灯片 "The intensity and energy systems" 与 "Exercise physiology: Energy-supply in human skeletal muscle"'},
+    restPh:"例如 2' 1'30'' 8-10'",nt:'国际写法',ntSelf:'(自行书写)',ntAuto:'(系统生成)',ntPh:"例如 3x4x30m 100% R1'30'' SR6-8'",ntRead:'系统读取为',ntBad:"无法读取。顺序:训练量 → 强度 % → R → SR,例如 3x4x30m 100% R1'30'' SR6-8'(' = 分钟,'' = 秒)",ntDiff:f=>`写法与填写内容不一致:${f}`,
+    vol:'总距离',work:'做功 ≈',sec:'秒/次',add:'+ 添加练习',check:'检查作业',copy:'复制计划',clear:'清空作业',clearC:'再按一次确认',
+    totAll:'本课总距离',restAll:'总休息 ≈',min:'分钟',score:(a,b)=>`通过 ${a}/${b} 项`,copied:'计划已复制',pbNote:'尚未填写 100 米成绩,按 12.0 秒估算做功时间',
+    ref:'标准:Speed Repetition、Intensive Interval 与 Extensive Interval 训练指南(课程讲义) · Extensive interval 以 %HRmax 表示强度,休息至心率降到规定值(次/分)',
+    m:{miss:f=>`尚未填写:${f}`,d:(v,a,b)=>`距离 ${v} 米应为 ${a}–${b} 米`,i:(v,a,b)=>`强度 ${v}% 应为 ${a}–${b}%`,reps:(v,a,b)=>`每组 ${v} 次应为 ${a}–${b} 次`,sets:(v,a,b)=>a===b?`${v} 组应为 ${a} 组`:`${v} 组应为 ${a}–${b} 组`,
+      r:(v,a,b)=>`次间休息 ${v} 分钟应为 ${a}–${b} 分钟`,sr:(v,a,b)=>`组间休息 ${v} 分钟应为 ${a}–${b} 分钟`,srNone:'此类型只练 1 组,无需组间休息',
+      sv:(v,a,b)=>`每组距离 ${v} 米应为 ${a}–${b} 米`,tot:(v,a,b)=>`总距离 ${v} 米应为 ${a}–${b} 米`,
+      es:(s,e)=>`能量系统"${s}"与此类型不符(应为 ${e})`,esT:(t,e)=>`每次做功约 ${t} 秒,主要能量系统应为 ${e}`,
+      iHR:(v,a,b)=>`强度 ${v}%HRmax 应为 ${a}–${b}%HRmax`,rhr:(v,a,b)=>a===b?`次间休息至心率 ${v} 次/分 应为 ${a} 次/分`:`次间休息至心率 ${v} 次/分 应为 ${a}–${b} 次/分`,rhrBad:'此类型按心率决定次间休息,请填写 次/分,例如 120-140',
+      ok:'距离、强度、数量、休息和能量系统均符合标准',ntOk:'国际写法正确且与计划一致'}}
+};
+// ส่งงานและให้คะแนนชิ้นงานความเร็ว (db: wsspeed/{uid} งานของนักศึกษา, wsgspeed/{uid} คะแนนจากอาจารย์)
+Object.assign(SL.th,{submit:'ส่งชิ้นงานให้อาจารย์',resubmit:'ส่งอีกครั้ง (ฉบับแก้ไข)',submitted:x=>`ส่งล่าสุด ${x}`,notSubmitted:'ยังไม่ได้ส่งชิ้นงาน',changed:'แก้ไขหลังส่ง ยังไม่ได้ส่งฉบับล่าสุด',needName:'กรอกชื่อนักศึกษา/รหัสก่อนส่ง',submitOk:'ส่งชิ้นงานแล้ว',submitFail:'ส่งไม่สำเร็จ ลองใหม่อีกครั้ง',
+  soloNote:'ฉบับนี้ไม่มีระบบส่งงาน กด "คัดลอกโปรแกรม" แล้วส่งตามช่องทางของรายวิชา',signNote:'เข้าสู่ระบบก่อน จึงจะส่งชิ้นงานให้อาจารย์ได้',tTab:'ชิ้นงานความเร็ว',tEmpty:'ยังไม่มีนักศึกษาส่งชิ้นงานความเร็ว',fbT:'ผลประเมินชิ้นงานจากอาจารย์',lvNew:'มือใหม่',lvPro:'ชำนาญ',nDrills:'แบบฝึก',stale:'ส่งฉบับใหม่หลังอาจารย์ให้คะแนน คะแนนอาจเปลี่ยนเมื่ออาจารย์ตรวจอีกครั้ง',
+  rub:['ปริมาณ (V): ระยะทาง เที่ยว เซ็ต เหมาะกับประเภทความเร็ว','ความหนัก (I) และเวลาพัก (R) ตามหลักการฝึก','การเลือกระบบพลังงานและความสัมพันธ์กับเวลาทำงาน','การเขียนโปรแกรมแบบสากลถูกต้องและครบถ้วน'],
+  cols:['ชื่อ/รหัส','ID','สถิติ 100 ม.','ระดับ','จำนวนแบบฝึก','ระยะรวม (ม.)','คะแนนอัตโนมัติ','เกณฑ์ 1','เกณฑ์ 2','เกณฑ์ 3','เกณฑ์ 4','คะแนนอาจารย์','คะแนนรวม','ความเห็น','ส่งเมื่อ','ให้คะแนนเมื่อ']});
+Object.assign(SL.en,{submit:'Submit to instructor',resubmit:'Resubmit (edited)',submitted:x=>`Last submitted ${x}`,notSubmitted:'Not submitted yet',changed:'Edited since submitting; latest version not sent',needName:'Enter your name/ID before submitting',submitOk:'Task submitted',submitFail:'Couldn\'t submit. Try again',
+  soloNote:'This version has no submission. Use "Copy program" and send it through the course channel',signNote:'Sign in to submit the task to your instructor',tTab:'Speed task',tEmpty:'No speed tasks submitted yet',fbT:'Instructor\'s grade for this task',lvNew:'Beginner',lvPro:'Advanced',nDrills:'drills',stale:'Resubmitted after grading; the grade may change when re-checked',
+  rub:['Volume (V): distance, reps and sets fit the speed type','Intensity (I) and rest (R) follow training principles','Energy system choice and its link to work time','Correct, complete international notation'],
+  cols:['Name/ID','ID','100 m best','Level','Drills','Total distance (m)','Auto score','Criterion 1','Criterion 2','Criterion 3','Criterion 4','Instructor score','Final score','Comment','Submitted','Graded']});
+Object.assign(SL.zh,{submit:'提交给老师',resubmit:'再次提交(修改版)',submitted:x=>`最近提交 ${x}`,notSubmitted:'尚未提交',changed:'提交后已修改,最新版本未提交',needName:'提交前请填写姓名/学号',submitOk:'作业已提交',submitFail:'提交失败,请重试',
+  soloNote:'此版本无提交功能,请点击"复制计划"后通过课程渠道发送',signNote:'登录后才能提交作业',tTab:'速度作业',tEmpty:'尚无学生提交速度作业',fbT:'老师对本作业的评分',lvNew:'新手',lvPro:'熟练',nDrills:'项练习',stale:'评分后又重新提交,老师复查后分数可能改变',
+  rub:['训练量 (V):距离、次数、组数符合速度类型','强度 (I) 与休息 (R) 符合训练原则','能量系统的选择及其与做功时间的关系','国际写法正确且完整'],
+  cols:['姓名/学号','ID','100 米成绩','水平','练习数','总距离(米)','自动分','标准 1','标准 2','标准 3','标准 4','老师评分','总分','评语','提交时间','评分时间']});
+// PDF ชิ้นงานความเร็ว
+Object.assign(SL.th,{pdf:{lv:'ระดับ',auto:'คะแนนอัตโนมัติ',noChk:'ยังไม่ได้กด "ตรวจชิ้นงาน" เอกสารนี้จึงไม่มีผลตรวจ',leg:'สีหัวตาราง: V ปริมาณ · I ความหนัก · R การพัก — สีระบบพลังงานไล่จากแดง (ATP-PC: จ่ายพลังงานเร็ว เข้มข้นสูง) ถึงเขียว (Aerobic: ทนนาน) · ✓ ผ่านเกณฑ์  ! ควรทบทวน  ✕ ไม่ตรงเกณฑ์'}});
+Object.assign(SL.en,{pdf:{lv:'Level',auto:'Auto score',noChk:'"Check task" was not pressed, so this document has no check results',leg:'Header colors: V volume · I intensity · R recovery — energy system colors run from red (ATP-PC: fastest, most intense) to green (aerobic: longest) · ✓ meets criteria  ! review  ✕ does not meet criteria'}});
+Object.assign(SL.zh,{pdf:{lv:'水平',auto:'自动评分',noChk:'尚未点击"检查作业",本文件不含检查结果',leg:'表头颜色:V 训练量 · I 强度 · R 休息 — 能量系统颜色由红(ATP-PC:供能最快、强度最高)到绿(有氧:持续最久) · ✓ 符合标准  ! 需复查  ✕ 不符合标准'}});
+let mySpd=null,mySpdG=null;
+const sT=k=>(SL[lang]||SL.th)[k];
+local.ws=local.ws==='speed'?'speed':'plan';
+const newSpdRow=t=>({t,ex:'',d:'',reps:'',sets:'',r:'',sr:'',i:'',es:'',nt:''});
+if(!local.spd||!Array.isArray(local.spd.rows))local.spd={pb:'',rows:['acc','max','sei'].map(newSpdRow),checked:false};
+let spdClearArm=false;
+const sNum=v=>{const n=parseFloat(String(v).replace(',','.'));return isFinite(n)?n:null};
+// เวลาพัก (หน่วยสากล): ' = นาที, '' (หรือ ") = วินาที เช่น 2', 1'30'', 90'', 8-10' ; ตัวเลขเปล่า = นาที → [ต่ำสุด, สูงสุด] เป็นนาที
+const qn=s=>String(s||'').replace(/[’‘′`´]/g,"'").replace(/[”“″]/g,'"').replace(/''/g,'"').replace(/วินาที|sec\b|s\b/gi,'"').replace(/นาที|min\b/gi,"'").replace(/\s+/g,'');
+function restPart(p,hint){let m=p.match(/^(\d+(?:\.\d+)?)'(?:(\d+(?:\.\d+)?)")?$/);if(m)return +m[1]+(m[2]?+m[2]/60:0);
+  m=p.match(/^(\d+(?:\.\d+)?)"$/);if(m)return +m[1]/60;m=p.match(/^(\d+(?:\.\d+)?)$/);if(m)return hint==='"'?+m[1]/60:+m[1];return null}
+function sRest(v){const s=qn(v);if(!s)return null;const parts=s.split(/[-–]|ถึง/);if(parts.length>2)return null;
+  const last=parts[parts.length-1],hint=/"$/.test(last)&&!/'/.test(last)?'"':"'";
+  const a=restPart(parts[0],hint),b=parts.length>1?restPart(last,hint):a;if(a==null||b==null)return null;return [Math.min(a,b),Math.max(a,b)]}
+const fmtMin=x=>{const tot=Math.round(x*60),m=Math.floor(tot/60),s=tot%60;return m&&s?`${m}'${s}''`:m?`${m}'`:`${s}''`};
+// แสดงเวลาพักแบบสากล: 2' · 1'30'' · 8-10' · 45''-1'30''
+const fmtR=v=>{const x=sRest(v);if(!x)return String(v||'').trim();if(Math.abs(x[0]-x[1])<1e-9)return fmtMin(x[0]);
+  const w=y=>Math.abs(Math.round(y*60)%60)===0;return w(x[0])&&w(x[1])?`${Math.round(x[0])}-${Math.round(x[1])}'`:`${fmtMin(x[0])}-${fmtMin(x[1])}`};
+const isFly=ex=>/fly|flying|ลอย|บิน/i.test(ex||'');
+// เวลาทำงานต่อเที่ยวโดยประมาณ จากสถิติ 100 ม. (โมเดลอย่างง่ายสำหรับการเรียนรู้ ไม่ใช่การวัดจริง)
+function sWork(row,pb=local.spd.pb){const t100=sNum(pb)||12,d=sNum(row.d),i=sNum(row.i)||100;if(!d)return null;const v=100/(t100*0.83);
+  let t=isFly(row.ex)?d/v:d<=100?t100*(0.17+0.83*d/100):t100+(d-100)/v*(1+(d-100)/1000);return Math.round(t/(i/100)*10)/10}
+const esFromTime=(t,i)=>t==null?null:(i!=null&&i<85)?['ll','ag']:t<=6?['pc']:t<=10?['pc','pcl']:t<=20?['pcl','pc','lh']:['lh','pcl']; // ATP-PC เด่น ≤6 วินาที (อาจารย์กำหนด 2026-10-12); 6–10 วินาที ช่วงเปลี่ยนผ่าน รับทั้ง ATP-PC และ ATP-PC + Lactic
+// พักระหว่างเที่ยวของประเภทชีพจร (Extensive interval) เขียนเป็น HR120-140 (ครั้ง/นาที)
+const fmtRH=v=>{const x=/['"]|นาที|วินาที|min|sec/i.test(v||'')?null:sRange(v);return x?'HR'+rngTxt(x):String(v||'').trim()};
+const fmtRow=(r,v)=>isHR(r)?fmtRH(v):fmtR(v);
+// ลำดับการเขียน: ปริมาณ V (เซ็ต x เที่ยว x ระยะ) → ความหนัก I % (หรือ %HRmax) → การพัก R (R ระหว่างเที่ยว, SR ระหว่างเซ็ต)
+function sNtParts(r){const s=sNum(r.sets),n=sNum(r.reps),d=sNum(r.d),i=sRange(r.i),hr=isHR(r);if(!n||!d)return null;
+  return{v:`${s&&s>1?s+'x':''}${n}x${d}m${isFly(r.ex)?' fly':''}`,i:i?rngTxt(i)+(hr?'%HRmax':'%'):'',r:[r.r?`R${hr?' '+fmtRH(r.r):fmtR(r.r)}`:'',s&&s>1&&r.sr?`SR${fmtR(r.sr)}`:''].filter(Boolean).join(' ')}}
+function sNotation(r){const p=sNtParts(r);return p?[p.v,p.i,p.r].filter(Boolean).join(' '):''}
+// สูตรแบบแยกสีตามกลุ่ม V-I-R (โหมดมือใหม่)
+function sNotationHTML(r){const p=sNtParts(r);if(!p)return '—';return [[p.v,'nv'],[p.i,'ni'],[p.r,'nr']].filter(x=>x[0]).map(([t,c])=>`<span class="${c}">${esc(t)}</span>`).join(' ')}
+// อ่านสูตร เช่น 3x4x30m 100% R2' SR6-8' / 4x30m 100% R1'30'' / 2x(3x60m) 95% R4' SR8' / 4x30m fly 95% R6'
+// ประเภทชีพจร: 3x10x200m 80-85%HRmax R HR120-140 SR3'
+function sParse(txt,hr=false){let s=String(txt||'').replace(/[×*]/g,'x').replace(/effort/ig,'').replace(/@/g,' ').replace(/[’‘′`´]/g,"'").replace(/[”“″]/g,'"').replace(/\s+/g,' ').trim();if(!s)return null;
+  let r='',sr='';const mSR=s.match(/\bSR\s*([0-9.'"\s–-]+)$/i);if(mSR){sr=mSR[1].trim();s=s.slice(0,mSR.index).trim()}
+  const mR=hr?s.match(/\bR\s*(?:HR\s*)?(\d+(?:\s*[-–]\s*\d+)?)\s*(?:bpm)?$/i):s.match(/\bR\s*([0-9.'"\s–-]+)$/i);if(mR){r=mR[1].replace(/\s+/g,'');s=s.slice(0,mR.index).trim()}
+  const m=s.match(/^(?:(\d+)\s*x\s*)?\(?\s*(\d+)\s*x\s*(\d+(?:\.\d+)?)\s*m\s*\)?\s*(fly(?:ing)?)?\s*(?:(\d+(?:\s*[-–]\s*\d+)?)\s*%\s*(?:HR\s*(?:max)?)?)?$/i);
+  if(!m||(r&&!hr&&!sRest(r))||(sr&&!sRest(sr)))return false;
+  return{sets:m[1]?+m[1]:1,reps:+m[2],d:+m[3],i:m[5]!=null?sRange(m[5]):null,r,sr}}
+function sNtDiff(r,p){const L=sT('m'),diff=[],S=sNum(r.sets)||1,hr=isHR(r);
+  if(p.sets!==S)diff.push(`${sT('hSets')} ${p.sets}≠${S}`);if(p.reps!==sNum(r.reps))diff.push(`${sT('sReps')} ${p.reps}≠${r.reps||'-'}`);
+  if(p.d!==sNum(r.d))diff.push(`${sT('hD')} ${p.d}≠${r.d||'-'}`);if(p.i!=null&&!rngEq(p.i,sRange(r.i)))diff.push(`${sT('hI')} ${rngTxt(p.i)}%≠${r.i||'-'}%`);
+  const eq=(a,b)=>{const x=sRest(a),y=sRest(b);return(!x&&!y)||(x&&y&&Math.abs(x[0]-y[0])<.01&&Math.abs(x[1]-y[1])<.01)};
+  if(!(hr?rngEq(sRange(p.r),sRange(r.r)):eq(p.r,r.r)))diff.push(`R ${p.r?fmtRow(r,p.r):'-'}≠${fmtRow(r,r.r)||'-'}`);if(S>1&&!eq(p.sr,r.sr))diff.push(`SR ${p.sr?fmtR(p.sr):'-'}≠${fmtR(r.sr)||'-'}`);return diff}
+const inR=(v,[a,b])=>v!=null&&v>=a-1e-9&&v<=b+1e-9;
+const restIn=(x,[a,b])=>x&&x[0]>=a-1e-9&&x[1]<=b+1e-9;
+function sCheck(r,pro=local.level!=='new',pb=local.spd.pb){const c=SPD[r.t]||SPD.acc,M=sT('m'),out=[];let pass=0,total=0;
+  const add=(ok,type,msg)=>{total++;if(ok)pass++;else out.push([type,msg])};
+  const need=[['d',sT('hD')],['reps',sT('sReps')],['i',sT('hI')],['r',sT('hR')+' '+sT('sR')],['es',sT('hEs')]];if((c.sets[1]||1)>1)need.splice(2,0,['sets',sT('hSets')]);
+  const miss=need.filter(([k])=>!String(r[k]||'').trim()).map(x=>x[1]);if(miss.length)return{out:[['bad',M.miss(miss.join(', '))]],pass:0,total:1};
+  const d=sNum(r.d),n=sNum(r.reps),S=sNum(r.sets)||1,i=sNum(r.i),ir=sRange(r.i),rr=sRest(r.r),sr=sRest(r.sr);
+  add(inR(d,c.d),'warn',M.d(d,c.d[0],c.d[1]));add(rngIn(ir,c.i),'warn',(c.hr?M.iHR:M.i)(rngTxt(ir)||r.i,c.i[0],c.i[1]));add(inR(n,c.reps),'warn',M.reps(n,c.reps[0],c.reps[1]));add(inR(S,c.sets),'warn',M.sets(S,c.sets[0],c.sets[1]));
+  // Extensive interval: พักจนชีพจรลดลงถึงค่าที่กำหนด (ครั้ง/นาที) แทนเวลา
+  if(c.hr){const h=/['"]|นาที|วินาที|min|sec/i.test(r.r)?null:sRange(r.r);add(rngIn(h,c.rhr),'warn',h?M.rhr(rngTxt(h),c.rhr[0],c.rhr[1]):M.rhrBad)}
+  else add(restIn(rr,c.r),'warn',M.r(fmtR(r.r),c.r[0],c.r[1]));
+  if(c.sr){if(S>1)add(restIn(sr,c.sr),'warn',M.sr(fmtR(r.sr)||'-',c.sr[0],c.sr[1]))}else if(sr&&S<=1)add(false,'warn',M.srNone);
+  if(c.sv&&S>=1)add(inR(n*d,c.sv),'warn',M.sv(n*d,c.sv[0],c.sv[1]));
+  add(inR(n*d*S,c.tot),'warn',M.tot(n*d*S,c.tot[0],c.tot[1]));
+  const ES=sT('es'),e=esN(r.es);add(c.es.includes(e),'bad',M.es(ES[e]||e,c.es.map(k=>ES[k]).join(' / ')));
+  if(!c.hr){const wt=sWork(r,pb),ef=esFromTime(wt,i);if(ef&&c.es.includes(e)&&!ef.includes(e))add(false,'warn',M.esT(wt,ES[ef[0]]))}
+  if(pro){const p=sParse(r.nt,c.hr);add(p&&!sNtDiff(r,p).length,'warn',p===null?M.miss(sT('nt')):p===false?sT('ntBad'):sT('ntDiff')(sNtDiff(r,p).join(', ')))}
+  if(!out.length)out.push(['ok',M.ok+(pro?' · '+M.ntOk:'')]);return{out,pass,total}}
+function sRowDerived(r,idx){const pro=local.level!=='new',hr=isHR(r),wt=hr?null:sWork(r),n=sNum(r.reps),d=sNum(r.d),S=sNum(r.sets)||1,vol=n&&d?n*d*S:null;
+  let h='';
+  // ชำนาญ: บอกว่าระบบอ่านสูตรที่พิมพ์ได้ว่าอะไร และตรงกับช่องหรือไม่ (สูตรอยู่ในคอลัมน์ "สูตรสากล" ของแถว)
+  if(pro){const p=sParse(r.nt,hr),df=p?sNtDiff(r,p):[];
+    h+=p?`<span class="${df.length?'warn':'ok'}">${df.length?'! '+esc(sT('ntDiff')(df.join(', '))):'✓ '+esc(sT('ntRead'))+': '+esc(`${p.sets>1?p.sets+' × ':''}${p.reps} × ${p.d} m${p.i!=null?' · '+rngTxt(p.i)+(hr?'%HRmax':'%'):''}${p.r?' · R '+fmtRow(r,p.r):''}${p.sr?' · SR '+fmtR(p.sr):''}`)}</span>`:p===false?`<span class="warn">! ${esc(sT('ntBad'))}</span>`:'';
+  }
+  if(vol)h+=`<span>${esc(sT('vol'))} <b>${vol}</b> m</span>`;if(wt)h+=`<span>${esc(sT('work'))} ${wt} ${esc(sT('sec'))}</span>`;
+  return h}
+function renderSpeed(){
+  const el=document.getElementById('wsSpeed'),sp=local.spd,T=sT('t'),ES=sT('es');
+  const opt=(arr,map,v)=>arr.map(k=>`<option value="${k}"${v===k?' selected':''}>${esc(map[k])}</option>`).join('');
+  const dl=SPD_TYPES.map(t=>`<datalist id="swdl-${t}">${SPD_EX[t].map(x=>`<option value="${esc(x)}">`).join('')}</datalist>`).join('');
+  const rows=sp.rows.map((r,idx)=>{const res=sp.checked?sCheck(r):null;return `<div class="sw-item" data-row="${idx}">
+    <div class="sw-row">
+      <label class="c t" data-l="${esc(sT('hType'))}"><select class="sw-t" data-si="${idx}" data-sf="t" aria-label="${esc(sT('hType'))}">${opt(SPD_TYPES,T,r.t)}</select></label>
+      <label class="c ex" data-l="${esc(sT('hEx'))}"><input data-si="${idx}" data-sf="ex" value="${esc(r.ex)}" list="swdl-${r.t}" aria-label="${esc(sT('hEx'))}"></label>
+      <label class="c v" data-l="${esc(sT('hD')+' '+sT('sD'))}"><input data-si="${idx}" data-sf="d" value="${esc(r.d)}" inputmode="decimal" aria-label="${esc(sT('hD'))}"></label>
+      <label class="c v" data-l="${esc(sT('hReps')+' '+sT('sReps'))}"><input data-si="${idx}" data-sf="reps" value="${esc(r.reps)}" inputmode="numeric" aria-label="${esc(sT('sReps'))}"></label>
+      <label class="c v" data-l="${esc((sT('hSets')+' '+(sT('sSets')||'')).trim())}"><input data-si="${idx}" data-sf="sets" value="${esc(r.sets)}" inputmode="numeric" aria-label="${esc(sT('hSets'))}"></label>
+      <label class="c i" data-l="${esc(sT('hI')+' '+(isHR(r)?sT('iHR'):sT('sI')))}"><input data-si="${idx}" data-sf="i" value="${esc(r.i)}"${isHR(r)?` placeholder="${esc(sT('iHRph'))}"`:' inputmode="decimal"'} aria-label="${esc(sT('hI')+(isHR(r)?' '+sT('iHR'):''))}"></label>
+      <label class="c r" data-l="${esc(sT('hR')+' '+sT('sR')+(isHR(r)?' (HR)':''))}"><input data-si="${idx}" data-sf="r" value="${esc(r.r)}" placeholder="${esc(isHR(r)?sT('rHRph'):sT('restPh'))}"${isHR(r)?' inputmode="numeric"':''} aria-label="${esc(sT('hR')+' '+sT('sR'))}"></label>
+      <label class="c r" data-l="${esc(sT('hSR')+' '+sT('sSR'))}"><input data-si="${idx}" data-sf="sr" value="${esc(r.sr)}" placeholder="${esc(sT('restPh'))}" aria-label="${esc(sT('hSR')+' '+sT('sSR'))}"></label>
+      ${local.level!=='new'
+        ?`<label class="c nt" data-l="${esc(sT('nt'))}"><textarea rows="1" data-si="${idx}" data-sf="nt" placeholder="${esc(isHR(r)?sT('ntPhHR'):sT('ntPh'))}" aria-label="${esc(sT('nt'))}" autocomplete="off" spellcheck="false">${esc(r.nt)}</textarea></label>`
+        :`<div class="c nt" data-l="${esc(sT('nt'))}"><output class="sw-ntv" id="sw-g-${idx}">${sNotationHTML(r)}</output></div>`}
+      <label class="c es" data-l="${esc(sT('hEs'))}"><select class="sw-es${r.es?' es-'+esc(esN(r.es)):''}" data-si="${idx}" data-sf="es" aria-label="${esc(sT('hEs'))}">${opt([''],ES,r.es)}<optgroup label="${esc(sT('esAnox'))}">${opt(ES_ANOX,ES,esN(r.es))}</optgroup><optgroup label="${esc(sT('esOx'))}">${opt(ES_OX,ES,esN(r.es))}</optgroup></select></label>
+      <button type="button" class="sw-del" data-sdel="${idx}" aria-label="${esc(sT('clear'))}" title="${esc(sT('clear'))}"${sp.rows.length<=1?' hidden':''}>×</button>
+    </div>
+    <div class="sw-nt" id="sw-d-${idx}">${sRowDerived(r,idx)}</div>
+    ${res?`<ul class="sw-fb">${res.out.map(([k,m])=>`<li class="${k}">${esc(m)}</li>`).join('')}</ul>${local.level!=='new'?esMixBar(r):''}`:''}
+  </div>`}).join('');
+  let pass=0,total=0;if(sp.checked)sp.rows.forEach(r=>{const x=sCheck(r);pass+=x.pass;total+=x.total});
+  keepTyping(()=>{el.innerHTML=`<div class="sw-head"><div><h2>${esc(sT('title'))}</h2><p>${esc(sT('sub'))}</p></div>
+      <div class="sw-fields"><div class="fld"><label for="sw-name">${esc(sT('name'))}</label><input id="sw-name" value="${esc(local.indiv.student||'')}" autocomplete="name"></div>
+      <div class="fld"><label for="sw-pb">${esc(sT('pb'))}</label><input id="sw-pb" value="${esc(sp.pb)}" inputmode="decimal" placeholder="${esc(sT('pbPh'))}"></div></div></div>
+    <div class="sw-grid"><div class="sw-band" aria-hidden="true"><span class="v">${esc(sT('bandV'))}</span><span class="i">${esc(sT('bandI'))}</span><span class="r">${esc(sT('bandR'))}</span></div><div class="sw-hrow" aria-hidden="true"><span>${esc(sT('hType'))}</span><span>${esc(sT('hEx'))}</span><span class="v">${esc(sT('hD'))}<small>${esc(sT('sD'))}</small></span><span class="v">${esc(sT('hReps'))}<small>${esc(sT('sReps'))}</small></span><span class="v">${esc(sT('hSets'))}<small>${esc(sT('sSets')||'')}</small></span><span class="i">${esc(sT('hI'))}<small>${esc(sT('sI'))}</small></span><span class="r">${esc(sT('hR'))}<small>${esc(sT('sR'))}</small></span><span class="r">${esc(sT('hSR'))}<small>${esc(sT('sSR'))}</small></span><span>${esc(sT('nt'))} (Format)<small>${esc(local.level!=='new'?sT('ntSelf'):sT('ntAuto'))}</small></span><span>${esc(sT('hEs'))}</span><span></span></div>${rows}</div>
+    ${dl}
+    <div class="sw-foot"><div class="sw-tot" id="sw-tot"></div>
+      <div class="sw-btns"><button type="button" class="btn" id="sw-add">${esc(sT('add'))}</button><button type="button" class="btn" id="sw-copy">${esc(sT('copy'))}</button><button type="button" class="btn" id="sw-pdf">${esc(t('pdf'))}</button><button type="button" class="btn danger" id="sw-clear">${esc(spdClearArm?sT('clearC'):sT('clear'))}</button><button type="button" class="btn primary" id="sw-check">${esc(sT('check'))}</button></div></div>
+    ${sp.checked?`<p class="sw-score">${esc(sT('score')(pass,total))}</p>`:''}
+    <div class="sw-sub" id="sw-sub"></div><div id="sw-gr"></div>
+    <p class="sw-ref">${esc(sT('ref'))}${sNum(sp.pb)?'':' · '+esc(sT('pbNote'))}</p>`});
+  renderSpeedTotals();renderSpeedSub();
+  el.querySelectorAll('[data-si]').forEach(inp=>{
+    const ev=inp.tagName==='SELECT'?'change':'input';
+    if(inp.tagName==='TEXTAREA')inp.addEventListener('keydown',e=>{if(e.key==='Enter')e.preventDefault()});
+    inp.addEventListener(ev,()=>{const r=sp.rows[+inp.dataset.si],f=inp.dataset.sf;r[f]=f==='nt'?inp.value.replace(/\s*\n\s*/g,' '):inp.value;
+      if(f==='t'||f==='es'){saveLocal();renderSpeed();return}
+      // อัปเดตเฉพาะส่วนที่คำนวณได้ (ช่องที่กำลังพิมพ์ไม่ถูกวาดใหม่ จึงไม่เสียตำแหน่งเคอร์เซอร์)
+      saveLocal();const i2=inp.dataset.si,dv=document.getElementById('sw-d-'+i2),g=document.getElementById('sw-g-'+i2);
+      if(dv)dv.innerHTML=sRowDerived(r,i2);if(g)g.innerHTML=sNotationHTML(r);
+      renderSpeedTotals();renderSpeedSub()})});
+  el.querySelectorAll('[data-sdel]').forEach(b=>b.onclick=()=>{sp.rows.splice(+b.dataset.sdel,1);saveLocal();renderSpeed()});
+  document.getElementById('sw-name').addEventListener('input',e=>{local.indiv.student=e.target.value;saveLocal()});
+  document.getElementById('sw-pb').addEventListener('input',e=>{sp.pb=e.target.value;saveLocal();sp.rows.forEach((r,i)=>{const dv=document.getElementById('sw-d-'+i);if(dv)dv.innerHTML=sRowDerived(r,i)});renderSpeedTotals()});
+  document.getElementById('sw-add').onclick=()=>{sp.rows.push(newSpdRow(SPD_TYPES.find(t=>!sp.rows.some(r=>r.t===t))||'acc'));saveLocal();renderSpeed()};
+  document.getElementById('sw-check').onclick=()=>{sp.checked=true;saveLocal();renderSpeed();const s=el.querySelector('.sw-score');if(s)s.scrollIntoView({behavior:'smooth',block:'nearest'})};
+  document.getElementById('sw-pdf').onclick=()=>makePdf('speed');
+  document.getElementById('sw-copy').onclick=()=>{const T2=sT('t'),E2=sT('es');copyText([sT('title'),(local.indiv.student||''),...sp.rows.map(r=>`${T2[r.t]}: ${r.ex||'-'} · ${local.level!=='new'&&r.nt?r.nt:sNotation(r)} · ${E2[esN(r.es)]||'-'}`)].filter(Boolean).join('\n'),sT('copied'))};
+  document.getElementById('sw-clear').onclick=()=>{if(!spdClearArm){spdClearArm=true;renderSpeed();setTimeout(()=>{if(spdClearArm){spdClearArm=false;if(local.ws==='speed')renderSpeed()}},3000);return}
+    spdClearArm=false;local.spd={pb:'',rows:['acc','max','sei'].map(newSpdRow),checked:false};saveLocal();renderSpeed()};
+}
+const spdKey=()=>JSON.stringify({pb:local.spd.pb,rows:local.spd.rows,level:local.level});
+function speedAuto(rows,pro,pb){let p=0,n=0;(rows||[]).forEach(r=>{const x=sCheck(r,pro,pb);p+=x.pass;n+=x.total});return n?Math.round(p/n*100):0}
+function renderSpeedSub(){
+  const el=document.getElementById('sw-sub'),gr=document.getElementById('sw-gr');if(!el)return;
+  if(!capsReady){el.innerHTML='';return}
+  if(!db){el.innerHTML=`<p class="hint">${esc(sT('soloNote'))}</p>`;gr.innerHTML='';return}
+  if(!uid){el.innerHTML=`<p class="hint">${esc(sT('signNote'))}</p>`;gr.innerHTML='';return}
+  const changed=!!(mySpd&&local.spd.lastSent&&local.spd.lastSent!==spdKey());
+  el.innerHTML=`<button type="button" class="btn primary" id="sw-submit">${esc(mySpd?sT('resubmit'):sT('submit'))}</button><span class="hint"><span class="dot ${mySpd&&!changed?'live':'off'}"></span>${esc(mySpd?sT('submitted')(fmtTime(mySpd.submittedAt)):sT('notSubmitted'))}${changed?' · '+esc(sT('changed')):''}</span>`;
+  document.getElementById('sw-submit').onclick=submitSpeed;
+  const g=mySpdG;
+  if(g&&rubricPct(g)!=null){const auto=g.auto??0,fin=finalScore(auto,g),stale=mySpd&&g.at&&mySpd.submittedAt>g.at;
+    gr.innerHTML=`<section class="panel fb sw-grade"><div><h2>${esc(sT('fbT'))}</h2><div class="big" style="color:${scoreCol(fin)}">${fin}<small>/100</small></div></div>
+      <div style="min-width:0"><dl><dt>${t('fbAuto')}</dt><dd>${auto}</dd><dt>${t('fbRubric')}</dt><dd>${rubricPct(g)} (${g.r.map((v,i)=>`${i+1}:${v}`).join(' · ')})</dd><dt>${t('fbAt')}</dt><dd>${esc(fmtTime(g.at))}</dd></dl>
+      ${g.comment?`<blockquote>${esc(g.comment)}</blockquote>`:''}${stale?`<p class="hint">${esc(sT('stale'))}</p>`:''}</div></section>`}
+  else gr.innerHTML='';
+}
+async function submitSpeed(){
+  if(!db||!uid)return;const sp=local.spd,name=(local.indiv.student||'').trim();
+  if(!name){toast(sT('needName'));const n=document.getElementById('sw-name');if(n)n.focus();return}
+  const b=document.getElementById('sw-submit');if(b)b.disabled=true;
+  const payload={student:name,pb:sp.pb||'',level:local.level,rows:clone(sp.rows),auto:speedAuto(sp.rows,local.level!=='new',sp.pb),submittedAt:Date.now()};
+  try{await db.doc('wsspeed/'+uid).set(payload);sp.lastSent=spdKey();saveLocal();toast(sT('submitOk'))}
+  catch(e){toast(e&&e.code==='invalid_argument'?t('submitDenied'):sT('submitFail'))}
+  if(b)b.disabled=false;renderSpeedSub();
+}
+// ฝั่งอาจารย์: แถวของชิ้นงานความเร็ว (คะแนนอัตโนมัติคำนวณใหม่จากเกณฑ์ปัจจุบันทุกครั้ง)
+function spdRows(){return tData.spd.map(x=>{const g=tData.spdg[x.id]||null,pro=x.level!=='new',auto=speedAuto(x.rows,pro,x.pb);
+  return{key:'s:'+x.id,kind:'s',id:x.id,title:x.student||t('noName'),x,pro,grade:g,auto,rub:rubricPct(g),fin:finalScore(auto,g),time:x.submittedAt,stale:!!(g&&g.at&&x.submittedAt>g.at)}})}
+const spdTotal=rows=>(rows||[]).reduce((a,q)=>{const n=sNum(q.reps),d=sNum(q.d),S=sNum(q.sets)||1;return a+(n&&d?n*d*S:0)},0);
+function teacherRowS(r){
+  const open=tv.open.has(r.key),x=r.x;
+  const status=r.rub!=null?(r.stale?`<span class="pill warn">${t('resub')}</span>`:`<span class="pill ok">${t('graded')}</span>`):`<span class="pill">${t('notGraded')}</span>`;
+  const meta=[`${t('tSubmittedAt')} ${esc(fmtTime(r.time))}`,`${esc(sT('pb'))}: ${esc(x.pb||'-')}`,esc(r.pro?sT('lvPro'):sT('lvNew'))].join(' · ');
+  return `<article class="grow">
+    <div class="grow-top"><div style="min-width:0"><h3>${esc(r.title)} ${status}</h3><div class="gmeta">${meta}</div>
+      <div class="prog"><span>${esc(sT('totAll'))} ${spdTotal(x.rows)} m · ${(x.rows||[]).length} ${esc(sT('nDrills'))}</span></div></div>
+      <div><div class="scores"><div><span>${t('autoS')}</span><strong style="color:${scoreCol(r.auto)}">${r.auto}</strong></div>
+        <div><span>${t('teachS')}</span><strong>${r.rub??'–'}</strong></div><div><span>${t('finalS')}</span><strong style="color:${r.fin!=null?scoreCol(r.fin):'inherit'}">${r.fin??'–'}</strong></div></div>
+      <div class="grow-btns"><button class="btn small" data-open="${esc(r.key)}" aria-expanded="${open}">${open?t('tHide'):t('tView')}</button>
+      <button class="btn small danger" data-delg="${esc(r.key)}">${tv.delArm===r.key?t('tDelC'):t('tDel')}</button></div></div></div>
+    ${open?spdDetail(r)+rubricForm(r,sT('rub')):''}</article>`;
+}
+function spdDetail(r){const x=r.x,T2=sT('t'),E2=sT('es');
+  return `<div class="sw-tv">${(x.rows||[]).map(q=>{const res=sCheck(q,r.pro,x.pb),nt=r.pro?(q.nt||'—'):(sNotation(q)||'—');
+    return `<div class="sw-tvr"><div><b>${esc(T2[q.t]||q.t)}</b> · ${esc(q.ex||'-')}</div><div class="sw-nt"><code>${esc(nt)}</code><span>${esc(E2[esN(q.es)]||'-')}</span></div>${r.pro?esMixBar(q):''}
+      <ul class="sw-fb">${res.out.map(([k,m])=>`<li class="${k}">${esc(m)}</li>`).join('')}</ul></div>`}).join('')}</div>`}
+function renderSpeedTotals(){const el=document.getElementById('sw-tot');if(!el)return;const sp=local.spd;let tot=0,rest=0;
+  sp.rows.forEach(r=>{const n=sNum(r.reps),d=sNum(r.d),S=sNum(r.sets)||1;if(n&&d)tot+=n*d*S;const rr=isHR(r)?null:sRest(r.r),sr=sRest(r.sr);if(n&&rr)rest+=((rr[0]+rr[1])/2)*Math.max(0,n-1)*S;if(S>1&&sr)rest+=((sr[0]+sr[1])/2)*(S-1)});
+  el.innerHTML=`<span>${esc(sT('totAll'))} <b>${tot}</b> m</span><span>${esc(sT('restAll'))} <b>${Math.round(rest)}</b> ${esc(sT('min'))}</span>`}
+// สลับระหว่าง "แผน 7 วัน" กับ "ชิ้นงาน: ความเร็ว" (ซ่อนส่วนของอีกงานไว้ ข้อมูลไม่หาย)
+function applyWs(){
+  const T=local.mode==='teacher',sp=local.ws==='speed'&&!T;
+  document.getElementById('wsSeg').hidden=T;
+  document.querySelectorAll('#wsSeg [data-ws]').forEach(b=>{b.textContent=sT(b.dataset.ws==='plan'?'wsPlan':'wsSpeed');b.setAttribute('aria-pressed',local.ws===b.dataset.ws)});
+  document.getElementById('wsSpeed').hidden=!sp;
+  if(T)return;
+  // โหมดแผน: renderAll ตั้งค่าการแสดงผลไว้แล้ว ไม่ต้องแตะ; โหมดชิ้นงาน: ซ่อนส่วนของแผน 7 วัน
+  if(sp){['steps','who','mc','work','planActions','eval','fb'].forEach(id=>{const e=document.getElementById(id);if(e)e.hidden=true});renderSpeed()}
+  else document.getElementById('work').hidden=false; // ส่วนอื่น renderAll คืนค่าให้แล้ว แต่กล่อง work ไม่อยู่ในรายการของ renderAll
+}
+document.querySelectorAll('#wsSeg [data-ws]').forEach(b=>b.onclick=()=>{local.ws=b.dataset.ws;saveLocal();renderAll();window.scrollTo({top:0})});
+
 function renderAll(){
   renderStatic();
   const T=local.mode==='teacher';
   ['who','mc','tools','viewBar','boardWrap','sum','planActions','steps'].forEach(id=>document.getElementById(id).hidden=T);
   document.getElementById('teacher').hidden=!T;
-  if(T){document.getElementById('eval').hidden=true;document.getElementById('fb').hidden=true;renderTeacher();return}
+  if(T){document.getElementById('eval').hidden=true;document.getElementById('fb').hidden=true;renderTeacher();applyWs();return}
   renderWho();renderFeedback();renderProfile();renderLib();renderPalettes();renderBoard();
   if(!document.getElementById('eval').hidden)renderEval();
+  applyWs();
 }
 renderAll();
 
@@ -2265,11 +2755,15 @@ renderAll();
   if(uid){
     db.doc('indiv/'+uid).onSnapshot(s=>{mySub=s.exists?s.data():null;renderSubmitStatus();renderFeedback()},()=>{});
     db.doc('grades/'+uid).onSnapshot(s=>{myGrade=s.exists?s.data():null;renderFeedback()},()=>{});
+    db.doc('wsspeed/'+uid).onSnapshot(s=>{mySpd=s.exists?s.data():null;renderSpeedSub()},()=>{});
+    db.doc('wsgspeed/'+uid).onSnapshot(s=>{mySpdG=s.exists?s.data():null;renderSpeedSub()},()=>{});
   }
   if(canTeach){
     db.collection('indiv').onSnapshot(s=>{tData.indiv=s.docs.map(d=>{const x=d.data();return{id:d.id,student:x.student||'',context:x.context||'',submittedAt:x.submittedAt||0,days:normDays(x.days),profile:normProfile(x.profile)}});if(local.mode==='teacher')renderTeacher()},()=>{});
     db.collection('grades').onSnapshot(s=>{tData.grades=Object.fromEntries(s.docs.map(d=>[d.id,d.data()]));if(local.mode==='teacher')renderTeacher()},()=>{});
     db.collection('ggrades').onSnapshot(s=>{tData.ggrades=Object.fromEntries(s.docs.map(d=>[d.id,d.data()]));if(local.mode==='teacher')renderTeacher()},()=>{});
+    db.collection('wsspeed').onSnapshot(s=>{tData.spd=s.docs.map(d=>{const x=d.data();return{id:d.id,student:x.student||'',pb:x.pb||'',level:x.level==='new'?'new':'pro',rows:Array.isArray(x.rows)?x.rows:[],submittedAt:x.submittedAt||0}});if(local.mode==='teacher')renderTeacher()},()=>{});
+    db.collection('wsgspeed').onSnapshot(s=>{tData.spdg=Object.fromEntries(s.docs.map(d=>[d.id,d.data()]));if(local.mode==='teacher')renderTeacher()},()=>{});
   }
   if(local.mode==='group'&&group.code)joinGroup(group.code);else renderAll();
 })();
