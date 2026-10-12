@@ -1,4 +1,4 @@
-<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><script src="firebase-config.js?v=202610121158" charset="utf-8"></script><script src="claude-shim.js?v=202610121158" charset="utf-8"></script><style>body{margin:0}.export-row .fld{display:none}</style></head><body><title>ตารางวางแผนการฝึก 7 วัน</title>
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><script src="firebase-config.js?v=202610121553" charset="utf-8"></script><script src="claude-shim.js?v=202610121553" charset="utf-8"></script><style>body{margin:0}.export-row .fld{display:none}</style></head><body><title>ตารางวางแผนการฝึก 7 วัน</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;500;600&family=Noto+Sans+SC:wght@400;600;700&display=swap">
 <style>
@@ -2543,7 +2543,8 @@ const SPD_EX={acc:['Block start','Crouch start','3-point start','Hill sprint','S
 // ชีพจร/ช่วงตัวเลข: "120-140", "HR120", "120 bpm" → [ต่ำสุด, สูงสุด]
 function sRange(v){const m=String(v||'').match(/\d+(?:\.\d+)?/g);if(!m)return null;const a=+m[0],b=m.length>1?+m[1]:a;return [Math.min(a,b),Math.max(a,b)]}
 const rngTxt=x=>!x?'':x[0]===x[1]?String(x[0]):`${x[0]}-${x[1]}`;
-const rngIn=(x,[a,b])=>x&&x[0]>=a-1e-9&&x[1]<=b+1e-9;
+// ช่วงที่นักศึกษากำหนด (เช่น 80-85, 120-140) ผ่านเมื่อ "ซ้อนทับ" กับเกณฑ์ เพราะเกณฑ์เป็นแนวทางอ้างอิง หน้างานโค้ชเลือกค่าในช่วงตามสถานการณ์ (อาจารย์กำหนด 2026-10-12)
+const rngIn=(x,[a,b])=>!!x&&x[0]<=b+1e-9&&x[1]>=a-1e-9;
 const rngEq=(x,y)=>(!x&&!y)||(x&&y&&Math.abs(x[0]-y[0])<.01&&Math.abs(x[1]-y[1])<.01);
 const isHR=r=>!!(SPD[r.t]&&SPD[r.t].hr);
 const SL={
@@ -2648,18 +2649,18 @@ Object.assign(SL.th,{swipe:'⇆ เลื่อนตารางซ้าย-�
 const CRIT_SRC=L=>({acc:L.sr,max:L.sr,agi:L.sr,sei:L.sei,sse:L.sse,exs:L.ex,exl:L.ex});
 Object.assign(SL.th,{crit:{btn:'เกณฑ์',btnL:x=>`ดูเกณฑ์ของ ${x}`,title:x=>`เกณฑ์: ${x}`,m:'ม.',min:'นาที',none:'— (ฝึก 1 เซ็ต)',rHR:x=>`พักจนชีพจรลดลงถึง ${x} ครั้ง/นาที`,
   d:'ระยะทางต่อเที่ยว',i:'ความหนัก',reps:'จำนวนเที่ยวต่อเซ็ต',r:'พักระหว่างเที่ยว (R)',sets:'จำนวนเซ็ต',sr:'พักระหว่างเซ็ต (SR)',sv:'ระยะรวมต่อเซ็ต',tot:'ระยะรวมทั้งหมด',es:'ระบบพลังงาน',
-  nT:'ข้อควรรู้',nSp:['ระยะรวมต่อเซ็ต = จำนวนเที่ยว × ระยะทาง และระยะรวมทั้งหมด = ระยะต่อเซ็ต × จำนวนเซ็ต','ระบบประมาณเวลาทำงานต่อเที่ยวจากสถิติ 100 ม.: ไม่เกิน 6 วินาที ATP-PC เด่น · 6–10 วินาที ATP-PC หรือ ATP-PC + Lactic · 10–20 วินาที ผสม · เกิน 20 วินาที Lactic (แบบจำลองเพื่อการเรียน ไม่ใช่การวัดจริง)','ลำดับการเขียนสูตร: ปริมาณ → ความหนัก % → R → SR (\' = นาที, \'\' = วินาที)'],
-  nHR:['ความหนักเป็นเปอร์เซ็นต์ของชีพจรสูงสุด (%HRmax)','พักระหว่างเที่ยวจนชีพจรลดลงถึงค่าที่กำหนด (ครั้ง/นาที) แล้วจึงเริ่มเที่ยวถัดไป','ลำดับการเขียนสูตร: ปริมาณ → %HRmax → R HR… → SR'],
+  nT:'ข้อควรรู้',nSp:['เกณฑ์เป็นแนวทางอ้างอิง ถ้ากำหนดเป็นช่วง (เช่น SR7-9\') และช่วงนั้นซ้อนทับกับเกณฑ์ ถือว่าใช้ได้ เพราะหน้างานโค้ชเลือกค่าในช่วงตามสถานการณ์ของนักกีฬา','ระยะรวมต่อเซ็ต = จำนวนเที่ยว × ระยะทาง และระยะรวมทั้งหมด = ระยะต่อเซ็ต × จำนวนเซ็ต','ระบบประมาณเวลาทำงานต่อเที่ยวจากสถิติ 100 ม.: ไม่เกิน 6 วินาที ATP-PC เด่น · 6–10 วินาที ATP-PC หรือ ATP-PC + Lactic · 10–20 วินาที ผสม · เกิน 20 วินาที Lactic (แบบจำลองเพื่อการเรียน ไม่ใช่การวัดจริง)','ลำดับการเขียนสูตร: ปริมาณ → ความหนัก % → R → SR (\' = นาที, \'\' = วินาที)'],
+  nHR:['เกณฑ์เป็นแนวทางอ้างอิง ถ้ากำหนดเป็นช่วง (เช่น SR7-9\') และช่วงนั้นซ้อนทับกับเกณฑ์ ถือว่าใช้ได้ เพราะหน้างานโค้ชเลือกค่าในช่วงตามสถานการณ์ของนักกีฬา','ความหนักเป็นเปอร์เซ็นต์ของชีพจรสูงสุด (%HRmax)','พักระหว่างเที่ยวจนชีพจรลดลงถึงค่าที่กำหนด (ครั้ง/นาที) แล้วจึงเริ่มเที่ยวถัดไป','ลำดับการเขียนสูตร: ปริมาณ → %HRmax → R HR… → SR'],
   src:CRIT_SRC({sr:'ที่มา: สไลด์ "Speed Repetition" (เอกสารประกอบการสอนของรายวิชา)',sei:'ที่มา: สไลด์ "Intensive Interval: speed endurance" (เอกสารประกอบการสอนของรายวิชา)',sse:'ที่มา: สไลด์ "Intensive Interval: special speed endurance" (เอกสารประกอบการสอนของรายวิชา)',ex:'ที่มา: สไลด์ "Extensive Interval" (เอกสารประกอบการสอนของรายวิชา)'})}});
 Object.assign(SL.en,{crit:{btn:'Criteria',btnL:x=>`Criteria for ${x}`,title:x=>`Criteria: ${x}`,m:'m',min:'min',none:'— (one set)',rHR:x=>`rest until HR drops to ${x} bpm`,
   d:'Distance per rep',i:'Intensity',reps:'Reps per set',r:'Rest between reps (R)',sets:'Sets',sr:'Rest between sets (SR)',sv:'Volume per set',tot:'Total volume',es:'Energy system',
-  nT:'Good to know',nSp:['Volume per set = reps × distance; total volume = volume per set × sets','Work time per rep is estimated from the 100 m best: up to 6 s ATP-PC dominant · 6–10 s ATP-PC or ATP-PC + Lactic · 10–20 s mixed · over 20 s Lactic (a teaching model, not a measurement)','Notation order: volume → intensity % → R → SR (\' = min, \'\' = s)'],
-  nHR:['Intensity is a percentage of maximum heart rate (%HRmax)','Rest between reps until heart rate drops to the target (bpm), then start the next rep','Notation order: volume → %HRmax → R HR… → SR'],
+  nT:'Good to know',nSp:['The criteria are a reference. A range (e.g. SR7-9\') that overlaps the criteria is accepted, because the coach picks the value within it to suit the athlete on the day','Volume per set = reps × distance; total volume = volume per set × sets','Work time per rep is estimated from the 100 m best: up to 6 s ATP-PC dominant · 6–10 s ATP-PC or ATP-PC + Lactic · 10–20 s mixed · over 20 s Lactic (a teaching model, not a measurement)','Notation order: volume → intensity % → R → SR (\' = min, \'\' = s)'],
+  nHR:['The criteria are a reference. A range (e.g. SR7-9\') that overlaps the criteria is accepted, because the coach picks the value within it to suit the athlete on the day','Intensity is a percentage of maximum heart rate (%HRmax)','Rest between reps until heart rate drops to the target (bpm), then start the next rep','Notation order: volume → %HRmax → R HR… → SR'],
   src:CRIT_SRC({sr:'Source: "Speed Repetition" slide (course handout)',sei:'Source: "Intensive Interval: speed endurance" slide (course handout)',sse:'Source: "Intensive Interval: special speed endurance" slide (course handout)',ex:'Source: "Extensive Interval" slide (course handout)'})}});
 Object.assign(SL.zh,{crit:{btn:'标准',btnL:x=>`查看 ${x} 的标准`,title:x=>`标准:${x}`,m:'米',min:'分钟',none:'—(只练 1 组)',rHR:x=>`休息至心率降到 ${x} 次/分`,
   d:'每次距离',i:'强度',reps:'每组次数',r:'次间休息 (R)',sets:'组数',sr:'组间休息 (SR)',sv:'每组距离',tot:'总距离',es:'能量系统',
-  nT:'须知',nSp:['每组距离 = 次数 × 距离;总距离 = 每组距离 × 组数','每次做功时间按 100 米成绩估算:6 秒以内 ATP-PC 为主 · 6–10 秒 ATP-PC 或 ATP-PC + 乳酸 · 10–20 秒 混合 · 超过 20 秒 乳酸(教学模型,并非实测)','写法顺序:训练量 → 强度 % → R → SR(\' = 分钟,\'\' = 秒)'],
-  nHR:['强度为最大心率百分比 (%HRmax)','次间休息至心率降到规定值(次/分)后再开始下一次','写法顺序:训练量 → %HRmax → R HR… → SR'],
+  nT:'须知',nSp:['标准仅供参考。若填写的是范围(如 SR7-9\')且与标准有重叠即视为合格,因为教练会根据运动员当天的状况在范围内选择','每组距离 = 次数 × 距离;总距离 = 每组距离 × 组数','每次做功时间按 100 米成绩估算:6 秒以内 ATP-PC 为主 · 6–10 秒 ATP-PC 或 ATP-PC + 乳酸 · 10–20 秒 混合 · 超过 20 秒 乳酸(教学模型,并非实测)','写法顺序:训练量 → 强度 % → R → SR(\' = 分钟,\'\' = 秒)'],
+  nHR:['标准仅供参考。若填写的是范围(如 SR7-9\')且与标准有重叠即视为合格,因为教练会根据运动员当天的状况在范围内选择','强度为最大心率百分比 (%HRmax)','次间休息至心率降到规定值(次/分)后再开始下一次','写法顺序:训练量 → %HRmax → R HR… → SR'],
   src:CRIT_SRC({sr:'来源:"Speed Repetition" 幻灯片(课程讲义)',sei:'来源:"Intensive Interval: speed endurance" 幻灯片(课程讲义)',sse:'来源:"Intensive Interval: special speed endurance" 幻灯片(课程讲义)',ex:'来源:"Extensive Interval" 幻灯片(课程讲义)'})}});
 let mySpd=null,mySpdG=null;
 const sT=k=>(SL[lang]||SL.th)[k];
@@ -2707,7 +2708,8 @@ function sNtDiff(r,p){const L=sT('m'),diff=[],S=sNum(r.sets)||1,hr=isHR(r);
   const eq=(a,b)=>{const x=sRest(a),y=sRest(b);return(!x&&!y)||(x&&y&&Math.abs(x[0]-y[0])<.01&&Math.abs(x[1]-y[1])<.01)};
   if(!(hr?rngEq(sRange(p.r),sRange(r.r)):eq(p.r,r.r)))diff.push(`R ${p.r?fmtRow(r,p.r):'-'}≠${fmtRow(r,r.r)||'-'}`);if(S>1&&!eq(p.sr,r.sr))diff.push(`SR ${p.sr?fmtR(p.sr):'-'}≠${fmtR(r.sr)||'-'}`);return diff}
 const inR=(v,[a,b])=>v!=null&&v>=a-1e-9&&v<=b+1e-9;
-const restIn=(x,[a,b])=>x&&x[0]>=a-1e-9&&x[1]<=b+1e-9;
+// เวลาพักเป็นช่วง เช่น SR7-9' กับเกณฑ์ 8-10' ซ้อนทับกัน = ผ่าน; ค่าเดียวต้องอยู่ในเกณฑ์
+const restIn=(x,[a,b])=>!!x&&x[0]<=b+1e-9&&x[1]>=a-1e-9;
 function sCheck(r,pro=local.level!=='new',pb=local.spd.pb){const c=SPD[r.t]||SPD.acc,M=sT('m'),out=[];let pass=0,total=0;
   const add=(ok,type,msg)=>{total++;if(ok)pass++;else out.push([type,msg])};
   const need=[['d',sT('hD')],['reps',sT('sReps')],['i',sT('hI')],['r',sT('hR')+' '+sT('sR')],['es',sT('hEs')]];if((c.sets[1]||1)>1)need.splice(2,0,['sets',sT('hSets')]);
@@ -2838,10 +2840,13 @@ function spdDetail(r){const x=r.x,T2=sT('t'),E2=sT('es');
 function renderSpeedTotals(){const el=document.getElementById('sw-tot');if(!el)return;const sp=local.spd;let tot=0,rest=0;
   sp.rows.forEach(r=>{const n=sNum(r.reps),d=sNum(r.d),S=sNum(r.sets)||1;if(n&&d)tot+=n*d*S;const rr=isHR(r)?null:sRest(r.r),sr=sRest(r.sr);if(n&&rr)rest+=((rr[0]+rr[1])/2)*Math.max(0,n-1)*S;if(S>1&&sr)rest+=((sr[0]+sr[1])/2)*(S-1)});
   el.innerHTML=`<span>${esc(sT('totAll'))} <b>${tot}</b> m</span><span>${esc(sT('restAll'))} <b>${Math.round(rest)}</b> ${esc(sT('min'))}</span>`}
+// ปิดชิ้นงานความเร็วชั่วคราวในฉบับจริง (อาจารย์สั่ง 2026-10-12 จนกว่าจะได้เกณฑ์ Speed endurance ใหม่) — เปิดเฉพาะ Sandbox
+// เมื่อพร้อมเปิดให้นักศึกษาใช้: เปลี่ยนเป็น const WS_SPEED_OPEN=true; (งานที่ส่งแล้วยังอยู่ และอาจารย์ยังเห็นแท็บชิ้นงานความเร็ว)
+const WS_SPEED_OPEN=KEY.endsWith('-sandbox');
 // สลับระหว่าง "แผน 7 วัน" กับ "ชิ้นงาน: ความเร็ว" (ซ่อนส่วนของอีกงานไว้ ข้อมูลไม่หาย)
 function applyWs(){
-  const T=local.mode==='teacher',sp=local.ws==='speed'&&!T;
-  document.getElementById('wsSeg').hidden=T;
+  const T=local.mode==='teacher',sp=local.ws==='speed'&&!T&&WS_SPEED_OPEN;
+  document.getElementById('wsSeg').hidden=T||!WS_SPEED_OPEN;
   document.querySelectorAll('#wsSeg [data-ws]').forEach(b=>{b.textContent=sT(b.dataset.ws==='plan'?'wsPlan':'wsSpeed');b.setAttribute('aria-pressed',local.ws===b.dataset.ws)});
   document.getElementById('wsSpeed').hidden=!sp;
   if(T)return;
