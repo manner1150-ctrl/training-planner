@@ -1,4 +1,4 @@
-<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><script src="firebase-config.js?v=202610121609" charset="utf-8"></script><script src="claude-shim.js?v=202610121609" charset="utf-8"></script><style>body{margin:0}.export-row .fld{display:none}</style></head><body><title>ตารางวางแผนการฝึก 7 วัน</title>
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><script src="firebase-config.js?v=202610121623" charset="utf-8"></script><script src="claude-shim.js?v=202610121623" charset="utf-8"></script><style>body{margin:0}.export-row .fld{display:none}</style></head><body><title>ตารางวางแผนการฝึก 7 วัน</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;500;600&family=Noto+Sans+SC:wght@400;600;700&display=swap">
 <style>
@@ -2544,7 +2544,8 @@ const SPD={
   acc:{d:[1,30],i:[95,100],reps:[3,4],r:[1,3],sets:[3,4],sr:[6,8],sv:[80,120],tot:[300,400],es:['pc']},
   max:{d:[40,60],i:[95,100],reps:[3,4],r:[4,6],sets:[3,4],sr:[8,10],sv:[80,200],tot:[400,600],es:['pc','pcl']}, // 2026-10-12 อาจารย์อนุมัติให้รับ ATP-PC + Lactic ด้วย (40–60 ม. ใช้เวลา 6–8 วินาที เกินช่วง ATP-PC เด่น ≤6 วินาที)
   agi:{d:[20,40],i:[95,100],reps:[3,4],r:[1,3],sets:[3,4],sr:[6,8],sv:[80,160],tot:[400,600],es:['pc']},
-  sei:{d:[60,150],i:[95,100],reps:[2,5],r:[2,5],sets:[2,3],sr:[8,10],sv:[150,300],tot:[300,1200],es:['pcl','lh']},
+  // ยืนยันกับผู้เขียนตาราง 2026-10-12: พักระหว่างเที่ยวสั้น (2–5') โดยตั้งใจ เพื่อให้ lactate สะสมสูง; ความหนัก 90–100%
+  sei:{d:[60,150],i:[90,100],reps:[2,5],r:[2,5],sets:[2,3],sr:[8,10],sv:[150,300],tot:[300,1200],es:['pcl','lh'],why:true},
   sse:{d:[150,300],i:[95,100],reps:[1,5],r:[10,20],sets:[1,1],sr:null,sv:null,tot:[300,1200],es:['lh']},
   // Extensive Interval (ตารางของอาจารย์): ความหนักเป็น %ชีพจรสูงสุด (%HRmax) และพักระหว่างเที่ยวจนชีพจรลดลงถึงค่าที่กำหนด (ครั้ง/นาที)
   exs:{hr:true,d:[100,400],i:[80,85],reps:[6,30],rhr:[120,140],sets:[2,4],sr:[2,5],sv:[600,2000],tot:[2000,8000],es:['ag','ll']},
@@ -2581,6 +2582,7 @@ function openCrit(tp){const c=SPD[tp];if(!c)return;const m=document.getElementBy
   const rows=[[C.d,rg(c.d,C.m)],[C.i,rg(c.i,c.hr?'%HRmax':'%')],[C.reps,rg(c.reps)],[C.r,c.hr?C.rHR(rg(c.rhr)):rg(c.r,C.min)],[C.sets,rg(c.sets)],[C.sr,c.sr?rg(c.sr,C.min):C.none],[C.sv,c.sv?rg(c.sv,C.m):'—'],[C.tot,rg(c.tot,C.m)],[C.es,c.es.map(k=>ES[k]).join(' / ')]];
   m.innerHTML=`<div class="dialog sw-evd" role="dialog" aria-modal="true" aria-labelledby="crh"><h3 id="crh">${esc(C.title(T[tp]||tp))}</h3>
     <table class="sw-evt sw-crt"><tbody>${rows.map(([k,v])=>`<tr><th scope="row">${esc(k)}</th><td>${esc(String(v))}</td></tr>`).join('')}</tbody></table>
+    ${c.why&&C.why&&C.why[tp]?`<section><h4>${esc(C.whyT)}</h4><p>${esc(C.why[tp])}</p></section>`:''}
     <section><h4>${esc(C.nT)}</h4><ul>${(c.hr?C.nHR:C.nSp).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>
     <p class="sw-evs">${esc(C.src[tp]||'')}</p>
     <div class="dlg-actions"><button class="btn primary" id="crx">${esc(t('close'))}</button></div></div>`;
@@ -2697,17 +2699,17 @@ Object.assign(SL.th,{swipe:'⇆ เลื่อนตารางซ้าย-�
 const CRIT_SRC=L=>({acc:L.sr,max:L.sr,agi:L.sr,sei:L.sei,sse:L.sse,exs:L.ex,exl:L.ex});
 Object.assign(SL.th,{crit:{btn:'เกณฑ์',btnL:x=>`ดูเกณฑ์ของ ${x}`,title:x=>`เกณฑ์: ${x}`,m:'ม.',min:'นาที',none:'— (ฝึก 1 เซ็ต)',rHR:x=>`พักจนชีพจรลดลงถึง ${x} ครั้ง/นาที`,
   d:'ระยะทางต่อเที่ยว',i:'ความหนัก',reps:'จำนวนเที่ยวต่อเซ็ต',r:'พักระหว่างเที่ยว (R)',sets:'จำนวนเซ็ต',sr:'พักระหว่างเซ็ต (SR)',sv:'ระยะรวมต่อเซ็ต',tot:'ระยะรวมทั้งหมด',es:'ระบบพลังงาน',
-  nT:'ข้อควรรู้',nSp:['เกณฑ์เป็นแนวทางอ้างอิง ถ้ากำหนดเป็นช่วง (เช่น SR7-9\') และช่วงนั้นซ้อนทับกับเกณฑ์ ถือว่าใช้ได้ เพราะหน้างานโค้ชเลือกค่าในช่วงตามสถานการณ์ของนักกีฬา','ระยะรวมต่อเซ็ต = จำนวนเที่ยว × ระยะทาง และระยะรวมทั้งหมด = ระยะต่อเซ็ต × จำนวนเซ็ต','ระบบประมาณเวลาทำงานต่อเที่ยวจากสถิติ 100 ม.: ไม่เกิน 6 วินาที ATP-PC เด่น · 6–10 วินาที ATP-PC หรือ ATP-PC + Lactic · 10–20 วินาที ผสม · เกิน 20 วินาที Lactic (แบบจำลองเพื่อการเรียน ไม่ใช่การวัดจริง)','ลำดับการเขียนสูตร: ปริมาณ → ความหนัก % → R → SR (\' = นาที, \'\' = วินาที)'],
+  whyT:'ทำไมพักสั้น',why:{sei:'ความเร็วอดทน (Intensive interval) ตั้งใจให้พักระหว่างเที่ยวสั้นเพียง 2–5 นาที เพื่อให้ร่างกายฟื้นตัวไม่เต็มที่ และ lactate สะสมสูงขึ้นในแต่ละเที่ยว จึงฝึกความสามารถในการคงความเร็วขณะที่ lactate สูง ส่วนพักระหว่างเซ็ต 8–10 นาที เพื่อให้เริ่มเซ็ตใหม่ได้ด้วยความหนัก 90–100% (ยืนยันกับผู้เขียนตาราง)'},nT:'ข้อควรรู้',nSp:['เกณฑ์เป็นแนวทางอ้างอิง ถ้ากำหนดเป็นช่วง (เช่น SR7-9\') และช่วงนั้นซ้อนทับกับเกณฑ์ ถือว่าใช้ได้ เพราะหน้างานโค้ชเลือกค่าในช่วงตามสถานการณ์ของนักกีฬา','ระยะรวมต่อเซ็ต = จำนวนเที่ยว × ระยะทาง และระยะรวมทั้งหมด = ระยะต่อเซ็ต × จำนวนเซ็ต','ระบบประมาณเวลาทำงานต่อเที่ยวจากสถิติ 100 ม.: ไม่เกิน 6 วินาที ATP-PC เด่น · 6–10 วินาที ATP-PC หรือ ATP-PC + Lactic · 10–20 วินาที ผสม · เกิน 20 วินาที Lactic (แบบจำลองเพื่อการเรียน ไม่ใช่การวัดจริง)','ลำดับการเขียนสูตร: ปริมาณ → ความหนัก % → R → SR (\' = นาที, \'\' = วินาที)'],
   nHR:['เกณฑ์เป็นแนวทางอ้างอิง ถ้ากำหนดเป็นช่วง (เช่น SR7-9\') และช่วงนั้นซ้อนทับกับเกณฑ์ ถือว่าใช้ได้ เพราะหน้างานโค้ชเลือกค่าในช่วงตามสถานการณ์ของนักกีฬา','ความหนักเป็นเปอร์เซ็นต์ของชีพจรสูงสุด (%HRmax)','พักระหว่างเที่ยวจนชีพจรลดลงถึงค่าที่กำหนด (ครั้ง/นาที) แล้วจึงเริ่มเที่ยวถัดไป','ลำดับการเขียนสูตร: ปริมาณ → %HRmax → R HR… → SR'],
   src:CRIT_SRC({sr:'ที่มา: สไลด์ "Speed Repetition" (เอกสารประกอบการสอนของรายวิชา)',sei:'ที่มา: สไลด์ "Intensive Interval: speed endurance" (เอกสารประกอบการสอนของรายวิชา)',sse:'ที่มา: สไลด์ "Intensive Interval: special speed endurance" (เอกสารประกอบการสอนของรายวิชา)',ex:'ที่มา: สไลด์ "Extensive Interval" (เอกสารประกอบการสอนของรายวิชา)'})}});
 Object.assign(SL.en,{crit:{btn:'Criteria',btnL:x=>`Criteria for ${x}`,title:x=>`Criteria: ${x}`,m:'m',min:'min',none:'— (one set)',rHR:x=>`rest until HR drops to ${x} bpm`,
   d:'Distance per rep',i:'Intensity',reps:'Reps per set',r:'Rest between reps (R)',sets:'Sets',sr:'Rest between sets (SR)',sv:'Volume per set',tot:'Total volume',es:'Energy system',
-  nT:'Good to know',nSp:['The criteria are a reference. A range (e.g. SR7-9\') that overlaps the criteria is accepted, because the coach picks the value within it to suit the athlete on the day','Volume per set = reps × distance; total volume = volume per set × sets','Work time per rep is estimated from the 100 m best: up to 6 s ATP-PC dominant · 6–10 s ATP-PC or ATP-PC + Lactic · 10–20 s mixed · over 20 s Lactic (a teaching model, not a measurement)','Notation order: volume → intensity % → R → SR (\' = min, \'\' = s)'],
+  whyT:'Why the short rest',why:{sei:'Speed endurance (intensive interval) uses deliberately short rest between reps, only 2–5 min, so recovery is incomplete and lactate builds up rep after rep. This trains the ability to hold speed at high lactate. The 8–10 min between sets lets the athlete start each set at 90–100% again (confirmed with the author of the table)'},nT:'Good to know',nSp:['The criteria are a reference. A range (e.g. SR7-9\') that overlaps the criteria is accepted, because the coach picks the value within it to suit the athlete on the day','Volume per set = reps × distance; total volume = volume per set × sets','Work time per rep is estimated from the 100 m best: up to 6 s ATP-PC dominant · 6–10 s ATP-PC or ATP-PC + Lactic · 10–20 s mixed · over 20 s Lactic (a teaching model, not a measurement)','Notation order: volume → intensity % → R → SR (\' = min, \'\' = s)'],
   nHR:['The criteria are a reference. A range (e.g. SR7-9\') that overlaps the criteria is accepted, because the coach picks the value within it to suit the athlete on the day','Intensity is a percentage of maximum heart rate (%HRmax)','Rest between reps until heart rate drops to the target (bpm), then start the next rep','Notation order: volume → %HRmax → R HR… → SR'],
   src:CRIT_SRC({sr:'Source: "Speed Repetition" slide (course handout)',sei:'Source: "Intensive Interval: speed endurance" slide (course handout)',sse:'Source: "Intensive Interval: special speed endurance" slide (course handout)',ex:'Source: "Extensive Interval" slide (course handout)'})}});
 Object.assign(SL.zh,{crit:{btn:'标准',btnL:x=>`查看 ${x} 的标准`,title:x=>`标准:${x}`,m:'米',min:'分钟',none:'—(只练 1 组)',rHR:x=>`休息至心率降到 ${x} 次/分`,
   d:'每次距离',i:'强度',reps:'每组次数',r:'次间休息 (R)',sets:'组数',sr:'组间休息 (SR)',sv:'每组距离',tot:'总距离',es:'能量系统',
-  nT:'须知',nSp:['标准仅供参考。若填写的是范围(如 SR7-9\')且与标准有重叠即视为合格,因为教练会根据运动员当天的状况在范围内选择','每组距离 = 次数 × 距离;总距离 = 每组距离 × 组数','每次做功时间按 100 米成绩估算:6 秒以内 ATP-PC 为主 · 6–10 秒 ATP-PC 或 ATP-PC + 乳酸 · 10–20 秒 混合 · 超过 20 秒 乳酸(教学模型,并非实测)','写法顺序:训练量 → 强度 % → R → SR(\' = 分钟,\'\' = 秒)'],
+  whyT:'为什么休息短',why:{sei:'速度耐力(强化间歇)刻意将次间休息控制在 2–5 分钟,使恢复不完全、乳酸逐次累积升高,从而训练在高乳酸状态下保持速度的能力。组间休息 8–10 分钟,使每组都能以 90–100% 的强度开始(已与表格作者确认)'},nT:'须知',nSp:['标准仅供参考。若填写的是范围(如 SR7-9\')且与标准有重叠即视为合格,因为教练会根据运动员当天的状况在范围内选择','每组距离 = 次数 × 距离;总距离 = 每组距离 × 组数','每次做功时间按 100 米成绩估算:6 秒以内 ATP-PC 为主 · 6–10 秒 ATP-PC 或 ATP-PC + 乳酸 · 10–20 秒 混合 · 超过 20 秒 乳酸(教学模型,并非实测)','写法顺序:训练量 → 强度 % → R → SR(\' = 分钟,\'\' = 秒)'],
   nHR:['标准仅供参考。若填写的是范围(如 SR7-9\')且与标准有重叠即视为合格,因为教练会根据运动员当天的状况在范围内选择','强度为最大心率百分比 (%HRmax)','次间休息至心率降到规定值(次/分)后再开始下一次','写法顺序:训练量 → %HRmax → R HR… → SR'],
   src:CRIT_SRC({sr:'来源:"Speed Repetition" 幻灯片(课程讲义)',sei:'来源:"Intensive Interval: speed endurance" 幻灯片(课程讲义)',sse:'来源:"Intensive Interval: special speed endurance" 幻灯片(课程讲义)',ex:'来源:"Extensive Interval" 幻灯片(课程讲义)'})}});
 let mySpd=null,mySpdG=null;
@@ -2890,7 +2892,7 @@ function renderSpeedTotals(){const el=document.getElementById('sw-tot');if(!el)r
   el.innerHTML=`<span>${esc(sT('totAll'))} <b>${tot}</b> m</span><span>${esc(sT('restAll'))} <b>${Math.round(rest)}</b> ${esc(sT('min'))}</span>`}
 // ปิดชิ้นงานความเร็วชั่วคราวในฉบับจริง (อาจารย์สั่ง 2026-10-12 จนกว่าจะได้เกณฑ์ Speed endurance ใหม่) — เปิดเฉพาะ Sandbox
 // เมื่อพร้อมเปิดให้นักศึกษาใช้: เปลี่ยนเป็น const WS_SPEED_OPEN=true; (งานที่ส่งแล้วยังอยู่ และอาจารย์ยังเห็นแท็บชิ้นงานความเร็ว)
-const WS_SPEED_OPEN=KEY.endsWith('-sandbox');
+const WS_SPEED_OPEN=true; // เปิดอีกครั้ง 2026-10-12 หลังยืนยันเกณฑ์ Speed endurance กับผู้เขียนตาราง (ปิดอีกได้ด้วย KEY.endsWith('-sandbox'))
 // สลับระหว่าง "แผน 7 วัน" กับ "ชิ้นงาน: ความเร็ว" (ซ่อนส่วนของอีกงานไว้ ข้อมูลไม่หาย)
 function applyWs(){
   const T=local.mode==='teacher',sp=local.ws==='speed'&&!T&&WS_SPEED_OPEN;
