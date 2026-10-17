@@ -120,11 +120,11 @@
   <a class="brand" href="index.html"><img src="logo-mark.png" alt="ตรามหาวิทยาลัยการกีฬาแห่งชาติ"><span><b>คณะพลศึกษา</b><small>มหาวิทยาลัยการกีฬาแห่งชาติ วิทยาเขตอุดรธานี</small></span></a>
   <nav aria-label="เมนูหลัก"><a href="index.html">หน้าแรก</a><a href="index.html#learn">เรียนรู้</a><a href="index.html#practice" aria-current="page">ฝึกปฏิบัติ</a><a href="index.html#rubric">เกณฑ์การให้คะแนน</a><a href="planner.html">เปิดโปรแกรม</a></nav>
 </div></header>
-<section class="band"><div class="wrap"><div class="titles"><div class="crumb"><a href="index.html">หน้าแรก</a> › <a href="index.html#practice">ฝึกปฏิบัติ</a> › <a href="macrocycle.html">Macrocycle</a> › Mesocycle</div><h1>Mesocycle · แผนการฝึกรายช่วง</h1><p>แบ่งภาพรวมทั้งปีลงมาเป็นช่วงละ 3–7 Microcycle ที่มีเป้าหมายเฉพาะ</p></div></div></section>
+<section class="band"><div class="wrap"><div class="titles"><div class="crumb"><a href="index.html">หน้าแรก</a> › <a href="index.html#practice">ฝึกปฏิบัติ</a> › <a href="macrocycle.html">Macrocycle</a> › Mesocycle</div><h1>Mesocycle · แผนการฝึกรายช่วง</h1><p>แบ่ง Macrocycle ลงมาเป็นช่วงละ 3–7 Microcycle ที่มีเป้าหมายเฉพาะ</p></div></div></section>
 
 <main>
   <nav class="levels" aria-label="ระดับของแผน">
-    <a href="macrocycle.html">Macrocycle<small>ทั้งปี</small></a>
+    <a href="macrocycle.html">Macrocycle<small>3–12 เดือน</small></a>
     <span class="on">Mesocycle<small>3–7 Microcycle</small></span>
     <a href="planner.html">Microcycle<small>7 วัน</small></a>
     <span class="soon" title="เร็ว ๆ นี้">Session<small>มื้อฝึก</small></span>
@@ -210,7 +210,7 @@
     var h = '';
     // ---- 1 ภาพรวมทั้งปี + เลือก Mesocycle
     var wPh = []; M.forEach(function (x) { for (var i = 0; i < x.n; i++) wPh[x.w0 + i] = x; });
-    h += '<section class="card"><h2><span class="no">1</span>เลือก Mesocycle จากภาพรวมทั้งปี</h2>';
+    h += '<section class="card"><h2><span class="no">1</span>เลือก Mesocycle จากภาพรวม Macrocycle</h2>';
     h += '<div class="yr" style="grid-template-columns:repeat(' + N + ',1fr)">';
     for (var w = 0; w < N; w++) { var x = wPh[w], L = S.load[w] || 0; h += '<i data-pick="' + (x ? x.g : '') + '" class="' + (x && x.g === m.g ? 'on' : '') + '" style="height:' + Math.max(6, L * 10) + '%;background:' + (x ? PHASE[x.k].c : '#d6dbe5') + '" title="สัปดาห์ ' + (w + 1) + (x ? ' · M' + (x.g + 1) : '') + ' · Load ' + L + '"></i>'; }
     h += '</div><div class="yrp" style="grid-template-columns:repeat(' + N + ',1fr)">';
