@@ -74,8 +74,8 @@
   .mt .b10 { height: 104px; background-image: repeating-linear-gradient(to top, transparent 0 19px, #eef0f4 19px 20px); }
   .mt .b5 { height: 54px; background-image: repeating-linear-gradient(to top, transparent 0 9px, #f1f3f7 9px 10px); }
   svg.ldl { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; z-index: 2; }
-  svg.ldl polyline { fill: none; stroke: #1d2433; stroke-width: 2; stroke-linejoin: round; opacity: .85; }
-  svg.ldl .o { fill: #1d2433; } svg.ldl .i { fill: #fff; }
+  svg.ldl polyline { fill: none; stroke: #1d2433; stroke-width: 1.3; stroke-linejoin: round; opacity: .5; }
+  svg.ldl .o { fill: #1d2433; opacity: .55; } svg.ldl .i { fill: #fff; }
   .mt { position: relative; }
   .mt .cw { box-shadow: inset 0 0 0 9999px rgba(143, 29, 29, .05); }
   .mt .go { font: 500 12.5px 'Prompt', sans-serif; text-decoration: none; color: var(--brand-navy-2); }
@@ -272,7 +272,7 @@
     mt.querySelectorAll('.bc[data-row="load"]').forEach(function (c) { var i = c.querySelector('i'); if (!i) { pts.push(null); return; } var r = i.getBoundingClientRect(); pts.push([r.left + r.width / 2 - br.left, r.top - br.top]); });
     var runs = [], run = []; pts.forEach(function (p) { if (p) run.push(p); else { if (run.length) runs.push(run); run = []; } }); if (run.length) runs.push(run);
     if (!pts.some(Boolean)) return; var f = function (v) { return v.toFixed(1); };
-    mt.insertAdjacentHTML('beforeend', '<svg class="ldl" width="' + mt.scrollWidth + '" height="' + mt.scrollHeight + '" aria-hidden="true">' + runs.filter(function (r) { return r.length > 1; }).map(function (r) { return '<polyline points="' + r.map(function (p) { return f(p[0]) + ',' + f(p[1]); }).join(' ') + '"/>'; }).join('') + pts.filter(Boolean).map(function (p) { return '<circle class="o" cx="' + f(p[0]) + '" cy="' + f(p[1]) + '" r="4"/><circle class="i" cx="' + f(p[0]) + '" cy="' + f(p[1]) + '" r="1.6"/>'; }).join('') + '</svg>'); }
+    mt.insertAdjacentHTML('beforeend', '<svg class="ldl" width="' + mt.scrollWidth + '" height="' + mt.scrollHeight + '" aria-hidden="true">' + runs.filter(function (r) { return r.length > 1; }).map(function (r) { return '<polyline points="' + r.map(function (p) { return f(p[0]) + ',' + f(p[1]); }).join(' ') + '"/>'; }).join('') + pts.filter(Boolean).map(function (p) { return '<circle class="o" cx="' + f(p[0]) + '" cy="' + f(p[1]) + '" r="3"/><circle class="i" cx="' + f(p[0]) + '" cy="' + f(p[1]) + '" r="1.2"/>'; }).join('') + '</svg>'); }
   function pattern(Ls) { if (Ls.some(function (v) { return !v; })) return 'ยังกำหนดไม่ครบ'; var s = Ls.map(function (v, i) { return i ? (v > Ls[i - 1] ? '↑' : v < Ls[i - 1] ? '↓' : '→') : ''; }).join(''); var ups = (s.match(/↑/g) || []).length, downs = (s.match(/↓/g) || []).length; return (ups && downs ? 'ขึ้นแล้วลด' : ups ? 'เพิ่มต่อเนื่อง' : downs ? 'ลดต่อเนื่อง' : 'คงที่') + ' ' + s; }
   function hints(m, wks) {
     var H = [], Ls = wks.map(function (w) { return S.load[w] || 0; });

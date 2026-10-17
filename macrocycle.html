@@ -85,6 +85,9 @@
   .tl .v { position: absolute; top: 1px; left: 0; right: 0; text-align: center; font: 600 10px 'Prompt', sans-serif; color: #4f6d8f; }
   .tl .cw { box-shadow: inset 0 0 0 9999px rgba(143, 29, 29, .06); }
   .tl .now { box-shadow: inset 0 -3px 0 var(--brand-gold); }
+  .tl.fit .bc i { max-width: none; } .tl.fit .c { overflow: hidden; }
+  .tl.tight .v, .tl.tight .dt { font-size: 8.5px; letter-spacing: 0; } .tl.tight .wk { font-size: 10px; } .tl.tight .mk .im { width: 15px; height: 15px; font-size: 9px; } .tl.tight .mk .pill { font-size: 8.5px; padding: 0 3px; }
+  .tl.xtight .v, .tl.xtight .dt { color: transparent; } .tl.xtight .wk { font-size: 8px; } .tl.xtight .mk .im { width: 11px; height: 11px; font-size: 0; } .tl.xtight .mk .pill { font-size: 0; padding: 0 3px; min-height: 8px; }
   .undo { position: fixed; right: 16px; bottom: 16px; z-index: 40; display: flex; gap: 6px; background: #fff; border: 1px solid #d6dbe5; border-radius: 14px; padding: 6px; box-shadow: 0 6px 18px rgba(10,42,102,.14); }
   .undo button { min-height: 40px; padding: 6px 12px; }
   .undo button:disabled { opacity: .4; cursor: default; }
@@ -98,8 +101,8 @@
   .tl .mk .i3, .tl .mk .i4, .tl .mk .i5 { box-shadow: inset 0 0 0 1.5px #1d2433, 0 0 0 2px #fff; }
   .tl .mkb { position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 2px; align-items: center; }
   svg.ldl { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; z-index: 1; }
-  svg.ldl polyline { fill: none; stroke: #1d2433; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; opacity: .85; }
-  svg.ldl .o { fill: #1d2433; } svg.ldl .i { fill: #fff; }
+  svg.ldl polyline { fill: none; stroke: #1d2433; stroke-width: 1.2; stroke-linejoin: round; stroke-linecap: round; opacity: .5; }
+  svg.ldl .o { fill: #1d2433; opacity: .55; } svg.ldl .i { fill: #fff; }
   svg.shl { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; z-index: 1; }
   svg.shl polyline { fill: none; stroke: #d9a520; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
   .pop { position: fixed; z-index: 50; background: #1d2433; color: #fff; border-radius: 10px; padding: 8px 12px; font-size: 13px; line-height: 1.5; max-width: 280px; box-shadow: 0 6px 18px rgba(0,0,0,.25); pointer-events: none; }
@@ -200,7 +203,7 @@
 
   <section class="card">
     <h2><span class="no">4</span>แผนการฝึกรายปี (Annual plan)</h2>
-    <div class="row noprint" style="margin-bottom:8px" role="group" aria-label="รูปแบบการแสดงผล"><span class="muted">รูปแบบ:</span><button type="button" data-view="a">ก · แผนภูมิแท่ง + สมรรถภาพทางกลไก</button><button type="button" data-view="wa">ข · Annual plan แบบ WA</button></div>
+    <div class="row noprint" style="margin-bottom:8px" role="group" aria-label="รูปแบบการแสดงผล"><span class="muted">รูปแบบ:</span><button type="button" data-view="a">ก · แผนภูมิแท่ง + สมรรถภาพทางกลไก</button><button type="button" data-view="wa">ข · Annual plan แบบ WA</button><button type="button" id="bFit" aria-pressed="false" title="แสดงทั้งปีในหน้าจอเดียว" style="margin-left:auto">⤢ พอดีจอ</button></div>
     <p class="muted" style="margin:0 0 8px">แตะหรือลากในช่องเพื่อกำหนดค่า: <b>Load การฝึก</b> 1–10 · <b>สมรรถภาพทางกลไก</b> 0–5 · ชี้หรือแตะสัญลักษณ์บนแท่งเพื่อดูกิจกรรม · แตะเลขสัปดาห์เพื่อดูวันที่ของ Microcycle · แตะแถวข้อความเพื่อพิมพ์ · ระบบไม่เติมค่าให้</p>
     <div class="tlw" id="tlw"><div class="tl" id="tl"></div></div>
     <div class="legend" id="legend"></div>
@@ -373,12 +376,18 @@
     var ev = S.events.filter(function (e) { return weekOf(e.date) === w; }).map(function (e) { return e.type === 'comp' ? 'แข่ง (' + e.pri + ') ' + e.name : (e.type === 'fit' ? 'ทดสอบสมรรถภาพ' : 'ทดสอบสรีรวิทยา') + (e.tests && e.tests.length ? ': ' + e.tests.join(', ') : ''); });
     return { t: 'Microcycle ' + (w + 1), d: thD(a) + ' – ' + thD(b, true), p: wp != null ? phName(wp) + (wm != null ? ' · Mesocycle ' + (wm + 1) : '') : '', ev: ev, L: S.load[w] || 0, sh: S.shape[w] || 0 };
   }
+  /* พอดีจอ (ผู้ใช้ขอ 2026-10-17): ทั้งปีในจอเดียว · ค่าเริ่มต้นเปิดบนจอ ≥1000px · จำไว้ในเครื่อง (tp-macro-fit) */
+  function fitOn() { var v = null; try { v = localStorage.getItem('tp-macro-fit'); } catch (e) {} return v == null ? innerWidth >= 1000 : v === '1'; }
+  document.addEventListener('click', function (ev) { if (!ev.target.closest('#bFit')) return; try { localStorage.setItem('tp-macro-fit', fitOn() ? '0' : '1'); } catch (e) {} renderChart(); });
   /* สองรูปแบบ (ผู้ใช้ขอลองทั้งคู่): 'a' = แผนภูมิแท่ง + สมรรถภาพทางกลไก · 'wa' = Annual plan ของ WA · ทั้งสองแบบ Load อยู่บนสุด */
   function renderChart() {
     var N = nW(), tl = $('tl'), colW = N > 30 ? 24 : 34, lw = innerWidth < 600 ? 104 : 150, view = S.view === 'wa' ? 'wa' : 'a';
     var majorW = {}; S.events.forEach(function (e) { if (e.type === 'comp' && e.pri <= 2) majorW[weekOf(e.date)] = 1; });
-    tl.style.gridTemplateColumns = lw + 'px repeat(' + N + ', minmax(' + colW + 'px, 1fr))';
-    tl.style.minWidth = (lw + N * colW) + 'px';
+    var fit = fitOn(), avail = $('tlw').clientWidth - lw;
+    tl.style.gridTemplateColumns = lw + 'px repeat(' + N + ', ' + (fit ? 'minmax(0, 1fr)' : 'minmax(' + colW + 'px, 1fr)') + ')';
+    tl.style.minWidth = fit ? '0' : (lw + N * colW) + 'px';
+    tl.classList.toggle('fit', fit); tl.classList.toggle('tight', fit && avail / N < 17); tl.classList.toggle('xtight', fit && avail / N < 11);
+    var fb = $('bFit'); if (fb) { fb.setAttribute('aria-pressed', fit); fb.classList.toggle('pri', fit); fb.textContent = fit ? '⤡ ขยาย (เลื่อนดู)' : '⤢ พอดีจอ'; }
     document.querySelectorAll('[data-view]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.view === view); b.classList.toggle('pri', b.dataset.view === view); });
     function lab(a, b, cls, c) { return '<div class="lab' + (cls ? ' ' + cls : '') + '"' + (c ? ' style="--c:' + c + '"' : '') + '>' + esc(a) + (b ? '<small>' + esc(b) + '</small>' : '') + '</div>'; }
     function spans(arr, cls) { var out = '', used = 0; arr.forEach(function (x) { var n = Math.min(x.n, N - used); if (n <= 0) return; out += '<div class="c ' + cls + '" style="grid-column:span ' + n + (x.bg ? ';background:' + x.bg : '') + '"' + (x.title ? ' title="' + esc(x.title) + '"' : '') + (x.attr || '') + '>' + (x.html != null ? x.html : (n >= 3 ? esc(x.t) : n >= 2 ? esc(String(x.t).slice(0, 3)) : '')) + '</div>'; used += n; }); if (used < N) out += '<div class="c" style="grid-column:span ' + (N - used) + ';color:#a0a7b5">' + (cls === 'sp' ? 'ยังไม่กำหนด' : '') + '</div>'; return out; }
@@ -439,7 +448,7 @@
     tl.querySelectorAll('.ld').forEach(function (c) { var i = c.querySelector('i'); if (!i) { pts.push(null); return; } var r = i.getBoundingClientRect(); pts.push([r.left + r.width / 2 - br.left, r.top - br.top]); });
     var runs = [], run = []; pts.forEach(function (p) { if (p) run.push(p); else { if (run.length) runs.push(run); run = []; } }); if (run.length) runs.push(run);
     if (!pts.some(Boolean)) return; var f = function (v) { return v.toFixed(1); };
-    tl.insertAdjacentHTML('beforeend', '<svg class="ldl" width="' + tl.scrollWidth + '" height="' + tl.scrollHeight + '" aria-hidden="true">' + runs.filter(function (r) { return r.length > 1; }).map(function (r) { return '<polyline points="' + r.map(function (p) { return f(p[0]) + ',' + f(p[1]); }).join(' ') + '"/>'; }).join('') + pts.filter(Boolean).map(function (p) { return '<circle class="o" cx="' + f(p[0]) + '" cy="' + f(p[1]) + '" r="3.4"/><circle class="i" cx="' + f(p[0]) + '" cy="' + f(p[1]) + '" r="1.3"/>'; }).join('') + '</svg>');
+    tl.insertAdjacentHTML('beforeend', '<svg class="ldl" width="' + tl.scrollWidth + '" height="' + tl.scrollHeight + '" aria-hidden="true">' + runs.filter(function (r) { return r.length > 1; }).map(function (r) { return '<polyline points="' + r.map(function (p) { return f(p[0]) + ',' + f(p[1]); }).join(' ') + '"/>'; }).join('') + pts.filter(Boolean).map(function (p) { return '<circle class="o" cx="' + f(p[0]) + '" cy="' + f(p[1]) + '" r="2.3"/><circle class="i" cx="' + f(p[0]) + '" cy="' + f(p[1]) + '" r="0.9"/>'; }).join('') + '</svg>');
   }
   function drawShape() {
     var tl = $('tl'), old = tl.querySelector('svg.shl'); if (old) old.remove();
