@@ -91,7 +91,7 @@
   .tl .v { position: absolute; top: 1px; left: 0; right: 0; text-align: center; font: 500 9px 'Prompt', sans-serif; color: #7a879c; }
   .tl .cw { box-shadow: inset 0 0 0 9999px rgba(143, 29, 29, .06); }
   .tl .now { box-shadow: inset 0 -3px 0 var(--brand-gold); }
-  .tl.pr .ld { height: 62px; } .tl.pr .bo { height: 28px; } .tl.pr .dt { min-height: 34px; font-size: 9px; } .tl.pr .cd { min-height: 56px; } .tl.pr .lab { padding: 1px 6px; } .tl.pr .lab small { display: none; } .tl.pr .ob { min-height: 20px !important; font-size: 10px; }
+  .tl.pr .ld { height: var(--lh, 62px); } .tl.pr .bo { height: var(--bh, 28px); } .tl.pr .dt { min-height: 34px; font-size: 9px; } .tl.pr .cd { min-height: 56px; } .tl.pr .lab { padding: 1px 6px; } .tl.pr .lab small { display: none; } .tl.pr .ob { min-height: 20px !important; font-size: 10px; }
   .tl.fit .bc i { max-width: none; } .tl.fit .c { overflow: hidden; }
   .tl.tight .v, .tl.tight .dt { font-size: 8.5px; letter-spacing: 0; } .tl.tight .wk { font-size: 10px; } .tl.tight .mk .im { width: 15px; height: 15px; font-size: 9px; } .tl.tight .mk .pill { font-size: 8.5px; padding: 0 3px; }
   .tl.xtight .v, .tl.xtight .dt { color: transparent; } .tl.xtight .wk { font-size: 8px; } .tl.xtight .mk .im { width: 11px; height: 11px; font-size: 0; } .tl.xtight .mk .pill { font-size: 0; padding: 0 3px; min-height: 8px; }
@@ -133,11 +133,34 @@
   .sbar { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; justify-content: space-between; background: #eef2f9; border: 1px solid #d6deec; border-radius: 14px; padding: 10px 14px; margin-bottom: 14px; font-size: 14px; color: #1d2433; }
   .sbar.on { background: #fff6dc; border-color: #ead48a; }
   .sbar.on #sbarTxt::before { content: '📘 '; }
-  .ahead { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 6px 10px; background: #f8f9fc; border: 1px solid #e3e7ef; border-radius: 12px; padding: 8px 12px; margin: 0 0 10px; }
+  .ahead { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px 10px; background: #f8f9fc; border: 1px solid #e3e7ef; border-radius: 12px; padding: 8px 12px; margin: 0 0 10px; }
   .ahead div { font-size: 13px; color: #1d2433; line-height: 1.35; }
   .ahead small { display: block; font: 500 11px 'Prompt', sans-serif; color: #6b7690; }
   .ahead b { font-family: 'Prompt', sans-serif; font-weight: 600; color: var(--brand-navy); }
   .ahead:empty { display: none; }
+  @media screen and (max-width: 760px) { body:not(.printing) .ahead { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .printonly { display: none; }
+  /* รายงานทางการ (พิมพ์): หัวกระดาษ ช่องลงนาม · .ponly แสดงเฉพาะตอนพิมพ์ */
+  .ponly { display: none; }
+  .rhd { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; align-items: center; border-bottom: 2px solid var(--brand-navy); padding: 0 0 6px; margin: 0 0 8px; }
+  .rhd img { width: 40px; height: 42px; object-fit: contain; }
+  .rhd b { display: block; font: 600 13.5px 'Prompt', sans-serif; color: var(--brand-navy); }
+  .rhd span { font-size: 12px; color: #38415a; }
+  .rhd .r { text-align: right; font-size: 11px; color: #38415a; line-height: 1.45; }
+  .rhd .t { font: 600 15px 'Prompt', sans-serif; color: #1d2433; }
+  .sig { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 16px; text-align: center; font-size: 12px; color: #1d2433; }
+  .sig div { line-height: 1.9; }
+  body.printing #planCard > h2, body.printing #planCard > .noprint, body.printing #planCard > .muted { display: none !important; }
+  body.printing .ponly, body.printing .printonly { display: block !important; }
+  body.printing #planCard { padding: 0 !important; border: 0 !important; }
+  /* หน้า 2 ของ PDF (อยู่ใน .printonly จึงไม่กระทบหน้าจอ) */
+  .ph2 { font-size: 18px !important; margin: 0 0 8px !important; } .ph2 span { font: 400 13px 'Sarabun', sans-serif; color: #6b7690; }
+  .pcnt { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 0 0 10px; }
+  .pcnt div { border: 1px solid #e3e7ef; border-radius: 10px; padding: 6px 10px; } .pcnt small { display: block; font: 500 11px 'Prompt', sans-serif; color: #6b7690; } .pcnt b { font: 600 20px 'Prompt', sans-serif; color: var(--brand-navy); }
+  .pev { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: var(--pf, 11px); }
+  .pev th { background: var(--brand-navy); color: #fff; font: 500 11.5px 'Prompt', sans-serif; padding: 5px 6px; text-align: left; }
+  .pev td { border-bottom: 1px solid #e3e7ef; padding: var(--pp, 3px) 6px; vertical-align: middle; } .pev .im { width: 15px; height: 15px; font-size: 9px; } .pev .pill { font-size: 9px; } .pev tr:nth-child(even) td { background: #f8f9fc; } .pev tr.maj td { font-weight: 700; }
+  .pft { font-size: 10px; color: #6b7690; text-align: center; margin: 10px 0 0; }
   .note { background: #fff8e6; border-left: 4px solid var(--brand-gold); padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 14px; margin: 10px 0 0; }
   footer { max-width: 1240px; margin: 0 auto; padding: 16px; border-top: 1px solid #e3e7ef; color: #6b7690; font-size: 13px; text-align: center; }
   @media (max-width: 860px) { .g4 { grid-template-columns: 1fr 1fr; } .ph { grid-template-columns: 1fr auto 34px; } .ph .pdel { grid-column: 3; } .ph .meso { grid-column: 1 / -1; grid-row: 2; } .evf { grid-template-columns: 1fr 1fr; } .evf label:nth-child(3) { grid-column: 1 / -1; } .br { grid-template-columns: 1fr 1fr 34px; } .br select { grid-column: 1 / 3; } }
@@ -147,8 +170,11 @@
     @page { size: A4 landscape; margin: 8mm; }
     header.site, .band, .levels, .noprint, .pop, .sbar, footer { display: none !important; }
     main > section.card:not(#planCard) { display: none !important; }
+    .printonly { display: block !important; break-before: page; }
+    .ahead { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; padding: 5px 10px !important; gap: 3px 10px !important; margin-bottom: 6px !important; } .ahead div { font-size: 11px !important; } .ahead small { font-size: 9.5px !important; }
     main { padding: 0; max-width: none; } #planCard { margin: 0; border: 0; padding: 0; }
-    #planCard > .muted { display: none; }
+    #planCard > .muted, #planCard > h2 { display: none; }
+    .ponly { display: block !important; }
     body { background: #fff !important; } .card { break-inside: avoid; border-color: #ccc; padding: 8px; }
     .tlw { overflow: visible; border: 0; } .tl { min-width: 0 !important; }
     .tl .lab { position: static; } * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -224,6 +250,7 @@
   </section>
 
   <section class="card" id="planCard">
+    <div class="ponly" id="rhd1"></div>
     <h2><span class="no">4</span>Macrocycle <span class="muted" style="font-family:Sarabun;font-weight:400">· Annual plan</span></h2>
     <div class="ahead" id="ahead"></div>
     <div class="row noprint" style="margin-bottom:8px" role="group" aria-label="รูปแบบการแสดงผล"><span class="muted">รูปแบบ:</span><button type="button" data-view="a">ก · แผนภูมิแท่ง + สมรรถภาพทางกลไก</button><button type="button" data-view="wa">ข · Annual plan แบบ WA</button><button type="button" id="bFit" aria-pressed="false" title="แสดงทั้งปีในหน้าจอเดียว" style="margin-left:auto">⤢ พอดีจอ</button></div>
@@ -231,6 +258,8 @@
     <div class="tlw" id="tlw"><div class="tl" id="tl"></div></div>
     <div class="legend" id="legend"></div>
   </section>
+
+  <section class="printonly" id="printEv"></section>
 
   <section class="card">
     <h2><span class="no">5</span>แถวสมรรถภาพทางกลไก (Biomotor abilities)</h2>
@@ -404,11 +433,31 @@
     var a0 = addDays(S.start, 0), a1 = addDays(S.start, N * 7 - 1), top = S.events.filter(function (e) { return e.type === 'comp' && e.pri === 1; })[0];
     var age = [S.cage && ('ปฏิทิน ' + S.cage), S.bage && ('ชีวภาพ ' + S.bage), S.tage && ('การฝึก ' + S.tage)].filter(Boolean).join(' · ');
     var it = [['นักกีฬา', S.code], ['ชนิดกีฬา / รายการ', [spn, S.event].filter(Boolean).join(' · ')], ['เพศ', S.gender], ['อายุ (ปี)', age], ['ขั้นการพัฒนา', S.ad], ['ช่วง Macrocycle', thD(a0, true) + ' – ' + thD(a1, true) + ' (' + N + ' Microcycle)'], ['หน่วยฝึก/สัปดาห์', S.upw], ['เป้าหมายหลัก (ระดับ 1)', top ? top.name + ' · ' + thDate(top.date) : '']];
-    el.innerHTML = it.filter(function (x) { return x[1]; }).map(function (x) { return '<div><small>' + x[0] + '</small><b>' + esc(x[1]) + '</b></div>'; }).join(''); }
+    var html = it.map(function (x) { return '<div><small>' + x[0] + '</small><b>' + esc(x[1] || '–') + '</b></div>'; }).join(''); el.innerHTML = html; return html; }
   /* พิมพ์ / บันทึก PDF แผ่นเดียว: บังคับพอดีจอ แล้วย่อการ์ดให้พอดี A4 แนวนอน (281 × 194 มม.) */
   var printing = false;
-  addEventListener('beforeprint', function () { printing = true; LH = 62; BH = 26; var c = $('planCard'); c.style.zoom = ''; c.style.width = '1060px'; renderChart(); var h = c.scrollHeight, w = c.scrollWidth; c.style.zoom = Math.min(1, 730 / h, 1060 / w) * 0.97; });
-  addEventListener('afterprint', function () { printing = false; LH = 88; BH = 50; var c = $('planCard'); c.style.zoom = ''; c.style.width = ''; renderChart(); });
+  addEventListener('beforeprint', function () { printing = true; document.body.classList.add('printing'); $('rhd1').innerHTML = reportHead('แผนการฝึกระยะยาว (Macrocycle)', 1); LH = 62; BH = 26; var c = $('planCard'), H = 724; c.style.zoom = ''; c.style.width = '1062px'; renderChart();
+    var h = c.scrollHeight, nb = S.view === 'wa' ? 0 : S.bio.length;
+    if (nb && h !== H) { BH = Math.max(12, Math.min(44, BH + Math.floor((H - h) / nb))); renderChart(); h = c.scrollHeight; }   // แถวสมรรถภาพยืด/หดให้เต็มหน้า
+    if (h > H) { LH = Math.max(44, LH - (h - H)); renderChart(); h = c.scrollHeight; }
+    if (h < H - 30 && !nb) { LH = Math.min(110, LH + (H - h)); renderChart(); h = c.scrollHeight; }
+    c.style.zoom = h > H ? (H / h).toFixed(3) : ''; buildPrintEv(); });
+  addEventListener('afterprint', function () { printing = false; document.body.classList.remove('printing'); $('rhd1').innerHTML = ''; LH = 88; BH = 50; $('printEv').innerHTML = ''; $('printEv').style.zoom = ''; $('printEv').style.width = ''; var c = $('planCard'); c.style.zoom = ''; c.style.width = ''; renderChart(); });
+  function reportHead(title, pg) { var now = new Date(); return '<div class="rhd"><img src="logo-mark.png" alt=""><div><b>คณะพลศึกษา มหาวิทยาลัยการกีฬาแห่งชาติ วิทยาเขตอุดรธานี</b><span class="t">' + title + '</span></div><div class="r">รหัสนักกีฬา: <b style="display:inline;font-size:11px">' + esc(S.code || '–') + '</b><br>พิมพ์เมื่อ ' + thD(now, true) + '<br>หน้า ' + pg + ' / 2</div></div>'; }
+  /* หน้า 2 ของ PDF: รายละเอียดการแข่งขันและการทดสอบ (ผู้ใช้ขอ 2026-10-17) */
+  function buildPrintEv() { var wp = weekPhase(), ev = S.events.slice().sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+    var cnt = [ev.filter(function (e) { return e.type === 'comp' && e.pri <= 2; }).length, ev.filter(function (e) { return e.type === 'comp' && e.pri > 2; }).length, ev.filter(function (e) { return e.type === 'fit'; }).length, ev.filter(function (e) { return e.type === 'phy'; }).length];
+    var h = reportHead('แผนการฝึกระยะยาว (Macrocycle) · การแข่งขันและการทดสอบ', 2) + '<div class="ahead">' + renderHead() + '</div>';
+    h += '<div class="pcnt"><div><small>รายการหลัก (ระดับ 1–2)</small><b>' + cnt[0] + '</b></div><div><small>รายการรอง (ระดับ 3–5)</small><b>' + cnt[1] + '</b></div><div><small>ทดสอบสมรรถภาพทางกาย</small><b>' + cnt[2] + '</b></div><div><small>ทดสอบทางสรีรวิทยา</small><b>' + cnt[3] + '</b></div></div>';
+    h += '<table class="pev"><colgroup><col style="width:5%"><col style="width:14%"><col style="width:11%"><col style="width:16%"><col style="width:17%"><col><col style="width:11%"></colgroup><tr><th>#</th><th>วันที่</th><th>Microcycle</th><th>Phase</th><th>ประเภท</th><th>รายการ / รายการทดสอบ</th><th style="text-align:center">ระดับ</th></tr>';
+    h += ev.map(function (e, i) { var w = weekOf(e.date), pi = wp[w];
+      var typ = e.type === 'comp' ? 'การแข่งขัน' + (e.pri <= 2 ? ' (หลัก)' : ' (รอง)') : e.type === 'fit' ? 'ทดสอบสมรรถภาพ' : 'ทดสอบสรีรวิทยา';
+      var det = e.type === 'comp' ? esc(e.name) : esc([e.name].concat(e.tests || []).filter(Boolean).join(' · '));
+      return '<tr' + (e.type === 'comp' && e.pri <= 2 ? ' class="maj"' : '') + '><td>' + (i + 1) + '</td><td>' + thD(new Date(e.date + 'T00:00:00'), true) + '</td><td>' + (w >= 0 && w < nW() ? w + 1 : '–') + '</td><td>' + (pi != null ? esc(phName(pi)) : '–') + '</td><td>' + typ + '</td><td>' + det + '</td><td style="text-align:center">' + (e.type === 'comp' ? imp(e) : tst(e)) + '</td></tr>'; }).join('') || '<tr><td colspan="7" style="text-align:center;color:#6b7690">ยังไม่มีรายการ</td></tr>';
+    h += '</table><div class="sig"><div>ลงชื่อ ...................................................<br>(...................................................)<br>ผู้จัดทำแผน (ผู้ฝึกสอน)<br>วันที่ ........ / ........ / ........</div><div>ลงชื่อ ...................................................<br>(...................................................)<br>ผู้รับรองแผน<br>วันที่ ........ / ........ / ........</div></div><p class="pft">Run Your Best #Godwit · คณะพลศึกษา มหาวิทยาลัยการกีฬาแห่งชาติ วิทยาเขตอุดรธานี · จัดทำและเรียบเรียงโดย ปริญญา นาเหนือ (PARINYA NANUA) · หลักการอ้างอิง World Athletics (WA)</p>';
+    var pe = $('printEv'); pe.innerHTML = h; pe.style.zoom = ''; pe.style.width = '1062px'; var lv = [['11.5px', '4px'], ['11px', '3px'], ['10.5px', '2px'], ['10px', '1px'], ['9.5px', '0px']], ph = 0;   // ลดระยะแถวทีละขั้นให้พอดีหน้า แล้วจึงย่อทั้งหน้า
+    for (var k = 0; k < lv.length; k++) { pe.style.setProperty('--pf', lv[k][0]); pe.style.setProperty('--pp', lv[k][1]); ph = pe.scrollHeight; if (ph <= 716) break; }
+    if (ph > 716) pe.style.zoom = (716 / ph).toFixed(3); }
   /* พอดีจอ (ผู้ใช้ขอ 2026-10-17): ทั้งปีในจอเดียว · ค่าเริ่มต้นเปิดบนจอ ≥1000px · จำไว้ในเครื่อง (tp-macro-fit) */
   function fitOn() { if (printing) return true; var v = null; try { v = localStorage.getItem('tp-macro-fit'); } catch (e) {} return v == null ? innerWidth >= 1000 : v === '1'; }
   document.addEventListener('click', function (ev) { if (!ev.target.closest('#bFit')) return; try { localStorage.setItem('tp-macro-fit', fitOn() ? '0' : '1'); } catch (e) {} renderChart(); });
@@ -419,7 +468,7 @@
     var fit = fitOn(), avail = $('tlw').clientWidth - lw;
     tl.style.gridTemplateColumns = lw + 'px repeat(' + N + ', ' + (fit ? 'minmax(0, 1fr)' : 'minmax(' + colW + 'px, 1fr)') + ')';
     tl.style.minWidth = fit ? '0' : (lw + N * colW) + 'px';
-    tl.classList.toggle('pr', printing); tl.classList.toggle('fit', fit); tl.classList.toggle('tight', fit && avail / N < 17); tl.classList.toggle('xtight', fit && avail / N < 11);
+    tl.classList.toggle('pr', printing); if (printing) { tl.style.setProperty('--lh', LH + 'px'); tl.style.setProperty('--bh', (BH + 2) + 'px'); } tl.classList.toggle('fit', fit); tl.classList.toggle('tight', fit && avail / N < 17); tl.classList.toggle('xtight', fit && avail / N < 11);
     var fb = $('bFit'); if (fb) { fb.setAttribute('aria-pressed', fit); fb.classList.toggle('pri', fit); fb.textContent = fit ? '⤡ ขยาย (เลื่อนดู)' : '⤢ พอดีจอ'; }
     document.querySelectorAll('[data-view]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.view === view); b.classList.toggle('pri', b.dataset.view === view); });
     function lab(a, b, cls, c) { return '<div class="lab' + (cls ? ' ' + cls : '') + '"' + (c ? ' style="--c:' + c + '"' : '') + '>' + esc(a) + (b ? '<small>' + esc(b) + '</small>' : '') + '</div>'; }
