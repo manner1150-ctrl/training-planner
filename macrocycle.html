@@ -77,7 +77,7 @@
   .tl .bc:focus { outline: 2px solid var(--brand-gold); outline-offset: -2px; }
   .tl .bc i { display: block; width: 100%; max-width: 30px; border-radius: 3px 3px 0 0; }
   .tl .ld { height: 120px; background-image: repeating-linear-gradient(to top, transparent 0 23px, #eef0f4 23px 24px); }
-  .tl .ld i { background: #4f6d8f; }
+  .tl .ld i { background: var(--pc, #4f6d8f); }
   .tl .sh { height: 90px; background-image: repeating-linear-gradient(to top, transparent 0 17px, #f4efe0 17px 18px); }
   .tl .sh b { position: absolute; left: 50%; width: 9px; height: 9px; margin-left: -4.5px; border-radius: 50%; background: #d9a520; box-shadow: 0 0 0 2px #fff; z-index: 2; }
   .tl .sh b.pk { width: 13px; height: 13px; margin-left: -6.5px; background: #8f1d1d; }
@@ -85,6 +85,9 @@
   .tl .v { position: absolute; top: 1px; left: 0; right: 0; text-align: center; font: 600 10px 'Prompt', sans-serif; color: #4f6d8f; }
   .tl .cw { box-shadow: inset 0 0 0 9999px rgba(143, 29, 29, .06); }
   .tl .now { box-shadow: inset 0 -3px 0 var(--brand-gold); }
+  svg.ldl { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; z-index: 1; }
+  svg.ldl polyline { fill: none; stroke: #1d2433; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; opacity: .85; }
+  svg.ldl .o { fill: #1d2433; } svg.ldl .i { fill: #fff; }
   svg.shl { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; z-index: 1; }
   svg.shl polyline { fill: none; stroke: #d9a520; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
   .pop { position: fixed; z-index: 50; background: #1d2433; color: #fff; border-radius: 10px; padding: 8px 12px; font-size: 13px; line-height: 1.5; max-width: 280px; box-shadow: 0 6px 18px rgba(0,0,0,.25); pointer-events: none; }
@@ -127,7 +130,7 @@
 <main>
   <nav class="levels" aria-label="ระดับของแผน">
     <span class="on">Macrocycle<small>ทั้งปี</small></span>
-    <span class="soon" title="เร็ว ๆ นี้">Mesocycle<small>3–7 Microcycle</small></span>
+    <a href="mesocycle.html">Mesocycle<small>3–7 Microcycle</small></a>
     <a href="planner.html">Microcycle<small>7 วัน</small></a>
     <span class="soon" title="เร็ว ๆ นี้">Session<small>มื้อฝึก</small></span>
     <span class="soon" title="เร็ว ๆ นี้">Unit<small>หน่วยฝึก</small></span>
@@ -217,6 +220,7 @@
 
 <footer><b>Run Your Best #Godwit</b> · คณะพลศึกษา มหาวิทยาลัยการกีฬาแห่งชาติ วิทยาเขตอุดรธานี<br><span class="author">จัดทำและเรียบเรียงโดย <b>ปริญญา นาเหนือ (PARINYA NANUA)</b> · อาจารย์ประจำคณะพลศึกษา มหาวิทยาลัยการกีฬาแห่งชาติ วิทยาเขตอุดรธานี</span><br>หลักการอ้างอิง World Athletics (WA) CECS Level II · 2.3 Macro- &amp; Mesocycle</footer>
 
+<script src="plan-sample.js"></script>
 <script>
 (function () {
   var KEY = 'tp-macro-v1';
@@ -253,7 +257,7 @@
     phy: ['VO2max', 'Lactate / Threshold', 'HRmax / HR ขณะพัก', 'องค์ประกอบร่างกาย', 'ชีพจรฟื้นตัว']
   };
   /* แผนตัวอย่างสำหรับดูรูปแบบ (นักกระโดดไกลหญิง 18 ปี, ดัดแปลงจากตัวอย่าง Annual plan ของ WA CECS Level II) — โหลดเมื่อผู้ใช้กดเองเท่านั้น */
-  var SAMPLE = {"code": "LJ-0001 (ตัวอย่าง)", "sport": "spr", "event": "กระโดดไกล", "gender": "หญิง", "cage": "18", "bage": "16", "tage": "5", "ad": "Event Group Development", "start": "2026-10-05", "weeks": 52, "upw": "8", "events": [{"id": "c0", "type": "comp", "date": "2027-01-08", "name": "Indoor 1", "pri": 4}, {"id": "c1", "type": "comp", "date": "2027-01-15", "name": "Indoor 2", "pri": 3}, {"id": "c2", "type": "comp", "date": "2027-02-05", "name": "ชิงแชมป์ในร่ม", "pri": 2}, {"id": "c3", "type": "comp", "date": "2027-02-26", "name": "กีฬามหาวิทยาลัย", "pri": 2}, {"id": "c4", "type": "comp", "date": "2027-05-21", "name": "คัดตัว 1", "pri": 4}, {"id": "c5", "type": "comp", "date": "2027-05-28", "name": "คัดตัว 2", "pri": 4}, {"id": "c6", "type": "comp", "date": "2027-06-11", "name": "สนามเล็ก", "pri": 4}, {"id": "c7", "type": "comp", "date": "2027-06-25", "name": "ภาค 1", "pri": 3}, {"id": "c8", "type": "comp", "date": "2027-07-02", "name": "ภาค 2", "pri": 3}, {"id": "c9", "type": "comp", "date": "2027-07-09", "name": "ภาค 3", "pri": 3}, {"id": "c10", "type": "comp", "date": "2027-07-16", "name": "ชิงแชมป์ประเทศไทย", "pri": 2}, {"id": "c11", "type": "comp", "date": "2027-07-30", "name": "ชิงแชมป์เยาวชนชาติ", "pri": 1}, {"id": "c12", "type": "comp", "date": "2027-08-06", "name": "เชิญ 1", "pri": 3}, {"id": "c13", "type": "comp", "date": "2027-08-13", "name": "เชิญ 2", "pri": 3}, {"id": "c14", "type": "comp", "date": "2027-08-20", "name": "กีฬาแห่งชาติ", "pri": 2}, {"id": "t15", "type": "fit", "date": "2026-11-13", "name": "", "tests": ["Vertical jump", "วิ่ง 30 เมตร"]}, {"id": "t16", "type": "fit", "date": "2026-12-25", "name": "", "tests": ["Vertical jump"]}, {"id": "t17", "type": "fit", "date": "2027-04-09", "name": "", "tests": ["Vertical jump", "วิ่ง 30 เมตร"]}, {"id": "t18", "type": "phy", "date": "2026-10-09", "name": "", "tests": ["องค์ประกอบร่างกาย"]}], "periods": [{"k": "gp", "meso": [6, 5, 6, 5]}, {"k": "sp", "meso": [5, 5]}, {"k": "pc", "meso": [4, 4]}, {"k": "c", "meso": [3, 3]}, {"k": "t", "meso": [6]}], "load": [3, 4, 5, 3, 4, 5, 4, 4, 5, 6, 5, 6, 5, 6, 6, 5, 6, 6, 4, 6, 5, 6, 6, 4, 7, 6, 6, 7, 8, 6, 6, 7, 7, 6, 7, 8, 6, 7, 8, 6, 6, 5, 4, 6, 5, 4, 1, 1, 1, 1, 1, 2], "shape": [2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 10, 9, 9, 9, 6, 5, 4, 4, 3, 3], "tags": [], "mon": ["P", "W", "", "", "", "", "", "W", "B", "", "", "", "", "B", "", "W", "", "B", "", "", "B", "", "W", "B", "", "", "P", "", "B", "", "", "", "B", "", "", "", "", "B", "", "", "B", "", "B", "", "", "B", "", "", "", "", "", ""], "pgoal": ["สร้างฐานความแข็งแรงและความอดทนทั่วไป", "เชื่อมความแข็งแรงสู่ความเร็วและการกระโดด", "เตรียมเทคนิคและความเร็วสำหรับการแข่ง", "พีคที่ชิงแชมป์เยาวชนชาติ", "พักฟื้นฟูร่างกายและจิตใจ"], "obj": {"0": {"phy": "อดทนทั่วไป", "tech": "Flight phase", "psy": "ตั้งเป้าหมาย"}, "1": {"phy": "อดทน + แข็งแรงทั่วไป", "tech": "Flight phase", "psy": "มุ่งมั่น 24/7"}, "2": {"phy": "แข็งแรงสูงสุด", "tech": "กลไก Take-off", "psy": "วินัยฝึกเอง"}, "3": {"phy": "แข็งแรง + เร่ง", "tech": "ระยะวิ่งใหม่", "tac": "จำลองจังหวะแข่ง", "psy": "สมาธิ"}, "4": {"phy": "Reactive + ความเร็ว", "tech": "เชื่อมวิ่ง–กระโดด", "tac": "กำหนดจุดตรวจ", "psy": "ควบคุมพลัง"}, "5": {"phy": "Reactive + ความเร็วสูงสุด", "tech": "ระยะวิ่งให้นิ่ง", "tac": "เพิ่มสิ่งรบกวน", "psy": "กิจวัตรก่อนแข่ง"}, "6": {"phy": "ความเร็วสูงสุด", "tech": "ปรับละเอียด", "tac": "ตอบสนองการแข่ง", "psy": "กิจวัตรก่อนแข่ง"}, "7": {"phy": "รักษาสมดุล", "tech": "คงเทคนิค", "tac": "ตามสถานการณ์", "psy": "โฟกัสเป้าหมาย"}, "8": {"phy": "ลดงาน", "tech": "คงที่", "tac": "ตามสถานการณ์", "psy": "โฟกัสกระบวนการ"}, "9": {"phy": "รักษาสภาพ", "tech": "คงที่", "psy": "คลายความกดดัน"}, "10": {"phy": "ฟื้นฟูแบบ Active", "psy": "พักใจ"}}, "view": "a", "sample": true, "bio": [{"id": "s0", "n": "ความเร็ว", "s": "Reaction · Acceleration · Max speed", "c": "#86101a"}, {"id": "s1", "n": "พลังระเบิด", "s": "Starting · Take-off · Reactive power", "c": "#2f5399"}, {"id": "s2", "n": "ความแข็งแรงสูงสุด", "s": "Maximum strength", "c": "#142c66"}, {"id": "s3", "n": "ความเร็วอดทน", "s": "Speed endurance", "c": "#e66565"}, {"id": "s4", "n": "ประสานงาน / เทคนิค", "s": "Coordination", "c": "#d97706"}, {"id": "s5", "n": "อดทนพื้นฐาน", "s": "Aerobic base", "c": "#5aa86c"}, {"id": "s6", "n": "ความอ่อนตัว", "s": "Mobility", "c": "#12857e"}], "lv": {"s0": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 2, 3, 3, 3, 2, 3, 3, 3, 2, 4, 4, 4, 3, 4, 4, 4, 3, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0], "s1": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 2, 3, 3, 3, 2, 3, 3, 3, 2, 4, 4, 4, 3, 4, 4, 4, 3, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0], "s2": [3, 3, 3, 2, 3, 3, 3, 2, 3, 3, 3, 2, 3, 3, 3, 3, 4, 4, 4, 3, 4, 4, 4, 3, 4, 4, 4, 3, 4, 4, 4, 3, 3, 3, 3, 2, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0], "s3": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 3, 3, 3, 2, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0], "s4": [2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 3, 2, 3, 3, 3, 2, 3, 3, 3, 2, 4, 4, 4, 3, 4, 4, 4, 3, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1], "s5": [4, 4, 4, 3, 4, 4, 4, 3, 4, 4, 4, 3, 4, 4, 4, 3, 4, 4, 4, 3, 4, 4, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 1], "s6": [3, 3, 3, 2, 3, 3, 3, 2, 3, 3, 3, 2, 3, 3, 3, 2, 3, 3, 3, 2, 3, 3, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 1]}};
+  var SAMPLE = window.TP_PLAN_SAMPLE;
   var OLD_LOAD = { hi: 8, mid: 6, lo: 4, rest: 2 }, OLD_PRI = { A: 1, B: 2, C: 3 };
   var S;
   function blank() { return { code: '', sport: '', event: '', gender: '', cage: '', bage: '', tage: '', ad: '', start: mondayOf(new Date()), weeks: 52, upw: '', events: [], periods: [], load: [], shape: [], tags: [], mon: [], obj: {}, pgoal: [], view: 'a', bio: [], lv: {} }; }
@@ -361,7 +365,7 @@
       for (var w = 0; w < N; w++) { var d = addDays(S.start, w * 7 + 3), m = d.getMonth() + '-' + d.getFullYear(); if (!cur || cur.m !== m) { cur = { m: m, n: 0, t: TH_M[d.getMonth()] + ' ' + String(d.getFullYear() + 543).slice(2) }; runs.push(cur); } cur.n++; }
       runs.forEach(function (r) { h += '<div class="c mo" style="grid-column:span ' + r.n + '">' + (r.n >= 2 ? r.t : '') + '</div>'; }); return h; };
     B.load = function () { var h = lab('Load การฝึก', 'ปริมาณ × ความหนัก 1–10');
-      for (var w = 0; w < N; w++) { var L = S.load[w] || 0; h += '<div class="bc ld' + (majorW[w] ? ' cw' : '') + '" data-row="load" data-w="' + w + '" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="10" aria-valuenow="' + L + '" aria-label="Load การฝึก สัปดาห์ ' + (w + 1) + '">' + barHTML('load', L) + '</div>'; }
+      for (var w = 0; w < N; w++) { var L = S.load[w] || 0; h += '<div class="bc ld' + (majorW[w] ? ' cw' : '') + '" data-row="load" data-w="' + w + '" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="10" aria-valuenow="' + L + '" aria-label="Load การฝึก สัปดาห์ ' + (w + 1) + '">' + barHTML('load', L, w) + '</div>'; }
       h += lab('ความพร้อมทางกีฬา', 'Athletic shape 0–10');
       for (w = 0; w < N; w++) { var s = S.shape[w] || 0; h += '<div class="bc sh' + (majorW[w] ? ' cw' : '') + '" data-row="shape" data-w="' + w + '" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="10" aria-valuenow="' + s + '" aria-label="ความพร้อมทางกีฬา สัปดาห์ ' + (w + 1) + '">' + barHTML('shape', s, w) + '</div>'; }
       return h; };
@@ -394,17 +398,28 @@
       ? B.month() + B.load() + B.tag() + B.week() + B.comp(true) + B.cycles(true) + '<div class="sec"><span>เป้าหมายของแต่ละ Mesocycle (WA: Physical · Technical · Tactical · Psych)</span></div>' + B.obj()
       : B.month() + B.load() + B.tag() + B.week() + B.comp(false) + B.cycles(false) + B.bio();
     tl.innerHTML = h;
-    drawShape();
-    $('legend').innerHTML = '<span><i style="background:#4f6d8f"></i>Load การฝึก</span><span><i style="background:#d9a520;height:4px;vertical-align:3px"></i>ความพร้อมทางกีฬา (พีค = จุดสีแดงเข้ม)</span><span><i style="background:rgba(143,29,29,.12);border:1px solid #e3c9c9"></i>สัปดาห์รายการหลัก</span>'
+    drawShape(); drawLoadLine();
+    $('legend').innerHTML = '<span><i style="background:linear-gradient(90deg,#5c8a4a 0 33%,#3f6fa8 33% 66%,#8f1d1d 66%)"></i>Load การฝึก (สีตาม Phase) + เส้นแนวโน้ม</span><span><i style="background:#d9a520;height:4px;vertical-align:3px"></i>ความพร้อมทางกีฬา (พีค = จุดสีแดงเข้ม)</span><span><i style="background:rgba(143,29,29,.12);border:1px solid #e3c9c9"></i>สัปดาห์รายการหลัก</span>'
       + '<span><span class="im i1">1</span> <span class="im i2">2</span> รายการหลัก (Major)</span><span><span class="im i3">3</span> รายการรอง (Minor 3–5)</span><span><span class="pill pF">T</span> ทดสอบสมรรถภาพ</span><span><span class="pill pP">P</span> ทดสอบสรีรวิทยา</span>'
       + (view === 'a' ? S.bio.map(function (b) { return '<span><i style="background:' + b.c + '"></i>' + esc(b.n) + '</span>'; }).join('') : '');
   }
+  /* สีแท่ง Load ตาม Phase ของสัปดาห์นั้น (ผู้ใช้ขอ 2026-10-17) */
+  function phColor(w) { var pi = weekPhase()[w]; return pi != null ? PHASE[S.periods[pi].k].c : '#4f6d8f'; }
   function peakWeek() { var mx = 0, pw = -1; for (var w = 0; w < nW(); w++) if ((S.shape[w] || 0) > mx) { mx = S.shape[w]; pw = w; } return pw; }
   function barHTML(row, v, w) {
     if (!v) return '';
-    if (row === 'load') return '<span class="v">' + v + '</span><i style="height:' + (v / 10 * (LH - 14)) + 'px"></i>';
+    if (row === 'load') return '<span class="v">' + v + '</span><i style="height:' + (v / 10 * (LH - 14)) + 'px;--pc:' + phColor(w) + '"></i>';
     if (row === 'shape') return '<b class="' + (w === peakWeek() ? 'pk' : '') + '" style="bottom:' + (v / 10 * (SH - 12) + 2) + 'px"></b>';
     var b = S.bio.filter(function (x) { return x.id === row; })[0]; return '<i style="height:' + (v / 5 * BH) + 'px;background:' + (b ? b.c : '#999') + '"></i>';
+  }
+  /* เส้นเชื่อมยอดแท่ง Load ให้เห็นแนวโน้มทั้งปี (แบบเดียวกับโปรแกรม 7 วัน) */
+  function drawLoadLine() {
+    var tl = $('tl'), old = tl.querySelector('svg.ldl'); if (old) old.remove();
+    var br = tl.getBoundingClientRect(), pts = [];
+    tl.querySelectorAll('.ld').forEach(function (c) { var i = c.querySelector('i'); if (!i) { pts.push(null); return; } var r = i.getBoundingClientRect(); pts.push([r.left + r.width / 2 - br.left, r.top - br.top]); });
+    var runs = [], run = []; pts.forEach(function (p) { if (p) run.push(p); else { if (run.length) runs.push(run); run = []; } }); if (run.length) runs.push(run);
+    if (!pts.some(Boolean)) return; var f = function (v) { return v.toFixed(1); };
+    tl.insertAdjacentHTML('beforeend', '<svg class="ldl" width="' + tl.scrollWidth + '" height="' + tl.scrollHeight + '" aria-hidden="true">' + runs.filter(function (r) { return r.length > 1; }).map(function (r) { return '<polyline points="' + r.map(function (p) { return f(p[0]) + ',' + f(p[1]); }).join(' ') + '"/>'; }).join('') + pts.filter(Boolean).map(function (p) { return '<circle class="o" cx="' + f(p[0]) + '" cy="' + f(p[1]) + '" r="3.4"/><circle class="i" cx="' + f(p[0]) + '" cy="' + f(p[1]) + '" r="1.3"/>'; }).join('') + '</svg>');
   }
   function drawShape() {
     var tl = $('tl'), old = tl.querySelector('svg.shl'); if (old) old.remove();
@@ -417,6 +432,7 @@
   function levelAt(cell, y) { var row = cell.dataset.row, r = cell.getBoundingClientRect(), max = row === 'load' || row === 'shape' ? 10 : 5, top = row === 'load' ? 14 : row === 'shape' ? 12 : 0; var f = (r.bottom - y) / (r.height - top); return Math.max(0, Math.min(max, Math.round(f * max + 0.25))); }
   function setLevel(row, w, v) { if (row === 'load') S.load[w] = v; else if (row === 'shape') S.shape[w] = v; else { S.lv[row] = S.lv[row] || []; S.lv[row][w] = v; } }
   function paintCell(cell, v) { var row = cell.dataset.row, w = +cell.dataset.w; setLevel(row, w, v); cell.setAttribute('aria-valuenow', v);
+    if (row === 'load') { cell.innerHTML = barHTML(row, v, w); drawLoadLine(); return; }
     if (row === 'shape') { $('tl').querySelectorAll('.sh').forEach(function (c) { c.innerHTML = barHTML('shape', S.shape[+c.dataset.w] || 0, +c.dataset.w); }); drawShape(); }
     else cell.innerHTML = barHTML(row, v, w); }
   var drag = null;
@@ -533,7 +549,7 @@
   addEventListener('resize', function () { renderChart(); });
 
   load(); bindInfo(); renderTestPick(); renderAll();
-  if (document.fonts) document.fonts.ready.then(drawShape);
+  if (document.fonts) document.fonts.ready.then(function () { drawShape(); drawLoadLine(); });
 })();
 </script>
 </body>
