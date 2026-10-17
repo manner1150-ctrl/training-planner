@@ -66,6 +66,12 @@
   .tl .cd { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 10.5px; color: #1d2433; min-height: 70px; white-space: nowrap; overflow: hidden; padding: 2px 0; }
   .tl .tst { flex-direction: column; gap: 2px; }
   .tl .sp { color: #fff; font: 600 12px 'Prompt', sans-serif; white-space: nowrap; overflow: hidden; border-right: 2px solid #fff; padding: 0 4px; }
+  .tl .lab.slim { padding: 1px 8px; flex-direction: row; align-items: center; justify-content: flex-start; gap: 4px; font-size: 12px; white-space: nowrap; overflow: hidden; }
+  .tl .lab.slim .in { font: 400 11px 'Sarabun', sans-serif; color: #6b7690; }
+  .tl .sp { min-height: 22px; font-size: 11.5px; line-height: 1.2; }
+  .tl .ms { min-height: 20px; }
+  .tl .ob { min-height: 24px !important; }
+  @media (max-width: 600px) { .tl .lab.slim .in { display: none; } }
   .tl .ms { background: #eef2f9; color: var(--brand-navy); font: 500 11px 'Prompt', sans-serif; border-right: 2px solid #fff; }
   .tl .ob { font-size: 11px; color: #1d2433; outline: none; cursor: text; border-right: 2px solid #fff; background: #fbfcfe; border-top: 1px solid #eef0f4; line-height: 1.25; padding: 2px 3px; min-height: 30px; overflow: hidden; }
   .tl .ob:empty::before { content: '+'; color: #c3c9d5; }
@@ -408,14 +414,15 @@
       if (full) { h += lab('การติดตามผล', 'พิมพ์รหัส เช่น W P B'); for (w = 0; w < N; w++) h += '<div class="c tx" contenteditable="true" spellcheck="false" data-mon="' + w + '" aria-label="การติดตามผล สัปดาห์ ' + (w + 1) + '">' + esc(S.mon[w] || '') + '</div>'; }
       return h; };
     var ms = [], g = 0; S.periods.forEach(function (p) { (p.meso || []).forEach(function (m) { ms.push({ n: +m || 0, g: g++ }); }); });
+    function slab(t, th) { return '<div class="lab slim">' + esc(t) + (th ? ' <span class="in">· ' + esc(th) + '</span>' : '') + '</div>'; }
     B.cycles = function (withMacro) { var h = '';
       if (withMacro) { var mac = macroOf(), mr = []; S.periods.forEach(function (p, i) { var n = phWeeks(p); if (mr.length && mr[mr.length - 1].m === mac[i]) mr[mr.length - 1].n += n; else mr.push({ m: mac[i], n: n }); });
-        h += lab('Macrocycle') + spans(mr.map(function (x) { return x.m ? { n: x.n, bg: '#1d2433', html: x.n >= 3 ? 'Macrocycle ' + x.m : 'M' + x.m } : { n: x.n, html: '' }; }), 'sp'); }
+        h += slab('Macrocycle') + spans(mr.map(function (x) { return x.m ? { n: x.n, bg: '#1d2433', html: x.n >= 3 ? 'Macrocycle ' + x.m : 'M' + x.m } : { n: x.n, html: '' }; }), 'sp'); }
       var pr = []; S.periods.forEach(function (p) { var n = phWeeks(p), k = PHASE[p.k].p; if (pr.length && pr[pr.length - 1].k === k) pr[pr.length - 1].n += n; else pr.push({ k: k, n: n }); });
-      h += lab('Period', 'ช่วงการฝึก') + spans(pr.map(function (x) { return { n: x.n, bg: PERIOD[x.k].c, title: PERIOD[x.k].n + ' (' + PERIOD[x.k].en + ')', html: x.n >= 3 ? PERIOD[x.k].n + (x.n >= 8 ? ' · ' + PERIOD[x.k].en : '') : '' }; }), 'sp');
-      h += lab('Phase', 'ระยะ') + spans(S.periods.map(function (p, i) { return { n: phWeeks(p), bg: PHASE[p.k].c, t: phName(i), title: phName(i) + ' (' + PHASE[p.k].en + ')' }; }), 'sp');
-      h += lab('เป้าหมายของ Phase', 'แตะเพื่อพิมพ์') + spans(S.periods.map(function (p, i) { return { n: phWeeks(p), html: esc(S.pgoal[i] || ''), attr: ' contenteditable="true" spellcheck="false" data-pg="' + i + '" aria-label="เป้าหมายของ ' + esc(phName(i)) + '"' }; }), 'ob');
-      h += lab('Mesocycle') + spans(ms.map(function (x) { return { n: x.n, html: 'M' + (x.g + 1), title: 'Mesocycle ' + (x.g + 1) + ' · ' + x.n + ' Microcycle' }; }), 'ms');
+      h += slab('Period', 'ช่วงการฝึก') + spans(pr.map(function (x) { return { n: x.n, bg: PERIOD[x.k].c, title: PERIOD[x.k].n + ' (' + PERIOD[x.k].en + ')', html: x.n >= 3 ? PERIOD[x.k].n + (x.n >= 8 ? ' · ' + PERIOD[x.k].en : '') : '' }; }), 'sp');
+      h += slab('Phase', 'ระยะ') + spans(S.periods.map(function (p, i) { return { n: phWeeks(p), bg: PHASE[p.k].c, t: phName(i), title: phName(i) + ' (' + PHASE[p.k].en + ')' }; }), 'sp');
+      h += slab('เป้าหมายของ Phase') + spans(S.periods.map(function (p, i) { return { n: phWeeks(p), html: esc(S.pgoal[i] || ''), attr: ' contenteditable="true" spellcheck="false" data-pg="' + i + '" aria-label="เป้าหมายของ ' + esc(phName(i)) + '"' }; }), 'ob');
+      h += slab('Mesocycle') + spans(ms.map(function (x) { return { n: x.n, html: 'M' + (x.g + 1), title: 'Mesocycle ' + (x.g + 1) + ' · ' + x.n + ' Microcycle' }; }), 'ms');
       return h; };
     B.obj = function () { var h = ''; OBJ.forEach(function (o) { h += lab(o[1], o[2]) + spans(ms.map(function (x) { var v = ((S.obj[x.g] || {})[o[0]]) || ''; return { n: x.n, html: esc(v), attr: ' contenteditable="true" spellcheck="false" data-obj="' + x.g + ':' + o[0] + '" aria-label="เป้าหมาย' + o[1] + ' Mesocycle ' + (x.g + 1) + '"' }; }), 'ob'); }); return h; };
     B.bio = function () { var h = '<div class="sec"><span>สมรรถภาพทางกลไก (Biomotor abilities) · ระดับความต้องการในการพัฒนา 0–5</span></div>';
