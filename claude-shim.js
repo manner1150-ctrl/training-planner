@@ -93,6 +93,8 @@
   function addAuthButton() {
     patchText();
     var host = document.querySelector('.switches'); if (!host || document.getElementById('tpAuthBtn')) return;
+    // ลิงก์กลับหน้าแรกของเว็บ (index.html = หน้าแรก, planner.html = โปรแกรม) — มีเฉพาะเว็บ ไม่อยู่ในฉบับ claude.ai
+    if (!document.getElementById('tpHomeBtn')) { var h = document.createElement('a'); h.id = 'tpHomeBtn'; h.className = 'btn small'; h.href = 'index.html'; h.textContent = '🏠 หน้าแรก'; h.style.textDecoration = 'none'; h.style.display = 'inline-flex'; h.style.alignItems = 'center'; host.insertBefore(h, host.firstChild); }
     var b = document.createElement('button'); b.id = 'tpAuthBtn'; b.className = 'btn small'; b.type = 'button';
     if (!configured) { b.textContent = 'ยังไม่ได้ตั้งค่า Firebase'; b.disabled = true; host.appendChild(b); return; }
     b.textContent = 'กำลังตรวจสอบ…'; host.appendChild(b);
