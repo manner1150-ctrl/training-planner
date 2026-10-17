@@ -4,28 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Macrocycle · แผนการฝึกรายปี · คณะพลศึกษา</title>
-<meta name="description" content="วางแผนการฝึกรายปี (Macrocycle): รายการแข่งขัน A/B/C วันทดสอบสมรรถภาพและสรีรวิทยา ช่วงการฝึก Mesocycle และ Load รายสัปดาห์">
+<meta name="description" content="วางแผนการฝึกรายปี (Macrocycle): Load รวมของแต่ละ Microcycle สมรรถภาพทางกลไกที่ต้องพัฒนา ช่วงการฝึก (Period/Phase) รายการแข่งขัน A/B/C และวันทดสอบ">
 <style>
   /* หน้า Macrocycle — ระดับบนสุดของแผน (Macro → Meso → Micro → Session → Unit) · ใช้ theme.css ร่วมกับหน้าแรก
-     ผู้ใช้กรอกเองทั้งหมด ระบบไม่เติม Load/ช่วงการฝึกให้ (มีแค่โครงตั้งต้นเมื่อกดเลือกเอง และ "ระบบช่วยดู") · บันทึกในเครื่อง (localStorage 'tp-macro-v1') */
+     รูปแบบ "แผนภูมิแท่งขั้นบันได" (ผู้ใช้เลือกแบบ ก 2026-10-17): แต่ละคอลัมน์ = 1 Microcycle อ่านแนวตั้งจาก Load รวม (1–10) ลงไปถึงระดับการพัฒนาสมรรถภาพทางกลไก (0–5)
+     สัปดาห์แข่งขัน A/B แท่งสูงสุดอัตโนมัติ (ผู้ใช้: วันแข่งต้องรีดศักยภาพออกมามากที่สุด)
+     ผู้ใช้กรอกเองทั้งหมด ระบบไม่เติม Load/ระดับให้ · บันทึกในเครื่อง (localStorage 'tp-macro-v1') */
   * { box-sizing: border-box; }
   body { margin: 0; color: #1d2433; line-height: 1.6; }
-  main { max-width: 1180px; margin: 0 auto; padding: 16px 16px 48px; }
+  main { max-width: 1240px; margin: 0 auto; padding: 16px 16px 48px; }
   a { color: var(--brand-navy-2); }
   h2 { font-family: 'Prompt', sans-serif; font-weight: 600; color: var(--brand-navy); font-size: 18px; margin: 0 0 10px; display: flex; align-items: center; gap: 10px; }
   h2 .no { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--brand-gold); color: #1d1a10; display: grid; place-items: center; font-size: 13px; }
-  h3 { font-family: 'Prompt', sans-serif; font-weight: 600; color: var(--brand-navy); font-size: 15px; margin: 12px 0 6px; }
   .card { background: #fff; border: 1px solid #e3e7ef; border-radius: 16px; padding: 16px 18px; margin-bottom: 14px; }
   .muted { color: #5b6476; font-size: 13.5px; }
-  /* ระดับของแผน */
   .levels { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 14px; }
   .levels a, .levels span { display: block; text-align: center; padding: 8px 4px; border-radius: 10px; font-family: 'Prompt', sans-serif; font-size: 13.5px; text-decoration: none; border: 1px solid #e3e7ef; background: #fff; color: var(--brand-navy); line-height: 1.3; }
   .levels .on { background: var(--brand-navy); color: #fff; border-color: var(--brand-navy); }
   .levels small { display: block; font-family: 'Sarabun', sans-serif; font-size: 11.5px; opacity: .75; }
   .levels .soon { color: #8a93a6; background: #f4f6fa; }
-  /* ฟอร์ม */
   .grid { display: grid; gap: 10px; }
-  .g4 { grid-template-columns: repeat(4, 1fr); } .g3 { grid-template-columns: repeat(3, 1fr); }
+  .g4 { grid-template-columns: repeat(4, 1fr); }
   .evf { grid-template-columns: 1.1fr 1fr 1.6fr 1.1fr auto; }
   label.f { display: flex; flex-direction: column; gap: 3px; font-size: 13px; color: #5b6476; font-family: 'Prompt', sans-serif; }
   input, select { font: inherit; font-size: 15px; padding: 7px 9px; border: 1px solid #cfd5e0; border-radius: 9px; background: #fff; color: #1d2433; min-height: 38px; width: 100%; }
@@ -34,66 +33,70 @@
   button.gold { background: var(--brand-gold); border-color: var(--brand-gold); color: #1d1a10; }
   button.x { min-height: 30px; padding: 2px 9px; color: #a11; }
   .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  /* รายการกิจกรรม */
   .ev { width: 100%; border-collapse: collapse; font-size: 14px; }
   .ev th { text-align: left; font: 500 13px 'Prompt', sans-serif; color: #5b6476; border-bottom: 1px solid #e3e7ef; padding: 6px; }
   .ev td { border-bottom: 1px solid #eef1f6; padding: 6px; vertical-align: middle; }
-  .pill { display: inline-block; font: 600 12px 'Prompt', sans-serif; padding: 2px 9px; border-radius: 20px; white-space: nowrap; }
-  .pA { background: #ad1820; color: #fff; } .pB { background: #d97706; color: #2b1600; } .pC { background: #6b4fa8; color: #fff; }
-  .pF { background: #12397f; color: #fff; } .pP { background: #12857e; color: #fff; }
-  /* ช่วงการฝึก */
-  .per { display: grid; grid-template-columns: 170px 90px 1fr 34px; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #eef1f6; }
-  .per .pdel { grid-column: 4; grid-row: 1; } .per .meso { grid-column: 3; grid-row: 1; }
-  .per .sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: middle; }
+  .pill { display: inline-block; font: 600 11.5px 'Prompt', sans-serif; padding: 1px 7px; border-radius: 20px; white-space: nowrap; line-height: 1.5; }
+  .pA { background: #1d2433; color: #fff; } .pB { background: #6b7690; color: #fff; } .pC { background: #fff; color: #1d2433; box-shadow: inset 0 0 0 1.5px #1d2433; }
+  .pF { background: #fff3cd; color: #6b4b00; box-shadow: inset 0 0 0 1.5px #d9a520; } .pP { background: #e0f2f1; color: #04403d; box-shadow: inset 0 0 0 1.5px #12857e; }
+  .ph { display: grid; grid-template-columns: 250px 110px 1fr 34px; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #eef1f6; }
+  .ph .pdel { grid-column: 4; grid-row: 1; } .ph .meso { grid-column: 3; grid-row: 1; }
+  .ph .sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: middle; }
+  .ph .pp { font: 500 12px 'Prompt', sans-serif; color: #5b6476; }
   .meso { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
   .meso span { white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; background: #f4f6fa; border-radius: 8px; padding: 2px 4px 2px 8px; font-size: 13px; }
   .meso input { width: 52px; min-height: 30px; padding: 2px 4px; text-align: center; font-size: 14px; }
   .meso button { min-height: 30px; padding: 2px 8px; }
-  /* ภาพรวม */
-  .tlw { overflow-x: auto; border: 1px solid #e3e7ef; border-radius: 12px; background: #fff; position: relative; }
-  .tl { display: grid; min-width: 100%; position: relative; }
-  .tl .lab { position: sticky; left: 0; z-index: 3; background: #fff; font: 500 12.5px 'Prompt', sans-serif; color: var(--brand-navy); padding: 4px 8px; border-right: 1px solid #e3e7ef; display: flex; align-items: center; }
-  .tl .c { border-right: 1px solid #f0f2f6; font-size: 11px; text-align: center; color: #5b6476; display: flex; align-items: center; justify-content: center; min-height: 26px; }
-  .tl .mo { font: 500 11.5px 'Prompt', sans-serif; color: var(--brand-navy); border-right: 1px solid #dfe3ea; background: #f8f9fc; justify-content: flex-start; padding-left: 4px; white-space: nowrap; overflow: hidden; }
-  .tl .ps { color: #fff; font: 600 12px 'Prompt', sans-serif; border-radius: 6px; margin: 3px 1px; white-space: nowrap; overflow: hidden; justify-content: center; }
-  .tl .ms { background: #eef2f9; color: var(--brand-navy); font: 500 11.5px 'Prompt', sans-serif; border-radius: 6px; margin: 3px 1px; border: 1px solid #d6deec; }
-  .tl .evc { flex-direction: column; gap: 2px; min-height: 44px; }
-  .tl .evc .pill { padding: 1px 5px; font-size: 10.5px; cursor: default; }
-  .tl .ld { align-items: flex-end; min-height: 92px; padding: 0 2px 2px; cursor: pointer; flex-direction: column; justify-content: flex-end; }
-  .tl .ld:hover { background: #f6f8fc; }
-  .tl .ld i { display: block; width: 100%; max-width: 22px; border-radius: 4px 4px 0 0; }
-  .tl .ld .e { width: 100%; max-width: 22px; height: 70px; border: 1px dashed #d6dbe5; border-radius: 4px; }
+  .tlw { overflow-x: auto; border: 1px solid #d6dbe5; border-radius: 12px; background: #fff; }
+  .tl { display: grid; min-width: 100%; user-select: none; -webkit-user-select: none; }
+  .tl > div { border-right: 1px solid #eef0f4; }
+  .tl .lab { position: sticky; left: 0; z-index: 3; background: #fff; font: 500 12.5px 'Prompt', sans-serif; color: var(--brand-navy); padding: 3px 8px; border-right: 1px solid #c9cfdb; display: flex; flex-direction: column; justify-content: center; line-height: 1.25; }
+  .tl .lab small { font: 400 11px 'Sarabun', sans-serif; color: #6b7690; }
+  @media (max-width: 600px) { .tl .lab { font-size: 11.5px; padding: 3px 5px; } .tl .lab small { font-size: 10px; } }
+  .tl .lab.bio { border-left: 4px solid var(--c); }
+  .tl .c { font-size: 11px; text-align: center; color: #5b6476; display: flex; align-items: center; justify-content: center; min-height: 24px; }
+  .tl .mo { font: 500 11.5px 'Prompt', sans-serif; color: var(--brand-navy); border-right: 1px solid #c9cfdb; background: #f8f9fc; justify-content: flex-start; padding-left: 4px; white-space: nowrap; overflow: hidden; }
+  .tl .wk { background: #f8f9fc; border-top: 1px solid #c9cfdb; border-bottom: 1px solid #c9cfdb; font-weight: 600; color: #1d2433; }
+  .tl .tg { font: 600 10.5px 'Prompt', sans-serif; color: #4a2f80; outline: none; cursor: text; min-height: 22px; overflow: hidden; white-space: nowrap; }
+  .tl .tg:empty::before { content: '·'; color: #c3c9d5; }
+  .tl .tg:focus { background: #f3efff; }
+  .tl .evc { flex-direction: column; gap: 2px; min-height: 40px; justify-content: flex-end; padding-bottom: 2px; }
+  .tl .evc .pill { padding: 0 4px; font-size: 10px; }
+  .tl .sp { color: #fff; font: 600 12px 'Prompt', sans-serif; white-space: nowrap; overflow: hidden; border-right: 2px solid #fff; padding: 0 4px; }
+  .tl .ms { background: #eef2f9; color: var(--brand-navy); font: 500 11px 'Prompt', sans-serif; border-right: 2px solid #fff; }
+  .tl .sec span { position: sticky; left: 8px; }
+  .tl .sec { grid-column: 1 / -1; background: #e9ecf2; font: 600 13px 'Prompt', sans-serif; color: #1d2433; padding: 4px 8px; border-top: 1px solid #c9cfdb; border-bottom: 1px solid #c9cfdb; }
+  .tl .bc, .tl .ldc { display: flex; align-items: flex-end; justify-content: center; padding: 0 2px; border-top: 1px solid #eef0f4; position: relative; }
+  .tl .bc { cursor: ns-resize; touch-action: none; }
+  .tl .bc:hover { background-color: #f4f7fc; }
+  .tl .bc:focus { outline: 2px solid var(--brand-gold); outline-offset: -2px; }
+  .tl .bc i, .tl .ldc i { display: block; width: 100%; max-width: 30px; border-radius: 3px 3px 0 0; }
+  .tl .ld, .tl .ldc { height: 120px; background-image: repeating-linear-gradient(to top, transparent 0 23px, #eef0f4 23px 24px); }
+  .tl .ld i { background: #4f6d8f; }
+  .tl .ldc i { background: #8f1d1d; }
+  .tl .ldc .v { color: #8f1d1d; }
+  .tl .bc.bo { height: 50px; background-image: repeating-linear-gradient(to top, transparent 0 9px, #f1f3f7 9px 10px); }
+  .tl .v { position: absolute; top: 1px; left: 0; right: 0; text-align: center; font: 600 10px 'Prompt', sans-serif; color: #4f6d8f; }
   .tl .now { box-shadow: inset 0 -3px 0 var(--brand-gold); }
-  .L-hi { background: #9a7cf2; height: 78px; } .L-mid { background: #f2884b; height: 58px; } .L-lo { background: #5fd0de; height: 40px; } .L-rest { background: #b4b8b5; height: 24px; }
-  svg.ll { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; z-index: 2; }
-  svg.ll polyline { fill: none; stroke: #1d2433; stroke-width: 2.2; stroke-linejoin: round; opacity: .8; }
-  svg.ll circle.o { fill: #1d2433; } svg.ll circle.i { fill: #fff; }
   .legend { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 13px; color: #5b6476; margin-top: 8px; align-items: center; }
   .legend i { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: -2px; margin-right: 4px; }
-  /* เน้นสมรรถภาพ */
-  .emw { overflow-x: auto; }
-  .em { border-collapse: collapse; font-size: 13.5px; min-width: 560px; width: 100%; }
-  .em th, .em td { border: 1px solid #e3e7ef; padding: 5px 6px; text-align: center; }
-  .em th { font: 500 12.5px 'Prompt', sans-serif; color: #fff; }
-  .em td.k { text-align: left; font: 500 13px 'Prompt', sans-serif; white-space: nowrap; }
-  .em td.k i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
-  .dots button { min-height: 0; border: 0; padding: 4px 6px; background: none; font-size: 15px; letter-spacing: 2px; color: #c3c9d5; }
-  .dots button b { color: var(--brand-navy); font-weight: 400; }
-  /* ระบบช่วยดู */
+  .br { display: grid; grid-template-columns: 1.4fr 1.4fr 170px 34px; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid #eef1f6; }
+  .br select { font-size: 14px; }
   .hints { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
   .hints li { padding: 8px 12px; border-radius: 10px; font-size: 14px; }
   .hints .w { background: #fdeeee; border-left: 4px solid #c62828; }
   .hints .i { background: #fff8e6; border-left: 4px solid var(--brand-gold); }
   .hints .ok { background: #e6f3ea; border-left: 4px solid #237a3c; }
   .note { background: #fff8e6; border-left: 4px solid var(--brand-gold); padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 14px; margin: 10px 0 0; }
-  footer { max-width: 1180px; margin: 0 auto; padding: 16px; border-top: 1px solid #e3e7ef; color: #6b7690; font-size: 13px; text-align: center; }
-  @media (max-width: 860px) { .g4 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: 1fr; } .per { grid-template-columns: 1fr auto 34px; } .per .pdel { grid-column: 3; } .per .meso { grid-column: 1 / -1; grid-row: 2; } .evf { grid-template-columns: 1fr 1fr; } .evf label:nth-child(3) { grid-column: 1 / -1; } }
-  @media (max-width: 560px) { .levels { grid-template-columns: repeat(5, minmax(0,1fr)); gap: 3px; } .levels a, .levels span { font-size: 11.5px; padding: 6px 1px; } .levels small { display: none; } .g4 { grid-template-columns: 1fr; } .ev th:nth-child(4), .ev td:nth-child(4) { display: none; } }
+  footer { max-width: 1240px; margin: 0 auto; padding: 16px; border-top: 1px solid #e3e7ef; color: #6b7690; font-size: 13px; text-align: center; }
+  @media (max-width: 860px) { .g4 { grid-template-columns: 1fr 1fr; } .ph { grid-template-columns: 1fr auto 34px; } .ph .pdel { grid-column: 3; } .ph .meso { grid-column: 1 / -1; grid-row: 2; } .evf { grid-template-columns: 1fr 1fr; } .evf label:nth-child(3) { grid-column: 1 / -1; } .br { grid-template-columns: 1fr 1fr 34px; } .br select { grid-column: 1 / 3; } }
+  @media (max-width: 560px) { .levels { gap: 3px; } .levels a, .levels span { font-size: 11.5px; padding: 6px 1px; } .levels small { display: none; } .g4 { grid-template-columns: 1fr; } .ev th:nth-child(4), .ev td:nth-child(4) { display: none; } }
   @media print {
-    @page { size: A4 landscape; margin: 10mm; }
-    header.site, .band, .levels, .noprint, footer .noprint { display: none !important; }
-    body { background: #fff !important; } .card { break-inside: avoid; border-color: #ccc; }
-    .tlw { overflow: visible; } * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @page { size: A4 landscape; margin: 8mm; }
+    header.site, .band, .levels, .noprint { display: none !important; }
+    body { background: #fff !important; } .card { break-inside: avoid; border-color: #ccc; padding: 8px; }
+    .tlw { overflow: visible; border: 0; } .tl { min-width: 0 !important; }
+    .tl .lab { position: static; } * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
 </style>
 <link rel="stylesheet" href="theme.css">
@@ -115,23 +118,21 @@
     <span class="soon" title="เร็ว ๆ นี้">Unit<small>หน่วยฝึก</small></span>
   </nav>
 
-  <!-- 1 ข้อมูลนักกีฬา -->
   <section class="card">
     <h2><span class="no">1</span>ข้อมูลนักกีฬาและปีการฝึก</h2>
     <div class="grid g4">
       <label class="f">รหัสนักกีฬา / ทีม<input id="code" placeholder="เช่น BX-07 (ไม่ใส่ชื่อจริง)"></label>
-      <label class="f">ชนิดกีฬา<select id="sport"><option value="">— เลือก —</option><option value="box">มวยสากล</option><option value="kar">คาราเต้</option><option value="wre">มวยปล้ำ</option><option value="tak">เซปักตะกร้อ</option><option value="ath">กรีฑา</option><option value="oth">อื่น ๆ</option></select></label>
+      <label class="f">ชนิดกีฬา<select id="sport"><option value="">— เลือก —</option><option value="mar">กรีฑา: ระยะไกล / มาราธอน</option><option value="spr">กรีฑา: ระยะสั้น / กระโดด / ขว้าง</option><option value="box">มวยสากล</option><option value="kar">คาราเต้</option><option value="wre">มวยปล้ำ</option><option value="tak">เซปักตะกร้อ</option><option value="oth">อื่น ๆ</option></select></label>
       <label class="f">รุ่น / ประเภท / ตำแหน่ง<input id="event" placeholder="เช่น 57 kg, 100 m, ตัวฟาด"></label>
       <label class="f">ระดับ<select id="level"><option value="">— เลือก —</option><option>เยาวชน</option><option>มหาวิทยาลัย</option><option>ทีมชาติ / อาชีพ</option></select></label>
-      <label class="f">วันเริ่มปีการฝึก<input id="start" type="date"></label>
-      <label class="f">จำนวนสัปดาห์<input id="weeks" type="number" min="8" max="104" value="52"></label>
+      <label class="f">วันเริ่มปีการฝึก (วันจันทร์)<input id="start" type="date"></label>
+      <label class="f">จำนวน Microcycle (สัปดาห์)<input id="weeks" type="number" min="8" max="104" value="52"></label>
       <label class="f">อายุการฝึก (ปี)<input id="tage" type="number" min="0" max="30"></label>
       <label class="f">หน่วยฝึกต่อสัปดาห์<input id="upw" type="number" min="1" max="20"></label>
     </div>
     <p class="muted" style="margin:8px 0 0">ข้อมูลบันทึกไว้ในเครื่องนี้เท่านั้น ใช้รหัสแทนชื่อจริงเพื่อคุ้มครองข้อมูลส่วนบุคคล (PDPA)</p>
   </section>
 
-  <!-- 2 รายการแข่งขันและการทดสอบ -->
   <section class="card">
     <h2><span class="no">2</span>รายการแข่งขันและวันทดสอบ</h2>
     <div class="grid evf">
@@ -142,44 +143,36 @@
       <label class="f">&nbsp;<button class="pri" id="eAdd" type="button">+ เพิ่ม</button></label>
     </div>
     <div id="testPick" class="note" hidden></div>
-    <div style="overflow-x:auto;margin-top:10px"><table class="ev"><thead><tr><th>วันที่</th><th>สัปดาห์</th><th>ประเภท</th><th>รายละเอียด</th><th></th></tr></thead><tbody id="evBody"></tbody></table></div>
+    <div style="overflow-x:auto;margin-top:10px"><table class="ev"><thead><tr><th>วันที่</th><th>Microcycle</th><th>ประเภท</th><th>รายละเอียด</th><th></th></tr></thead><tbody id="evBody"></tbody></table></div>
     <p class="muted" id="evEmpty" style="margin:6px 0 0">ยังไม่มีรายการ — เริ่มจากรายการแข่งขันหลัก (A) แล้วนับย้อนกลับเพื่อวางช่วงการฝึก</p>
   </section>
 
-  <!-- 3 ช่วงการฝึกและ Mesocycle -->
   <section class="card">
-    <h2><span class="no">3</span>ช่วงการฝึกและ Mesocycle</h2>
+    <h2><span class="no">3</span>ช่วงการฝึก (Period · Phase) และ Mesocycle</h2>
     <div class="row noprint" style="margin-bottom:6px">
       <span class="muted">เริ่มจากโครง:</span>
       <button type="button" data-tpl="single">ช่วงเดียว (Single)</button>
       <button type="button" data-tpl="double">สองช่วง (Double)</button>
-      <button type="button" id="pAdd">+ เพิ่มช่วง</button>
+      <button type="button" id="pAdd">+ เพิ่ม Phase</button>
       <span class="muted" id="pSum"></span>
     </div>
-    <div id="perList"></div>
-    <p class="muted" style="margin:8px 0 0">โครงตั้งต้นเป็นแค่จุดเริ่ม ผู้ฝึกสอนต้องปรับจำนวนสัปดาห์ให้รายการ A อยู่ในช่วงแข่งขัน · Mesocycle ทั่วไปยาว 3–6 สัปดาห์</p>
+    <div id="phList"></div>
+    <p class="muted" style="margin:8px 0 0">เลือก Phase แล้ว Period จะกำหนดตามหลักการโดยอัตโนมัติ: <b>ช่วงเตรียม</b> (เตรียมทั่วไป · เตรียมเฉพาะ) · <b>ช่วงแข่งขัน</b> (ก่อนแข่งขัน · ลดงานก่อนแข่ง · แข่งขัน) · <b>ช่วงเปลี่ยนผ่าน</b> (พักฟื้นฟู) · Mesocycle ทั่วไปยาว 3–6 สัปดาห์</p>
   </section>
 
-  <!-- 4 ภาพรวมทั้งปี -->
   <section class="card">
-    <h2><span class="no">4</span>ภาพรวมทั้งปีและ Load รายสัปดาห์</h2>
-    <p class="muted" style="margin:0 0 8px">แตะแท่งในแถว Load เพื่อเลือก สูง → กลาง → ต่ำ → พัก → ว่าง (Load เป็นการตัดสินใจของผู้ฝึกสอน ระบบไม่เติมให้)</p>
+    <h2><span class="no">4</span>Macrocycle: Load รวมและสมรรถภาพทางกลไก</h2>
+    <p class="muted" style="margin:0 0 8px">แตะหรือลากในช่องแท่งเพื่อกำหนดความสูง — Load รวมของแต่ละ Microcycle ระดับ 1–10 และระดับความต้องการในการพัฒนาสมรรถภาพ 0–5 · สัปดาห์ที่มีการแข่งขัน A/B แท่งสูงสุดอัตโนมัติ · แตะแถว "ประเภทงาน" เพื่อพิมพ์ป้ายสั้น เช่น HA, LA, RP · ระบบไม่เติมค่าให้</p>
     <div class="tlw" id="tlw"><div class="tl" id="tl"></div></div>
-    <div class="legend">
-      <span><i style="background:#9a7cf2"></i>Load สูง</span><span><i style="background:#f2884b"></i>กลาง</span><span><i style="background:#5fd0de"></i>ต่ำ</span><span><i style="background:#b4b8b5"></i>พัก</span>
-      <span><span class="pill pA">A</span> <span class="pill pB">B</span> <span class="pill pC">C</span> การแข่งขัน</span>
-      <span><span class="pill pF">T</span> ทดสอบสมรรถภาพ</span><span><span class="pill pP">P</span> ทดสอบสรีรวิทยา</span>
-    </div>
+    <div class="legend" id="legend"></div>
   </section>
 
-  <!-- 5 เน้นสมรรถภาพ -->
   <section class="card">
-    <h2><span class="no">5</span>การเน้นสมรรถภาพในแต่ละช่วง</h2>
-    <p class="muted" style="margin:0 0 8px">แตะจุดเพื่อกำหนดระดับการเน้น 0–3 ของแต่ละสมรรถภาพในแต่ละช่วง ตามความต้องการของชนิดกีฬาและนักกีฬาคนนี้</p>
-    <div class="emw" id="emw"></div>
+    <h2><span class="no">5</span>แถวสมรรถภาพทางกลไก (Biomotor abilities)</h2>
+    <div class="row noprint" style="margin-bottom:6px"><button type="button" id="bDef">ใช้ชุดตั้งต้นของชนิดกีฬา</button><button type="button" id="bAdd">+ เพิ่มแถว</button><span class="muted">ตั้งชื่อ คำอธิบาย และสีของแต่ละแถวได้ตามชนิดกีฬา</span></div>
+    <div id="bioList"></div>
   </section>
 
-  <!-- 6 ระบบช่วยดู -->
   <section class="card">
     <h2><span class="no">6</span>ระบบช่วยดู</h2>
     <ul class="hints" id="hints"></ul>
@@ -189,7 +182,7 @@
   <div class="row noprint">
     <button class="gold" type="button" id="bPrint">🖨️ พิมพ์ / บันทึก PDF</button>
     <button type="button" id="bExport">⬇ ส่งออกไฟล์ (.json)</button>
-    <label style="display:inline-flex"><span class="sr" hidden>นำเข้า</span><button type="button" id="bImport">⬆ นำเข้าไฟล์</button><input type="file" id="fImport" accept=".json,application/json" hidden></label>
+    <button type="button" id="bImport">⬆ นำเข้าไฟล์</button><input type="file" id="fImport" accept=".json,application/json" hidden>
     <button type="button" id="bReset">ล้างแผน</button>
     <a href="planner.html" style="margin-left:auto">ไปวาง Microcycle 7 วัน →</a>
   </div>
@@ -200,202 +193,239 @@
 <script>
 (function () {
   var KEY = 'tp-macro-v1';
-  var PER = {
-    gp: { n: 'เตรียมทั่วไป', en: 'General preparation', c: '#237a3c' },
-    sp: { n: 'เตรียมเฉพาะ', en: 'Specific preparation', c: '#d97706' },
-    pc: { n: 'ก่อนแข่งขัน', en: 'Pre-competition', c: '#c2410c' },
-    c:  { n: 'แข่งขัน', en: 'Competition', c: '#ad1820' },
-    t:  { n: 'พัก (Transition)', en: 'Transition', c: '#8a8878' }
+  var PERIOD = { prep: { n: 'ช่วงเตรียม', en: 'Preparation', c: '#1d2433' }, comp: { n: 'ช่วงแข่งขัน', en: 'Competition', c: '#6b2a17' }, trans: { n: 'ช่วงเปลี่ยนผ่าน', en: 'Transition', c: '#5f5e5a' } };
+  var PHASE = {
+    gp: { n: 'เตรียมทั่วไป', en: 'General preparation', p: 'prep', c: '#5c8a4a' },
+    sp: { n: 'เตรียมเฉพาะ', en: 'Specific preparation', p: 'prep', c: '#3f6fa8' },
+    pc: { n: 'ก่อนแข่งขัน', en: 'Pre-competition', p: 'comp', c: '#b9772f' },
+    tp: { n: 'ลดงานก่อนแข่ง', en: 'Tapering', p: 'comp', c: '#b5473c' },
+    c:  { n: 'แข่งขัน', en: 'Competition', p: 'comp', c: '#8f1d1d' },
+    t:  { n: 'พักฟื้นฟู', en: 'Transition', p: 'trans', c: '#8a8878' }
   };
-  var FIT = [
-    { k: 'str', n: 'แข็งแรง', c: '#142c66' }, { k: 'spd', n: 'ความเร็ว', c: '#ad1820' }, { k: 'end', n: 'อดทน', c: '#237a3c' },
-    { k: 'co', n: 'ประสานงาน / เทคนิค', c: '#d97706' }, { k: 'fx', n: 'อ่อนตัว', c: '#12857e' }, { k: 'rec', n: 'จิตใจ / ฟื้นฟู', c: '#8a8878' }
+  var COLORS = [
+    ['#237a3c', 'อดทน (เขียว)'], ['#5aa86c', 'อดทนพื้นฐาน (เขียวอ่อน)'], ['#86101a', 'ความเร็ว (แดงเข้ม)'], ['#e66565', 'ความเร็วอดทน / Lactic (แดงอ่อน)'],
+    ['#142c66', 'แข็งแรง (กรมท่า)'], ['#2f5399', 'พลังระเบิด (น้ำเงิน)'], ['#4a6fb3', 'แข็งแรงอดทน (ฟ้าน้ำเงิน)'],
+    ['#d97706', 'ประสานงาน / เทคนิค (ส้ม)'], ['#b45309', 'เทคนิค / ยุทธวิธี (ส้มเข้ม)'], ['#f59e0b', 'คล่องแคล่ว (เหลืองส้ม)'],
+    ['#12857e', 'อ่อนตัว (เขียวอมฟ้า)'], ['#5f5e5a', 'จิตใจ / ฟื้นฟู (เทา)']
   ];
-  /* รายการทดสอบที่ใช้กันทั่วไป (ผู้ฝึกสอนเลือกเอง) — เกณฑ์ 30 m, T-test, Illinois, Pro agility, Vertical jump อยู่ในเอกสาร Speed & Agility (มาโนช บุตรเมือง) */
+  function R(n, s, c) { return { id: Math.random().toString(36).slice(2, 8), n: n, s: s, c: c }; }
+  /* ชุดแถวตั้งต้นต่อชนิดกีฬา: ระบบตั้งแค่ "ชื่อแถว" ผู้ฝึกสอนกำหนดระดับเอง และแก้ชื่อ/เพิ่ม/ลบได้ */
+  var SPORT_BIO = {
+    mar: [['อดทน', 'Aerobic', '#237a3c'], ['Anaerobic', 'Lactic', '#e66565'], ['ความเร็ว', 'Anaerobic alactic', '#86101a'], ['ประสานงาน', 'เทคนิค', '#d97706'], ['แข็งแรง', 'General conditioning', '#142c66']],
+    spr: [['ความเร็ว', 'Alactic', '#86101a'], ['พลังระเบิด', 'Power', '#2f5399'], ['แข็งแรงสูงสุด', 'Max strength', '#142c66'], ['ความเร็วอดทน', 'Lactic', '#e66565'], ['ประสานงาน', 'เทคนิค', '#d97706'], ['อดทนพื้นฐาน', 'Aerobic', '#5aa86c'], ['อ่อนตัว', 'Mobility', '#12857e']],
+    box: [['อดทน', 'Aerobic', '#237a3c'], ['Anaerobic', 'Lactic', '#e66565'], ['ความเร็วและปฏิกิริยา', 'Speed / reaction', '#86101a'], ['พลังระเบิด', 'Power', '#2f5399'], ['แข็งแรง', 'Strength', '#142c66'], ['เทคนิค / ยุทธวิธี', 'Technique / tactics', '#b45309'], ['อ่อนตัว', 'Mobility', '#12857e']],
+    kar: [['ความเร็วและปฏิกิริยา', 'Speed / reaction', '#86101a'], ['พลังระเบิด', 'Power', '#2f5399'], ['Anaerobic', 'Alactic', '#e66565'], ['อ่อนตัว', 'Flexibility', '#12857e'], ['เทคนิค / ยุทธวิธี', 'Technique / tactics', '#b45309'], ['อดทนพื้นฐาน', 'Aerobic', '#5aa86c'], ['แข็งแรง', 'Strength', '#142c66']],
+    wre: [['แข็งแรงสูงสุด', 'Max strength', '#142c66'], ['แข็งแรงอดทน', 'Strength endurance', '#4a6fb3'], ['Anaerobic', 'Lactic', '#e66565'], ['พลังระเบิด', 'Power', '#2f5399'], ['อดทน', 'Aerobic', '#237a3c'], ['อ่อนตัว', 'Mobility', '#12857e'], ['เทคนิค / ยุทธวิธี', 'Technique / tactics', '#b45309']],
+    tak: [['พลังระเบิด', 'กระโดด', '#2f5399'], ['ความเร็ว / คล่องแคล่ว', 'Speed / agility', '#86101a'], ['อ่อนตัว', 'Flexibility', '#12857e'], ['ประสานงาน / เทคนิค', 'Coordination', '#d97706'], ['Anaerobic', 'Alactic', '#e66565'], ['อดทนพื้นฐาน', 'Aerobic', '#5aa86c'], ['แข็งแรง', 'Strength', '#142c66']],
+    oth: [['แข็งแรง', '', '#142c66'], ['ความเร็ว', '', '#86101a'], ['อดทน', '', '#237a3c'], ['ประสานงาน / เทคนิค', '', '#d97706'], ['อ่อนตัว', '', '#12857e']]
+  };
   var TESTS = {
     fit: ['วิ่ง 30 เมตร', 'Vertical jump', 'T-test', 'Illinois agility', 'Pro agility (5-10-5)', '1RM / ประมาณ 1RM', 'ความอ่อนตัว (Sit and reach)', 'วิ่งระยะไกล / Yo-Yo test'],
     phy: ['VO2max', 'Lactate / Threshold', 'HRmax / HR ขณะพัก', 'องค์ประกอบร่างกาย', 'ชีพจรฟื้นตัว']
   };
-  var LV = ['', 'hi', 'mid', 'lo', 'rest'], LN = { hi: 'สูง', mid: 'กลาง', lo: 'ต่ำ', rest: 'พัก' };
+  var OLD_LOAD = { hi: 8, mid: 6, lo: 4, rest: 2 };
   var S;
-  function blank() { return { code: '', sport: '', event: '', level: '', start: mondayOf(new Date()), weeks: 52, tage: '', upw: '', events: [], periods: [], load: [], emph: {} }; }
-  function load() { try { S = JSON.parse(localStorage.getItem(KEY)) || blank(); } catch (e) { S = blank(); } if (!S.periods) S.periods = []; if (!S.events) S.events = []; if (!S.load) S.load = []; if (!S.emph) S.emph = {}; }
+  function blank() { return { code: '', sport: '', event: '', level: '', start: mondayOf(new Date()), weeks: 52, tage: '', upw: '', events: [], periods: [], load: [], tags: [], bio: [], lv: {} }; }
+  function load() {
+    try { S = JSON.parse(localStorage.getItem(KEY)) || blank(); } catch (e) { S = blank(); }
+    var b = blank(); Object.keys(b).forEach(function (k) { if (S[k] == null) S[k] = b[k]; });
+    S.load = S.load.map(function (v) { return typeof v === 'string' ? (OLD_LOAD[v] || 0) : (+v || 0); });
+    delete S.emph;
+  }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
   function $(id) { return document.getElementById(id); }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-  function mondayOf(d) { d = new Date(d); var w = (d.getDay() + 6) % 7; d.setDate(d.getDate() - w); return d.toISOString().slice(0, 10); }
+  function mondayOf(d) { d = new Date(d); var w = (d.getDay() + 6) % 7; d.setDate(d.getDate() - w); var m = d.getMonth() + 1, dd = d.getDate(); return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (dd < 10 ? '0' : '') + dd; }
   function addDays(iso, n) { var d = new Date(iso + 'T00:00:00'); d.setDate(d.getDate() + n); return d; }
-  function weekOf(iso) { if (!iso || !S.start) return -1; var a = new Date(S.start + 'T00:00:00'), b = new Date(iso + 'T00:00:00'); return Math.floor((b - a) / 864e5 / 7); }
+  function weekOf(iso) { if (!iso || !S.start) return -1; var a = new Date(S.start + 'T00:00:00'), b = new Date(iso + 'T00:00:00'); return Math.floor(Math.round((b - a) / 864e5) / 7); }
   var TH_M = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
   function thDate(iso) { var d = new Date(iso + 'T00:00:00'); return d.getDate() + ' ' + TH_M[d.getMonth()] + ' ' + String(d.getFullYear() + 543).slice(2); }
   function nW() { return Math.max(8, Math.min(104, +S.weeks || 52)); }
-  function perWeeks(p) { return (p.meso || []).reduce(function (a, b) { return a + (+b || 0); }, 0); }
-  function weekPeriod() { var out = [], i = 0; S.periods.forEach(function (p, pi) { (p.meso || []).forEach(function (m, mi) { for (var k = 0; k < (+m || 0); k++) out[i++] = { pi: pi, mi: mi, first: k === 0 }; }); }); return out; }
+  function phWeeks(p) { return (p.meso || []).reduce(function (a, b) { return a + (+b || 0); }, 0); }
+  function weekPhase() { var out = [], i = 0; S.periods.forEach(function (p, pi) { (p.meso || []).forEach(function (m) { for (var k = 0; k < (+m || 0); k++) out[i++] = pi; }); }); return out; }
+  function phName(i) { var p = S.periods[i], same = S.periods.filter(function (q) { return q.k === p.k; }).length; if (same < 2) return PHASE[p.k].n; var n = 0; for (var j = 0; j <= i; j++) if (S.periods[j].k === p.k) n++; return PHASE[p.k].n + ' ' + n; }
+  /* สัปดาห์แข่งขัน A/B → แท่งสูงสุด (10) */
+  function compWeeks() { var m = {}; S.events.forEach(function (e) { if (e.type === 'comp' && (e.pri === 'A' || e.pri === 'B')) { var w = weekOf(e.date); if (w >= 0) (m[w] = m[w] || []).push(e); } }); return m; }
+  function loadAt(w, cw) { return (cw || compWeeks())[w] ? 10 : (S.load[w] || 0); }
 
-  /* ---------- 1 ข้อมูล */
   var F = ['code', 'sport', 'event', 'level', 'start', 'weeks', 'tage', 'upw'];
+  function fillInfo() { F.forEach(function (k) { $(k).value = S[k] == null ? '' : S[k]; }); }
   function bindInfo() {
-    F.forEach(function (k) { var el = $(k); el.value = S[k] == null ? '' : S[k];
-      el.addEventListener('change', function () { S[k] = k === 'start' ? (el.value ? mondayOf(el.value) : '') : el.value; if (k === 'start') el.value = S.start; save(); renderAll(); }); });
+    fillInfo();
+    F.forEach(function (k) { var el = $(k); el.addEventListener('change', function () {
+      S[k] = k === 'start' ? (el.value ? mondayOf(el.value) : '') : el.value; if (k === 'start') el.value = S.start;
+      if (k === 'sport' && S.sport && (!S.bio.length || confirm('ใช้แถวสมรรถภาพชุดตั้งต้นของชนิดกีฬานี้แทนแถวเดิม?'))) setDefaultBio();
+      save(); renderAll(); }); });
   }
+  function setDefaultBio() { S.bio = (SPORT_BIO[S.sport] || SPORT_BIO.oth).map(function (a) { return R(a[0], a[1], a[2]); }); S.lv = {}; }
 
-  /* ---------- 2 รายการ */
   function renderTestPick() {
     var t = $('eType').value, box = $('testPick');
     $('ePriW').style.visibility = t === 'comp' ? 'visible' : 'hidden';
     if (t === 'comp') { box.hidden = true; return; }
     box.hidden = false;
-    box.innerHTML = '<b style="font-family:Prompt">เลือกรายการทดสอบ:</b> ' + TESTS[t].map(function (n, i) { return '<label style="margin-right:12px;white-space:nowrap"><input type="checkbox" value="' + esc(n) + '" style="width:auto;min-height:0"> ' + esc(n) + '</label>'; }).join('');
+    box.innerHTML = '<b style="font-family:Prompt">เลือกรายการทดสอบ:</b> ' + TESTS[t].map(function (n) { return '<label style="margin-right:12px;white-space:nowrap"><input type="checkbox" value="' + esc(n) + '" style="width:auto;min-height:0"> ' + esc(n) + '</label>'; }).join('');
   }
   function addEvent() {
     var t = $('eType').value, d = $('eDate').value, n = $('eName').value.trim();
     if (!d) { $('eDate').focus(); return; }
-    var e = { id: Date.now().toString(36), type: t, date: d, name: n };
-    if (t === 'comp') e.pri = $('ePri').value;
-    else e.tests = [].slice.call(document.querySelectorAll('#testPick input:checked')).map(function (x) { return x.value; });
     if (t === 'comp' && !n) { $('eName').focus(); return; }
+    var e = { id: Date.now().toString(36), type: t, date: d, name: n };
+    if (t === 'comp') e.pri = $('ePri').value; else e.tests = [].slice.call(document.querySelectorAll('#testPick input:checked')).map(function (x) { return x.value; });
     S.events.push(e); S.events.sort(function (a, b) { return a.date < b.date ? -1 : 1; });
     $('eName').value = ''; save(); renderAll();
   }
   function tag(e) { return e.type === 'comp' ? '<span class="pill p' + e.pri + '">' + e.pri + '</span>' : e.type === 'fit' ? '<span class="pill pF">T</span>' : '<span class="pill pP">P</span>'; }
   function renderEvents() {
-    var b = $('evBody'), N = nW();
-    b.innerHTML = S.events.map(function (e) { var w = weekOf(e.date);
+    var N = nW();
+    $('evBody').innerHTML = S.events.map(function (e) { var w = weekOf(e.date);
       var typ = e.type === 'comp' ? 'การแข่งขัน' : e.type === 'fit' ? 'ทดสอบสมรรถภาพ' : 'ทดสอบสรีรวิทยา';
       var det = e.type === 'comp' ? esc(e.name) : esc((e.name ? e.name + ' · ' : '') + (e.tests || []).join(', '));
       return '<tr><td>' + thDate(e.date) + '</td><td>' + (w >= 0 && w < N ? 'สัปดาห์ ' + (w + 1) : '<span style="color:#a11">นอกปีการฝึก</span>') + '</td><td>' + tag(e) + ' ' + typ + '</td><td>' + det + '</td><td><button class="x" type="button" data-del="' + e.id + '" aria-label="ลบ">✕</button></td></tr>'; }).join('');
     $('evEmpty').hidden = S.events.length > 0;
   }
 
-  /* ---------- 3 ช่วงการฝึก */
   function tpl(kind) {
     if (S.periods.length && !confirm('แทนที่ช่วงการฝึกเดิมด้วยโครงตั้งต้น?')) return;
     S.periods = kind === 'double'
-      ? [{ k: 'gp', meso: [4, 4, 2] }, { k: 'sp', meso: [4, 4] }, { k: 'c', meso: [4, 4] }, { k: 't', meso: [2] }, { k: 'sp', meso: [4, 4] }, { k: 'pc', meso: [4] }, { k: 'c', meso: [4, 4] }, { k: 't', meso: [4] }]
-      : [{ k: 'gp', meso: [4, 4, 4, 4] }, { k: 'sp', meso: [4, 4, 4] }, { k: 'pc', meso: [4] }, { k: 'c', meso: [4, 4, 4, 4] }, { k: 't', meso: [4] }];
+      ? [{ k: 'gp', meso: [4, 4, 2] }, { k: 'sp', meso: [4, 4] }, { k: 'pc', meso: [3] }, { k: 'c', meso: [4] }, { k: 't', meso: [1] }, { k: 'sp', meso: [4, 4] }, { k: 'pc', meso: [4] }, { k: 'tp', meso: [2] }, { k: 'c', meso: [5] }, { k: 't', meso: [3] }]
+      : [{ k: 'gp', meso: [4, 4, 4, 4] }, { k: 'sp', meso: [4, 4, 4] }, { k: 'pc', meso: [4] }, { k: 'tp', meso: [2] }, { k: 'c', meso: [4, 4, 2] }, { k: 't', meso: [4] }];
     save(); renderAll();
   }
-  function renderPeriods() {
-    var tot = S.periods.reduce(function (a, p) { return a + perWeeks(p); }, 0), N = nW();
+  function renderPhases() {
+    var tot = S.periods.reduce(function (a, p) { return a + phWeeks(p); }, 0), N = nW();
     $('pSum').innerHTML = 'รวม <b>' + tot + '</b> / ' + N + ' สัปดาห์' + (tot !== N && S.periods.length ? ' <span style="color:#a11">(ยังไม่เท่ากัน)</span>' : '');
-    $('perList').innerHTML = S.periods.map(function (p, i) {
-      return '<div class="per"><select data-pk="' + i + '">' + Object.keys(PER).map(function (k) { return '<option value="' + k + '"' + (k === p.k ? ' selected' : '') + '>' + PER[k].n + '</option>'; }).join('') + '</select>'
-        + '<span><span class="sw" style="background:' + PER[p.k].c + '"></span>' + perWeeks(p) + ' สัปดาห์</span>'
-        + '<button type="button" class="x pdel" data-pdel="' + i + '" aria-label="ลบช่วง">✕</button>'
+    $('phList').innerHTML = S.periods.map(function (p, i) {
+      var P = PHASE[p.k];
+      return '<div class="ph"><label style="display:flex;flex-direction:column;gap:2px"><span class="pp">' + PERIOD[P.p].n + ' (' + PERIOD[P.p].en + ')</span><select data-pk="' + i + '" aria-label="Phase">' + Object.keys(PHASE).map(function (k) { return '<option value="' + k + '"' + (k === p.k ? ' selected' : '') + '>' + PHASE[k].n + ' (' + PHASE[k].en + ')</option>'; }).join('') + '</select></label>'
+        + '<span><span class="sw" style="background:' + P.c + '"></span>' + phWeeks(p) + ' สัปดาห์</span>'
+        + '<button type="button" class="x pdel" data-pdel="' + i + '" aria-label="ลบ Phase">✕</button>'
         + '<div class="meso">' + (p.meso || []).map(function (m, j) { return '<span>M' + (j + 1) + '<input type="number" min="1" max="12" value="' + m + '" data-m="' + i + ':' + j + '" aria-label="จำนวนสัปดาห์ของ Mesocycle ' + (j + 1) + '"><small>สัปดาห์</small><button type="button" class="x" data-mdel="' + i + ':' + j + '" aria-label="ลบ Mesocycle">✕</button></span>'; }).join('') + '<button type="button" data-madd="' + i + '">+ Mesocycle</button></div></div>';
-    }).join('') || '<p class="muted">ยังไม่มีช่วงการฝึก — เลือกโครงตั้งต้นหรือเพิ่มช่วงเอง</p>';
+    }).join('') || '<p class="muted">ยังไม่มีช่วงการฝึก — เลือกโครงตั้งต้นหรือเพิ่ม Phase เอง</p>';
   }
 
-  /* ---------- 4 ภาพรวม */
-  function renderTimeline() {
-    var N = nW(), wp = weekPeriod(), tl = $('tl'), colW = 26;
-    tl.style.gridTemplateColumns = '96px repeat(' + N + ', minmax(' + colW + 'px, 1fr))';
-    tl.style.minWidth = (96 + N * colW) + 'px';
-    var h = '';
-    // เดือน
-    h += '<div class="lab">เดือน</div>';
+  var LH = 120, BH = 50;
+  function renderChart() {
+    var N = nW(), tl = $('tl'), colW = N > 30 ? 24 : 34, lw = innerWidth < 600 ? 104 : 150, h = '', cw = compWeeks();
+    tl.style.gridTemplateColumns = lw + 'px repeat(' + N + ', minmax(' + colW + 'px, 1fr))';
+    tl.style.minWidth = (lw + N * colW) + 'px';
+    function lab(a, b, cls, c) { return '<div class="lab' + (cls ? ' ' + cls : '') + '"' + (c ? ' style="--c:' + c + '"' : '') + '>' + esc(a) + (b ? '<small>' + esc(b) + '</small>' : '') + '</div>'; }
+    h += lab('เดือน');
     var runs = [], cur = null;
     for (var w = 0; w < N; w++) { var d = addDays(S.start, w * 7 + 3), m = d.getMonth() + '-' + d.getFullYear();
-      if (!cur || cur.m !== m) { cur = { m: m, s: w, n: 0, lab: TH_M[d.getMonth()] + ' ' + String(d.getFullYear() + 543).slice(2) }; runs.push(cur); } cur.n++; }
+      if (!cur || cur.m !== m) { cur = { m: m, n: 0, lab: TH_M[d.getMonth()] + ' ' + String(d.getFullYear() + 543).slice(2) }; runs.push(cur); } cur.n++; }
     runs.forEach(function (r) { h += '<div class="c mo" style="grid-column:span ' + r.n + '">' + (r.n >= 2 ? r.lab : '') + '</div>'; });
-    // สัปดาห์
-    var nowW = weekOf(new Date().toISOString().slice(0, 10));
-    h += '<div class="lab">สัปดาห์</div>';
-    for (w = 0; w < N; w++) h += '<div class="c' + (w === nowW ? ' now' : '') + '">' + (w + 1) + '</div>';
-    // ช่วงการฝึก
-    h += '<div class="lab">ช่วงการฝึก</div>';
-    var pw = 0; S.periods.forEach(function (p) { var n = perWeeks(p); if (pw + n > N) n = N - pw; if (n <= 0) return; h += '<div class="c ps" style="grid-column:span ' + n + ';background:' + PER[p.k].c + '" title="' + PER[p.k].n + ' · ' + n + ' สัปดาห์">' + (n >= 3 ? PER[p.k].n : '') + '</div>'; pw += n; });
-    if (pw < N) h += '<div class="c" style="grid-column:span ' + (N - pw) + ';color:#a0a7b5">ยังไม่กำหนด</div>';
-    // Mesocycle
-    h += '<div class="lab">Mesocycle</div>';
-    var mw = 0, mi = 0; S.periods.forEach(function (p) { (p.meso || []).forEach(function (m) { var n = +m || 0; if (mw + n > N) n = N - mw; if (n <= 0) return; mi++; h += '<div class="c ms" style="grid-column:span ' + n + '" title="Mesocycle ' + mi + ' · ' + n + ' สัปดาห์">M' + mi + '</div>'; mw += n; }); });
-    if (mw < N) h += '<div class="c" style="grid-column:span ' + (N - mw) + '"></div>';
-    // แข่งขัน / ทดสอบ
-    h += '<div class="lab">แข่ง / ทดสอบ</div>';
+    h += lab('ประเภทงาน', 'เช่น HA · LA · RP');
+    for (w = 0; w < N; w++) h += '<div class="c tg" contenteditable="true" spellcheck="false" data-tag="' + w + '" aria-label="ประเภทงาน สัปดาห์ ' + (w + 1) + '">' + esc(S.tags[w] || '') + '</div>';
+    h += lab('แข่ง / ทดสอบ');
     var byW = {}; S.events.forEach(function (e) { var w2 = weekOf(e.date); if (w2 >= 0 && w2 < N) (byW[w2] = byW[w2] || []).push(e); });
     for (w = 0; w < N; w++) h += '<div class="c evc">' + (byW[w] || []).map(function (e) { return '<span title="' + esc(thDate(e.date) + ' · ' + (e.name || '') + (e.tests && e.tests.length ? ' · ' + e.tests.join(', ') : '')) + '">' + tag(e) + '</span>'; }).join('') + '</div>';
-    // Load
-    h += '<div class="lab">Load</div>';
-    for (w = 0; w < N; w++) { var L = S.load[w] || ''; h += '<div class="c ld" data-w="' + w + '" role="button" tabindex="0" aria-label="สัปดาห์ ' + (w + 1) + ' Load ' + (LN[L] || 'ว่าง') + '" title="สัปดาห์ ' + (w + 1) + ' · ' + (LN[L] || 'ว่าง') + '">' + (L ? '<i class="L-' + L + '"></i>' : '<span class="e"></span>') + '</div>'; }
+    h += lab('Load รวม', 'Microcycle 1–10');
+    for (w = 0; w < N; w++) {
+      if (cw[w]) { h += '<div class="ldc" title="สัปดาห์แข่งขัน: ' + esc(cw[w].map(function (e) { return e.pri + ' ' + e.name; }).join(', ')) + ' — รีดศักยภาพสูงสุด"><span class="v">★</span><i style="height:' + (LH - 14) + 'px"></i></div>'; continue; }
+      var L = S.load[w] || 0;
+      h += '<div class="bc ld" data-row="load" data-w="' + w + '" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="10" aria-valuenow="' + L + '" aria-label="Load รวม สัปดาห์ ' + (w + 1) + '">' + (L ? '<span class="v">' + L + '</span><i style="height:' + (L / 10 * (LH - 14)) + 'px"></i>' : '') + '</div>'; }
+    var nowW = weekOf(mondayOf(new Date()));
+    h += lab('Microcycle', 'สัปดาห์ที่');
+    for (w = 0; w < N; w++) h += '<div class="c wk' + (w === nowW ? ' now' : '') + '">' + (w + 1) + '</div>';
+    h += lab('Period', 'ช่วงการฝึก');
+    var used = 0, pr = []; S.periods.forEach(function (p) { var n = phWeeks(p), k = PHASE[p.k].p; if (pr.length && pr[pr.length - 1].k === k) pr[pr.length - 1].n += n; else pr.push({ k: k, n: n }); });
+    pr.forEach(function (x) { var n = Math.min(x.n, N - used); if (n <= 0) return; h += '<div class="c sp" style="grid-column:span ' + n + ';background:' + PERIOD[x.k].c + '" title="' + PERIOD[x.k].n + ' (' + PERIOD[x.k].en + ')">' + (n >= 3 ? PERIOD[x.k].n + (n >= 8 ? ' · ' + PERIOD[x.k].en : '') : '') + '</div>'; used += n; });
+    if (used < N) h += '<div class="c" style="grid-column:span ' + (N - used) + ';color:#a0a7b5">ยังไม่กำหนด</div>';
+    h += lab('Phase', 'ระยะ');
+    used = 0; S.periods.forEach(function (p, i) { var n = Math.min(phWeeks(p), N - used); if (n <= 0) return; var nm = phName(i); h += '<div class="c sp" style="grid-column:span ' + n + ';background:' + PHASE[p.k].c + '" title="' + nm + ' (' + PHASE[p.k].en + ') · ' + n + ' สัปดาห์">' + (n >= 3 ? nm : n >= 2 ? nm.slice(0, 3) : '') + '</div>'; used += n; });
+    if (used < N) h += '<div class="c" style="grid-column:span ' + (N - used) + '"></div>';
+    h += lab('Mesocycle');
+    used = 0; var mi = 0; S.periods.forEach(function (p) { (p.meso || []).forEach(function (m) { var n = Math.min(+m || 0, N - used); if (n <= 0) return; mi++; h += '<div class="c ms" style="grid-column:span ' + n + '" title="Mesocycle ' + mi + ' · ' + n + ' สัปดาห์">M' + mi + '</div>'; used += n; }); });
+    if (used < N) h += '<div class="c" style="grid-column:span ' + (N - used) + '"></div>';
+    h += '<div class="sec"><span>สมรรถภาพทางกลไก (Biomotor abilities) · ระดับความต้องการในการพัฒนา 0–5</span></div>';
+    S.bio.forEach(function (b) { h += lab(b.n, b.s, 'bio', b.c);
+      for (var w3 = 0; w3 < N; w3++) { var v = ((S.lv[b.id] || [])[w3]) || 0;
+        h += '<div class="bc bo" data-row="' + b.id + '" data-w="' + w3 + '" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="5" aria-valuenow="' + v + '" aria-label="' + esc(b.n) + ' สัปดาห์ ' + (w3 + 1) + '">' + (v ? '<i style="height:' + (v / 5 * BH) + 'px;background:' + b.c + '"></i>' : '') + '</div>'; } });
+    if (!S.bio.length) h += '<div class="c" style="grid-column:1 / -1;justify-content:flex-start;padding:8px">เลือกชนิดกีฬาในข้อ 1 หรือเพิ่มแถวในข้อ 5</div>';
     tl.innerHTML = h;
-    drawLine();
+    $('legend').innerHTML = '<span><i style="background:#4f6d8f"></i>Load รวมของ Microcycle</span><span><i style="background:#8f1d1d"></i>สัปดาห์แข่งขัน A/B ★</span>' + S.bio.map(function (b) { return '<span><i style="background:' + b.c + '"></i>' + esc(b.n) + '</span>'; }).join('')
+      + '<span><span class="pill pA">A</span> <span class="pill pB">B</span> <span class="pill pC">C</span> การแข่งขัน</span><span><span class="pill pF">T</span> ทดสอบสมรรถภาพ</span><span><span class="pill pP">P</span> ทดสอบสรีรวิทยา</span>';
   }
-  function drawLine() {
-    var wr = $('tlw'), tl = $('tl'), old = tl.querySelector('svg.ll'); if (old) old.remove();
-    var br = tl.getBoundingClientRect(), pts = [];
-    tl.querySelectorAll('.ld').forEach(function (c) { var i = c.querySelector('i'); if (!i) { pts.push(null); return; } var r = i.getBoundingClientRect(); pts.push([r.left + r.width / 2 - br.left, r.top - br.top]); });
-    var runs = [], run = []; pts.forEach(function (p) { if (p) run.push(p); else { if (run.length) runs.push(run); run = []; } }); if (run.length) runs.push(run);
-    if (!runs.length) return;
-    var f = function (v) { return v.toFixed(1); };
-    tl.insertAdjacentHTML('beforeend', '<svg class="ll" width="' + tl.scrollWidth + '" height="' + tl.scrollHeight + '" aria-hidden="true">' + runs.filter(function (r) { return r.length > 1; }).map(function (r) { return '<polyline points="' + r.map(function (p) { return f(p[0]) + ',' + f(p[1]); }).join(' ') + '"/>'; }).join('') + pts.filter(Boolean).map(function (p) { return '<circle class="o" cx="' + f(p[0]) + '" cy="' + f(p[1]) + '" r="3.6"/><circle class="i" cx="' + f(p[0]) + '" cy="' + f(p[1]) + '" r="1.4"/>'; }).join('') + '</svg>');
+  function levelAt(cell, y) { var r = cell.getBoundingClientRect(), max = cell.dataset.row === 'load' ? 10 : 5, top = cell.dataset.row === 'load' ? 14 : 0; var f = (r.bottom - y) / (r.height - top); return Math.max(0, Math.min(max, Math.round(f * max + 0.25))); }
+  function setLevel(row, w, v) { if (row === 'load') { S.load[w] = v; } else { S.lv[row] = S.lv[row] || []; S.lv[row][w] = v; } }
+  function paintCell(cell, v) { var row = cell.dataset.row; setLevel(row, +cell.dataset.w, v); cell.setAttribute('aria-valuenow', v);
+    var b = row === 'load' ? null : S.bio.filter(function (x) { return x.id === row; })[0];
+    cell.innerHTML = v ? (row === 'load' ? '<span class="v">' + v + '</span><i style="height:' + (v / 10 * (LH - 14)) + 'px"></i>' : '<i style="height:' + (v / 5 * BH) + 'px;background:' + b.c + '"></i>') : ''; }
+  var drag = null;
+  document.addEventListener('pointerdown', function (ev) { var c = ev.target.closest('.bc'); if (!c) return; ev.preventDefault(); drag = c.dataset.row; paintCell(c, levelAt(c, ev.clientY)); c.focus({ preventScroll: true }); });
+  document.addEventListener('pointermove', function (ev) { if (!drag) return; var el = document.elementFromPoint(ev.clientX, ev.clientY), c = el && el.closest('.bc'); if (c && c.dataset.row === drag) paintCell(c, levelAt(c, ev.clientY)); });
+  document.addEventListener('pointerup', function () { if (drag) { drag = null; save(); renderHints(); } });
+  document.addEventListener('keydown', function (ev) { var c = ev.target.closest && ev.target.closest('.bc'); if (!c) return;
+    var max = c.dataset.row === 'load' ? 10 : 5, v = +c.getAttribute('aria-valuenow') || 0;
+    if (ev.key === 'ArrowUp') v = Math.min(max, v + 1); else if (ev.key === 'ArrowDown') v = Math.max(0, v - 1); else if (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft') { var n = ev.key === 'ArrowRight' ? c.nextElementSibling : c.previousElementSibling; if (n && n.classList.contains('bc')) n.focus(); ev.preventDefault(); return; } else return;
+    ev.preventDefault(); paintCell(c, v); save(); renderHints(); });
+  document.addEventListener('input', function (ev) { var t = ev.target; if (t.dataset && t.dataset.tag != null) { S.tags[+t.dataset.tag] = t.textContent.trim().slice(0, 8); save(); } });
+  document.addEventListener('keydown', function (ev) { if (ev.target.dataset && ev.target.dataset.tag != null && ev.key === 'Enter') { ev.preventDefault(); ev.target.blur(); } }, true);
+
+  function renderBio() {
+    $('bioList').innerHTML = S.bio.map(function (b, i) {
+      return '<div class="br"><input value="' + esc(b.n) + '" data-bn="' + i + '" aria-label="ชื่อแถว"><input value="' + esc(b.s) + '" data-bs="' + i + '" placeholder="คำอธิบาย เช่น Aerobic" aria-label="คำอธิบาย">'
+        + '<select data-bc="' + i + '" aria-label="สี" style="border-left:8px solid ' + b.c + '">' + COLORS.map(function (c) { return '<option value="' + c[0] + '"' + (c[0] === b.c ? ' selected' : '') + '>' + c[1] + '</option>'; }).join('') + '</select>'
+        + '<button type="button" class="x" data-bdel="' + i + '" aria-label="ลบแถว">✕</button></div>'; }).join('') || '<p class="muted">ยังไม่มีแถว — เลือกชนิดกีฬาในข้อ 1 หรือกด "ใช้ชุดตั้งต้นของชนิดกีฬา"</p>';
   }
 
-  /* ---------- 5 เน้นสมรรถภาพ */
-  function renderEmph() {
-    if (!S.periods.length) { $('emw').innerHTML = '<p class="muted">กำหนดช่วงการฝึกในข้อ 3 ก่อน</p>'; return; }
-    var h = '<table class="em"><tr><th style="background:#fff"></th>' + S.periods.map(function (p, i) { return '<th style="background:' + PER[p.k].c + '">' + (i + 1) + '. ' + PER[p.k].n + '</th>'; }).join('') + '</tr>';
-    FIT.forEach(function (f) { h += '<tr><td class="k"><i style="background:' + f.c + '"></i>' + f.n + '</td>' + S.periods.map(function (p, i) { var v = ((S.emph[i] || {})[f.k]) || 0;
-      return '<td class="dots"><button type="button" data-em="' + i + ':' + f.k + '" aria-label="' + f.n + ' ช่วง ' + (i + 1) + ' ระดับ ' + v + '"><b>' + '●'.repeat(v) + '</b>' + '○'.repeat(3 - v) + '</button></td>'; }).join('') + '</tr>'; });
-    $('emw').innerHTML = h + '</table>';
-  }
-
-  /* ---------- 6 ระบบช่วยดู */
   function renderHints() {
-    var H = [], N = nW(), wp = weekPeriod(), tot = S.periods.reduce(function (a, p) { return a + perWeeks(p); }, 0);
-    var comps = S.events.filter(function (e) { return e.type === 'comp'; }), A = comps.filter(function (e) { return e.pri === 'A'; });
+    var H = [], N = nW(), wp = weekPhase(), cw = compWeeks(), tot = S.periods.reduce(function (a, p) { return a + phWeeks(p); }, 0);
+    var A = S.events.filter(function (e) { return e.type === 'comp' && e.pri === 'A'; });
     if (!A.length) H.push(['i', 'ยังไม่มีรายการแข่งขันหลัก (A) — กำหนดรายการ A ก่อน แล้วนับย้อนกลับเพื่อวางช่วงการฝึก']);
-    if (S.periods.length && tot !== N) H.push(['w', 'จำนวนสัปดาห์ของช่วงการฝึกรวม ' + tot + ' สัปดาห์ ไม่เท่ากับปีการฝึก ' + N + ' สัปดาห์']);
-    A.forEach(function (e) { var w = weekOf(e.date), p = wp[w]; if (w < 0 || w >= N) H.push(['w', 'รายการ A "' + e.name + '" อยู่นอกปีการฝึก']);
-      else if (S.periods.length && (!p || S.periods[p.pi].k !== 'c')) H.push(['w', 'รายการ A "' + e.name + '" (สัปดาห์ ' + (w + 1) + ') ไม่ได้อยู่ในช่วงแข่งขัน']);
-      if (w >= 0 && S.load[w] === 'hi') H.push(['w', 'สัปดาห์ที่มีรายการ A "' + e.name + '" ใช้ Load สูง — ควรลด Load ก่อนแข่ง (Taper)']); });
-    S.periods.forEach(function (p, i) { (p.meso || []).forEach(function (m, j) { if (+m > 6) H.push(['i', 'ช่วง ' + (i + 1) + ' (' + PER[p.k].n + ') มี Mesocycle ยาว ' + m + ' สัปดาห์ — ทั่วไปไม่เกิน 6 สัปดาห์']); }); });
-    if (S.periods.length && !S.periods.some(function (p) { return p.k === 't'; })) H.push(['i', 'ยังไม่มีช่วงพัก (Transition) สำหรับฟื้นฟูร่างกายและจิตใจหลังฤดูกาล']);
-    var run = 0, flagged = false; for (var w = 0; w < N; w++) { if (S.load[w] === 'hi') { run++; if (run >= 4 && !flagged) { H.push(['w', 'Load สูงติดกัน 4 สัปดาห์ขึ้นไป (ถึงสัปดาห์ ' + (w + 1) + ') — ควรมีสัปดาห์ลด Load เพื่อให้ร่างกายปรับตัว']); flagged = true; } } else run = 0; }
+    if (S.periods.length && tot !== N) H.push(['w', 'จำนวนสัปดาห์ของ Phase รวม ' + tot + ' สัปดาห์ ไม่เท่ากับปีการฝึก ' + N + ' สัปดาห์']);
+    A.forEach(function (e) { var w = weekOf(e.date), pi = wp[w];
+      if (w < 0 || w >= N) { H.push(['w', 'รายการ A "' + e.name + '" อยู่นอกปีการฝึก']); return; }
+      if (S.periods.length && (pi == null || S.periods[pi].k !== 'c')) H.push(['w', 'รายการ A "' + e.name + '" (สัปดาห์ ' + (w + 1) + ') ไม่ได้อยู่ใน Phase แข่งขัน']);
+      var a1 = loadAt(w - 1, cw), a2 = loadAt(w - 2, cw);
+      if (w >= 2 && a1 && a2 && a1 >= a2 && a1 >= 7) H.push(['i', 'ก่อนรายการ A "' + e.name + '" Load รวมยังไม่ลดลง — พิจารณา Phase ลดงานก่อนแข่ง (Tapering) เพื่อให้แท่งวันแข่งเป็นจุดสูงสุดของศักยภาพ']); });
+    S.periods.forEach(function (p, i) { (p.meso || []).forEach(function (m) { if (+m > 6) H.push(['i', phName(i) + ' มี Mesocycle ยาว ' + m + ' สัปดาห์ — ทั่วไปไม่เกิน 6 สัปดาห์']); }); });
+    if (S.periods.length && !S.periods.some(function (p) { return p.k === 't'; })) H.push(['i', 'ยังไม่มี Phase พักฟื้นฟู (Transition) หลังฤดูกาล']);
+    var up = 0, flagged = false; for (var w = 1; w < N; w++) { if (!cw[w] && !cw[w - 1] && S.load[w] && S.load[w - 1] && S.load[w] >= S.load[w - 1]) { up++; if (up >= 4 && !flagged) { H.push(['w', 'Load รวมไม่ลดลงเลย 5 สัปดาห์ติดกัน (ถึงสัปดาห์ ' + (w + 1) + ') — ควรมีสัปดาห์ลด Load เพื่อให้ร่างกายปรับตัว (เช่น 3:1)']); flagged = true; } } else up = 0; }
+    var gap = []; for (w = 0; w < N; w++) if (loadAt(w, cw) && S.bio.length && !S.bio.some(function (b) { return ((S.lv[b.id] || [])[w]) > 0; })) gap.push(w + 1);
+    if (gap.length) H.push(['i', 'Microcycle ที่มี Load แต่ยังไม่กำหนดสมรรถภาพทางกลไก: สัปดาห์ ' + gap.slice(0, 10).join(', ') + (gap.length > 10 ? ' …' : '')]);
     var fits = S.events.filter(function (e) { return e.type === 'fit'; });
-    if (!fits.some(function (e) { var w = weekOf(e.date); return w >= 0 && w < 4; })) H.push(['i', 'ยังไม่มีการทดสอบสมรรถภาพช่วงต้นปี (4 สัปดาห์แรก) เพื่อใช้เป็นค่าเริ่มต้น']);
-    if (fits.length && fits.length < 3) H.push(['i', 'ควรมีการทดสอบตามระยะ (Stage control) ท้ายช่วงเตรียมแต่ละช่วงด้วย']);
-    var filled = S.load.filter(Boolean).length;
-    if (S.periods.length && filled < N) H.push(['i', 'กำหนด Load แล้ว ' + filled + ' / ' + N + ' สัปดาห์']);
+    if (!fits.some(function (e) { var w2 = weekOf(e.date); return w2 >= 0 && w2 < 4; })) H.push(['i', 'ยังไม่มีการทดสอบสมรรถภาพช่วงต้นปี (4 สัปดาห์แรก) เพื่อใช้เป็นค่าเริ่มต้น']);
+    if (S.periods.length) { var filled = 0; for (w = 0; w < N; w++) if (loadAt(w, cw)) filled++; if (filled < N) H.push(['i', 'กำหนด Load รวมแล้ว ' + filled + ' / ' + N + ' Microcycle']); }
     if (!H.length) H.push(['ok', 'ยังไม่พบจุดที่ควรตรวจ — ทบทวนแผนกับสภาผู้ฝึกสอนอีกครั้งก่อนใช้งานจริง']);
     $('hints').innerHTML = H.map(function (x) { return '<li class="' + x[0] + '">' + esc(x[1]) + '</li>'; }).join('');
   }
 
-  function renderAll() { renderEvents(); renderPeriods(); renderTimeline(); renderEmph(); renderHints(); }
+  function renderAll() { renderEvents(); renderPhases(); renderChart(); renderBio(); renderHints(); }
 
-  /* ---------- events */
   document.addEventListener('click', function (ev) {
-    var t = ev.target.closest('[data-del],[data-pdel],[data-madd],[data-mdel],[data-tpl],[data-em],.ld');
-    if (!t) return;
-    if (t.dataset.del) { S.events = S.events.filter(function (e) { return e.id !== t.dataset.del; }); }
-    else if (t.dataset.pdel) { S.periods.splice(+t.dataset.pdel, 1); var ne = {}; Object.keys(S.emph).forEach(function (k) { var i = +k, d = +t.dataset.pdel; if (i < d) ne[i] = S.emph[k]; else if (i > d) ne[i - 1] = S.emph[k]; }); S.emph = ne; }
-    else if (t.dataset.madd) { S.periods[+t.dataset.madd].meso.push(4); }
+    var t = ev.target.closest('[data-del],[data-pdel],[data-madd],[data-mdel],[data-tpl],[data-bdel]'); if (!t) return;
+    if (t.dataset.del) S.events = S.events.filter(function (e) { return e.id !== t.dataset.del; });
+    else if (t.dataset.pdel) S.periods.splice(+t.dataset.pdel, 1);
+    else if (t.dataset.madd) S.periods[+t.dataset.madd].meso.push(4);
     else if (t.dataset.mdel) { var a = t.dataset.mdel.split(':'); S.periods[+a[0]].meso.splice(+a[1], 1); }
     else if (t.dataset.tpl) { tpl(t.dataset.tpl); return; }
-    else if (t.dataset.em) { var b = t.dataset.em.split(':'); S.emph[b[0]] = S.emph[b[0]] || {}; S.emph[b[0]][b[1]] = ((S.emph[b[0]][b[1]] || 0) + 1) % 4; }
-    else if (t.classList.contains('ld')) { var w = +t.dataset.w, cur = S.load[w] || ''; S.load[w] = LV[(LV.indexOf(cur) + 1) % LV.length]; }
+    else if (t.dataset.bdel) { var b = S.bio.splice(+t.dataset.bdel, 1)[0]; if (b) delete S.lv[b.id]; }
     save(); renderAll();
   });
-  document.addEventListener('keydown', function (ev) { if ((ev.key === 'Enter' || ev.key === ' ') && ev.target.classList && ev.target.classList.contains('ld')) { ev.preventDefault(); ev.target.click(); } });
   document.addEventListener('change', function (ev) {
-    var t = ev.target;
-    if (t.dataset.pk != null) { S.periods[+t.dataset.pk].k = t.value; save(); renderAll(); }
-    else if (t.dataset.m) { var a = t.dataset.m.split(':'); S.periods[+a[0]].meso[+a[1]] = Math.max(1, Math.min(12, +t.value || 1)); save(); renderAll(); }
+    var t = ev.target, d = t.dataset || {};
+    if (d.pk != null) S.periods[+d.pk].k = t.value;
+    else if (d.m) { var a = d.m.split(':'); S.periods[+a[0]].meso[+a[1]] = Math.max(1, Math.min(12, +t.value || 1)); }
+    else if (d.bn != null) S.bio[+d.bn].n = t.value.trim() || 'สมรรถภาพ';
+    else if (d.bs != null) S.bio[+d.bs].s = t.value.trim();
+    else if (d.bc != null) S.bio[+d.bc].c = t.value;
+    else return;
+    save(); renderAll();
   });
   $('eType').addEventListener('change', renderTestPick);
   $('eAdd').addEventListener('click', addEvent);
   $('pAdd').addEventListener('click', function () { S.periods.push({ k: 'gp', meso: [4] }); save(); renderAll(); });
+  $('bDef').addEventListener('click', function () { if (S.bio.length && !confirm('แทนที่แถวสมรรถภาพเดิม (ระดับที่กำหนดไว้จะถูกล้าง)?')) return; setDefaultBio(); save(); renderAll(); });
+  $('bAdd').addEventListener('click', function () { S.bio.push(R('สมรรถภาพใหม่', '', '#5f5e5a')); save(); renderAll(); });
   $('bPrint').addEventListener('click', function () { window.print(); });
-  $('bExport').addEventListener('click', function () {
-    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(S, null, 1)], { type: 'application/json' }));
-    a.download = 'macrocycle-' + (S.code || 'plan') + '.json'; document.body.appendChild(a); a.click(); a.remove();
-  });
+  $('bExport').addEventListener('click', function () { var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(S, null, 1)], { type: 'application/json' })); a.download = 'macrocycle-' + (S.code || 'plan') + '.json'; document.body.appendChild(a); a.click(); a.remove(); });
   $('bImport').addEventListener('click', function () { $('fImport').click(); });
-  $('fImport').addEventListener('change', function () { var f = this.files[0]; if (!f) return; f.text().then(function (t) { try { var o = JSON.parse(t); if (!o || !Array.isArray(o.periods)) throw 0; S = Object.assign(blank(), o); save(); F.forEach(function (k) { $(k).value = S[k] == null ? '' : S[k]; }); renderAll(); } catch (e) { alert('ไฟล์ไม่ถูกต้อง'); } }); this.value = ''; });
-  $('bReset').addEventListener('click', function () { if (!confirm('ล้างแผน Macrocycle ทั้งหมดในเครื่องนี้?')) return; S = blank(); save(); F.forEach(function (k) { $(k).value = S[k] == null ? '' : S[k]; }); renderAll(); });
-  addEventListener('resize', drawLine);
+  $('fImport').addEventListener('change', function () { var f = this.files[0]; if (!f) return; f.text().then(function (t) { try { var o = JSON.parse(t); if (!o || !Array.isArray(o.periods)) throw 0; localStorage.setItem(KEY, JSON.stringify(o)); load(); fillInfo(); renderAll(); } catch (e) { alert('ไฟล์ไม่ถูกต้อง'); } }); this.value = ''; });
+  $('bReset').addEventListener('click', function () { if (!confirm('ล้างแผน Macrocycle ทั้งหมดในเครื่องนี้?')) return; S = blank(); save(); fillInfo(); renderAll(); });
 
   load(); bindInfo(); renderTestPick(); renderAll();
-  if (document.fonts) document.fonts.ready.then(drawLine);
 })();
 </script>
 </body>
