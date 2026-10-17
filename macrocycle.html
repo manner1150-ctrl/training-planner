@@ -102,6 +102,11 @@
   .tl .ld i { position: relative; }
   .tl .mk { position: absolute; left: 50%; transform: translateX(-50%); top: 7px; display: flex; flex-direction: column; align-items: center; gap: 2px; z-index: 3; }
   .tl .mk.up { top: auto; bottom: calc(100% + 7px); }
+  .tl .evl { min-height: 18px; padding: 1px 0 2px; gap: 1px; flex-wrap: wrap; border-top: 1px solid #e3e7ef; background: #fbfcfe; }
+  .tl .evl .im { width: 13px; height: 13px; font-size: 8px; }
+  .tl .evl .i3, .tl .evl .i4, .tl .evl .i5 { box-shadow: inset 0 0 0 1.2px #1d2433; }
+  .tl .evl .pill { font-size: 8px; padding: 0 3px; line-height: 1.5; }
+  .tl.xtight .evl .im { width: 10px; height: 10px; font-size: 0; } .tl.xtight .evl .pill { font-size: 0; padding: 0 2px; min-height: 8px; }
   .tl .mk .im, .tl .mkb .im { width: 14px; height: 14px; font-size: 8.5px; box-shadow: 0 0 0 1.5px #fff; }
   .tl .mk .pill, .tl .mkb .pill { font-size: 8.5px; padding: 0 3px; line-height: 1.45; }
   .tl .mk { gap: 1px; top: 5px; } .tl .mk.up { bottom: calc(100% + 5px); }
@@ -222,7 +227,7 @@
     <h2><span class="no">4</span>Macrocycle <span class="muted" style="font-family:Sarabun;font-weight:400">· Annual plan</span></h2>
     <div class="ahead" id="ahead"></div>
     <div class="row noprint" style="margin-bottom:8px" role="group" aria-label="รูปแบบการแสดงผล"><span class="muted">รูปแบบ:</span><button type="button" data-view="a">ก · แผนภูมิแท่ง + สมรรถภาพทางกลไก</button><button type="button" data-view="wa">ข · Annual plan แบบ WA</button><button type="button" id="bFit" aria-pressed="false" title="แสดงทั้งปีในหน้าจอเดียว" style="margin-left:auto">⤢ พอดีจอ</button></div>
-    <p class="muted" style="margin:0 0 8px">แตะหรือลากในช่องเพื่อกำหนดค่า: <b>Load การฝึก</b> 1–10 · <b>สมรรถภาพทางกลไก</b> 0–5 · ชี้หรือแตะสัญลักษณ์บนแท่งเพื่อดูกิจกรรม · แตะเลขสัปดาห์เพื่อดูวันที่ของ Microcycle · แตะแถวข้อความเพื่อพิมพ์ · ระบบไม่เติมค่าให้</p>
+    <p class="muted" style="margin:0 0 8px">แตะหรือลากในช่องเพื่อกำหนดค่า: <b>Load การฝึก</b> 1–10 · <b>สมรรถภาพทางกลไก</b> 0–5 · ชี้หรือแตะสัญลักษณ์ใต้แท่งเพื่อดูกิจกรรม · แตะเลขสัปดาห์เพื่อดูวันที่ของ Microcycle · แตะแถวข้อความเพื่อพิมพ์ · ระบบไม่เติมค่าให้</p>
     <div class="tlw" id="tlw"><div class="tl" id="tl"></div></div>
     <div class="legend" id="legend"></div>
   </section>
@@ -424,8 +429,9 @@
     B.month = function () { var h = lab('เดือน'), runs = [], cur = null;
       for (var w = 0; w < N; w++) { var d = addDays(S.start, w * 7 + 3), m = d.getMonth() + '-' + d.getFullYear(); if (!cur || cur.m !== m) { cur = { m: m, n: 0, t: TH_M[d.getMonth()] + ' ' + String(d.getFullYear() + 543).slice(2) }; runs.push(cur); } cur.n++; }
       runs.forEach(function (r) { h += '<div class="c mo" style="grid-column:span ' + r.n + '">' + (r.n >= 2 ? r.t : '') + '</div>'; }); return h; };
-    B.load = function () { var h = lab('Load การฝึก', 'สัญลักษณ์บนแท่ง = แข่ง / ทดสอบ');
+    B.load = function () { var h = '<div class="lab" style="grid-row:span 2">Load การฝึก<small>แถบล่าง = แข่ง / ทดสอบ</small></div>';
       for (var w = 0; w < N; w++) { var L = S.load[w] || 0; h += '<div class="bc ld' + (majorW[w] ? ' cw' : '') + '" data-row="load" data-w="' + w + '" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="10" aria-valuenow="' + L + '" aria-label="Load การฝึก สัปดาห์ ' + (w + 1) + '">' + barHTML('load', L, w) + '</div>'; }
+      for (w = 0; w < N; w++) h += '<div class="c evl' + (majorW[w] ? ' cw' : '') + '">' + markers(w) + '</div>';
       return h; };
     B.tag = function () { var h = lab('ประเภทงาน', 'เช่น HA · LA · RP'); for (var w = 0; w < N; w++) h += '<div class="c tx" contenteditable="true" spellcheck="false" data-tag="' + w + '" aria-label="ประเภทงาน สัปดาห์ ' + (w + 1) + '">' + esc(S.tags[w] || '') + '</div>'; return h; };
     B.week = function () { var nowW = weekOf(mondayOf(new Date())), h = lab('Microcycle', 'แตะเพื่อดูวันที่');
@@ -465,7 +471,7 @@
   function markers(w) { return S.events.filter(function (e) { return weekOf(e.date) === w; }).sort(function (a, b) { return (a.type === 'comp' ? a.pri : 9) - (b.type === 'comp' ? b.pri : 9); }).map(function (e) { return '<span class="ev" data-ev="' + e.id + '" tabindex="0">' + (e.type === 'comp' ? imp(e) : tst(e)) + '</span>'; }).join(''); }
   function peakWeek() { var mx = 0, pw = -1; for (var w = 0; w < nW(); w++) if ((S.shape[w] || 0) > mx) { mx = S.shape[w]; pw = w; } return pw; }
   function barHTML(row, v, w) {
-    if (row === 'load') { var mk = markers(w); if (!v) return mk ? '<span class="mkb">' + mk + '</span>' : ''; return '<span class="v">' + v + '</span><i style="height:' + (v / 10 * (LH - 14)) + 'px;--pc:' + phColor(w) + '">' + (mk ? '<span class="mk' + (v <= 3 ? ' up' : '') + '">' + mk + '</span>' : '') + '</i>'; }
+    if (row === 'load') { if (!v) return ''; return '<span class="v">' + v + '</span><i style="height:' + (v / 10 * (LH - 14)) + 'px;--pc:' + phColor(w) + '"></i>'; }
     if (!v) return '';
     if (row === 'shape') return '<b class="' + (w === peakWeek() ? 'pk' : '') + '" style="bottom:' + (v / 10 * (SH - 12) + 2) + 'px"></b>';
     var b = S.bio.filter(function (x) { return x.id === row; })[0]; return '<i style="height:' + (v / 5 * BH) + 'px;background:' + (b ? b.c : '#999') + '"></i>';

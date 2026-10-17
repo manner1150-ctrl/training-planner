@@ -99,6 +99,33 @@
   .undo button { min-height: 40px; padding: 6px 12px; }
   .undo button:disabled { opacity: .4; cursor: default; }
   @media print { .undo { display: none !important; } }
+  /* เครื่องคำนวณ Load: Session-RPE (Foster et al., 2001) */
+  .au { flex-direction: column; gap: 3px; }
+  .au b { font: 600 13.5px 'Prompt', sans-serif; color: #1d2433; }
+  .au small { font-size: 11px; color: #6b7690; }
+  .au button { min-height: 28px; padding: 2px 10px; font-size: 12px; }
+  .ovl { position: fixed; inset: 0; background: rgba(13, 24, 48, .45); z-index: 60; display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 24px 12px; }
+  .ovl[hidden] { display: none; }
+  .dlg { background: #fff; border-radius: 16px; width: min(860px, 100%); padding: 18px 20px; box-shadow: 0 18px 50px rgba(0,0,0,.3); }
+  .dlg h3 { font: 600 18px 'Prompt', sans-serif; color: var(--brand-navy); margin: 0 0 4px; }
+  .dlg table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 8px; }
+  .dlg th { text-align: left; font: 500 12.5px 'Prompt', sans-serif; color: #5b6476; border-bottom: 1px solid #e3e7ef; padding: 6px 4px; }
+  .dlg td { border-bottom: 1px solid #eef1f6; padding: 5px 4px; vertical-align: middle; }
+  .dlg td input, .dlg td select { min-height: 34px; font-size: 14px; padding: 4px 6px; }
+  .dlg td.n { text-align: right; font: 600 14px 'Prompt', sans-serif; white-space: nowrap; }
+  .dlg .sum { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 12px; }
+  .dlg .sum div { background: #f8f9fc; border-radius: 10px; padding: 8px 12px; }
+  .dlg .sum small { display: block; font: 500 12px 'Prompt', sans-serif; color: #5b6476; }
+  .dlg .sum b { font: 600 20px 'Prompt', sans-serif; color: var(--brand-navy); }
+  .dlg .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; align-items: end; height: 70px; margin-top: 10px; }
+  .dlg .days div { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; font-size: 11px; color: #5b6476; }
+  .dlg .days i { display: block; width: 70%; background: #4f6d8f; border-radius: 3px 3px 0 0; margin-bottom: 2px; min-height: 2px; }
+  .dlg .use { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; background: #eef2f9; border-radius: 12px; padding: 10px 14px; margin-top: 12px; }
+  .dlg .use b.lv { font: 700 26px 'Prompt', sans-serif; color: var(--brand-navy); }
+  .dlg .ref { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #5b6476; }
+  .dlg .ref input { width: 110px; min-height: 34px; }
+  .rpe-tip { font-size: 12.5px; color: #5b6476; margin-top: 8px; line-height: 1.5; }
+  @media (max-width: 640px) { .dlg .sum { grid-template-columns: 1fr 1fr; } .dlg th:nth-child(2), .dlg td:nth-child(2) { display: none; } }
   .empty { text-align: center; padding: 30px 16px; }
   .empty b { display: block; font: 600 18px 'Prompt', sans-serif; color: var(--brand-navy); margin-bottom: 6px; }
   footer { max-width: 1240px; margin: 0 auto; padding: 16px; border-top: 1px solid #e3e7ef; color: #6b7690; font-size: 13px; text-align: center; }
@@ -138,6 +165,7 @@
 
   <div id="app"></div>
 </main>
+<div class="ovl noprint" id="ovl" hidden><div class="dlg" id="dlg" role="dialog" aria-modal="true" aria-label="คำนวณ Load"></div></div>
 <div class="undo noprint" role="group" aria-label="ย้อนกลับและทำซ้ำ"><button type="button" id="bUndo" title="ย้อนกลับ (Ctrl+Z)" disabled>↶ ย้อนกลับ</button><button type="button" id="bRedo" title="ทำซ้ำ (Ctrl+Y)" disabled>↷ ทำซ้ำ</button></div>
 
 
@@ -185,7 +213,7 @@
   var HIST = [], FUT = [], lastStr = null, lastT = 0;
   function histPush(prev, merge) { var now = Date.now(); if (!(merge && now - lastT < 800 && HIST.length)) { HIST.push(prev); if (HIST.length > 80) HIST.shift(); } lastT = now; FUT = []; updUndo(); }
   function updUndo() { var u = document.getElementById('bUndo'), r = document.getElementById('bRedo'); if (u) { u.disabled = !HIST.length; u.textContent = '↶ ย้อนกลับ' + (HIST.length ? ' (' + HIST.length + ')' : ''); } if (r) r.disabled = !FUT.length; }
-  function typing(el) { return el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)); }
+  function typing(el) { return (document.getElementById('ovl') && !document.getElementById('ovl').hidden) || (el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))); }
   document.addEventListener('keydown', function (ev) { if (!(ev.ctrlKey || ev.metaKey) || ev.altKey || typing(ev.target)) return; var k = ev.key.toLowerCase();
     if (k === 'z' && !ev.shiftKey) { ev.preventDefault(); undoStep(-1); } else if (k === 'y' || (k === 'z' && ev.shiftKey)) { ev.preventDefault(); undoStep(1); } });
   document.addEventListener('click', function (ev) { if (ev.target.closest('#bUndo')) undoStep(-1); else if (ev.target.closest('#bRedo')) undoStep(1); });
@@ -246,6 +274,7 @@
     h += lab('ความหนัก', 'Intensity 1–10', '#D85A30'); wks.forEach(function (w) { h += bar('int', w, S.int[w] || 0, 10, '#D85A30', 'b10'); });
     h += lab('การฟื้นตัว', 'วันพัก/ฟื้นฟูต่อสัปดาห์', '#7F77DD'); wks.forEach(function (w) { h += '<div class="c"><input type="number" min="0" max="7" data-rec="' + w + '" value="' + (S.rec[w] != null ? S.rec[w] : '') + '" aria-label="วันฟื้นตัว สัปดาห์ ' + (w + 1) + '"></div>'; });
     h += lab('หน่วยฝึก', 'ต่อสัปดาห์'); wks.forEach(function (w) { h += '<div class="c"><input type="number" min="0" max="20" data-upwk="' + w + '" value="' + (S.upwk[w] != null ? S.upwk[w] : '') + '" placeholder="' + esc(S.upw || '') + '" aria-label="หน่วยฝึก สัปดาห์ ' + (w + 1) + '"></div>'; });
+    h += lab('Session-RPE', 'นาที × RPE (AU)', '#4f6d8f'); wks.forEach(function (w) { var a = weekAU(w); h += '<div class="c au">' + (a.total ? '<b>' + a.total.toLocaleString() + ' AU</b><small>' + a.n + ' มื้อ · ≈ ระดับ ' + suggest(a.total) + '</small>' : '<small>ยังไม่คำนวณ</small>') + '<button type="button" class="noprint" data-srpe="' + w + '">' + (a.total ? 'แก้ไข' : 'คำนวณ') + '</button></div>'; });
     h += '<div class="sec"><span>Load ของแต่ละ Microcycle 4 ด้าน (WA ขั้นที่ 5) · 0–5</span></div>';
     OBJ.forEach(function (o) { h += lab(o[1], o[2], o[3]); wks.forEach(function (w) { h += bar('l4:' + o[0], w, ((S.l4[w] || {})[o[0]]) || 0, 5, o[3], 'b5'); }); });
     if (S.bio.length) { h += '<div class="sec"><span>สมรรถภาพทางกลไก (Biomotor abilities) · 0–5</span></div>';
@@ -297,6 +326,60 @@
   function levelAt(c, y) { var r = c.getBoundingClientRect(), max = +c.dataset.max, top = max === 10 ? 16 : 0; return Math.max(0, Math.min(max, Math.round((r.bottom - y) / (r.height - top) * max + 0.25))); }
   function colorOf(c) { var i = c.querySelector('i'); if (i) return i.style.background; var row = c.dataset.row; if (row === 'load') return PHASE[mesos()[sel].k].c; if (row === 'vol') return '#1D9E75'; if (row === 'int') return '#D85A30'; var a = row.split(':'); if (a[0] === 'l4') return OBJ.filter(function (o) { return o[0] === a[1]; })[0][3]; var b = S.bio.filter(function (x) { return x.id === a[1]; })[0]; return b ? b.c : '#999'; }
   function paint(c, v) { var col = colorOf(c); setV(c.dataset.row, +c.dataset.w, v); c.setAttribute('aria-valuenow', v); c.innerHTML = barIn(v, +c.dataset.max, col, c.classList.contains('b10') ? 'b10' : 'b5'); if (c.dataset.row === 'load') drawLoadLine(); }
+  /* ---------- เครื่องคำนวณ Load: Session-RPE (Foster et al., 2001)
+     Load ของมื้อ (AU) = เวลา (นาที) × RPE (CR-10) · Load สัปดาห์ = ผลรวม · Monotony = ค่าเฉลี่ยรายวัน ÷ SD รายวัน · Strain = Load สัปดาห์ × Monotony (Foster, 1998)
+     ระดับ 1–10 เทียบกับ AU ของสัปดาห์ที่หนักที่สุด (ผู้ใช้กำหนดได้) · ไม่เขียนทับ Load เอง ต้องกด "ใช้ค่านี้" */
+  var RPE = ['0 · พัก', '1 · เบามาก', '2 · เบา', '3 · ปานกลาง', '4 · ค่อนข้างหนัก', '5 · หนัก', '6 · หนัก+', '7 · หนักมาก', '8 · หนักมาก+', '9 · เกือบสุด', '10 · หนักที่สุด'];
+  var DAYS = ['จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.', 'อา.'];
+  function sessOf(w) { if (!S.srpe || typeof S.srpe !== 'object') S.srpe = {}; return S.srpe[w] || []; }
+  function weekAU(w, list) { var L = list || sessOf(w), day = [0, 0, 0, 0, 0, 0, 0], tot = 0, n = 0;
+    L.forEach(function (x) { var a = (+x.min || 0) * (+x.rpe || 0); if (a > 0) { tot += a; n++; day[+x.d || 0] += a; } });
+    var mean = tot / 7, sd = Math.sqrt(day.reduce(function (s2, v) { return s2 + (v - mean) * (v - mean); }, 0) / 7), mono = sd > 0 ? mean / sd : null;
+    return { total: Math.round(tot), n: n, day: day, mono: mono, strain: mono ? Math.round(tot * mono) : null }; }
+  function refAU() { if (+S.auRef > 0) return +S.auRef; var mx = 0; Object.keys(S.srpe || {}).forEach(function (w) { mx = Math.max(mx, weekAU(+w).total); }); return mx; }
+  function suggest(tot) { var r = refAU(); return r > 0 && tot > 0 ? Math.max(1, Math.min(10, Math.round(tot / r * 10))) : '–'; }
+  var cw = -1, draft = [];
+  function openCalc(w) { cw = w; draft = JSON.parse(JSON.stringify(sessOf(w))); if (!draft.length) draft.push({ d: 0, n: '', min: '', rpe: '' }); drawCalc(); $('ovl').hidden = false; }
+  function closeCalc() { $('ovl').hidden = true; cw = -1; }
+  function drawCalc() {
+    var a = weekAU(cw, draft), d0 = addDays(S.start, cw * 7), d1 = addDays(S.start, cw * 7 + 6), r = +S.auRef > 0 ? +S.auRef : Math.max(refAU(), a.total), lv = r > 0 && a.total > 0 ? Math.max(1, Math.min(10, Math.round(a.total / r * 10))) : null, mx = Math.max.apply(null, a.day.concat([1]));
+    var h = '<h3>คำนวณ Load · Microcycle ' + (cw + 1) + '</h3><p class="muted" style="margin:0">' + thD(d0) + ' – ' + thD(d1, true) + ' · วิธี Session-RPE: Load ของมื้อ = เวลา (นาที) × RPE</p>';
+    h += '<table><tr><th style="width:84px">วัน</th><th>มื้อฝึก / เนื้อหา</th><th style="width:92px">นาที</th><th style="width:150px">RPE (0–10)</th><th style="width:90px;text-align:right">AU</th><th style="width:36px"></th></tr>';
+    draft.forEach(function (x, i) { var au = (+x.min || 0) * (+x.rpe || 0);
+      h += '<tr><td><select data-cd="' + i + '" aria-label="วัน">' + DAYS.map(function (dn, k) { return '<option value="' + k + '"' + (+x.d === k ? ' selected' : '') + '>' + dn + '</option>'; }).join('') + '</select></td>'
+        + '<td><input data-cn="' + i + '" value="' + esc(x.n || '') + '" placeholder="เช่น เช้า: ความเร็ว + เทคนิค"></td>'
+        + '<td><input type="number" min="0" max="600" data-cm="' + i + '" value="' + esc(x.min) + '" aria-label="นาที"></td>'
+        + '<td><select data-cr="' + i + '" aria-label="RPE"><option value="">— เลือก —</option>' + RPE.map(function (t, k) { return '<option value="' + k + '"' + (x.rpe !== '' && +x.rpe === k ? ' selected' : '') + '>' + t + '</option>'; }).join('') + '</select></td>'
+        + '<td class="n">' + (au ? au.toLocaleString() : '–') + '</td><td><button type="button" class="x" data-cx="' + i + '" aria-label="ลบมื้อ" style="min-height:30px;padding:2px 8px;color:#a11">✕</button></td></tr>'; });
+    h += '</table><div class="row" style="margin-top:8px"><button type="button" data-cadd="1">+ เพิ่มมื้อฝึก</button></div>';
+    h += '<div class="days">' + a.day.map(function (v, k) { return '<div title="' + DAYS[k] + ' ' + v + ' AU"><span>' + (v ? v : '') + '</span><i style="height:' + Math.round(v / mx * 46) + 'px"></i>' + DAYS[k] + '</div>'; }).join('') + '</div>';
+    h += '<div class="sum"><div><small>Load สัปดาห์</small><b>' + a.total.toLocaleString() + '</b> AU</div><div><small>จำนวนมื้อ</small><b>' + a.n + '</b></div>'
+      + '<div><small>Monotony</small><b' + (a.mono && a.mono > 2 ? ' style="color:#a11"' : '') + '>' + (a.mono ? a.mono.toFixed(2) : '–') + '</b></div><div><small>Strain</small><b>' + (a.strain ? a.strain.toLocaleString() : '–') + '</b></div></div>';
+    if (a.mono && a.mono > 2) h += '<p class="rpe-tip" style="color:#a11">Monotony เกิน 2.0 — Load แต่ละวันใกล้เคียงกันมาก ความเสี่ยงล้าสะสมสูงขึ้น ควรสลับวันหนัก–เบาให้ชัด (Foster, 1998)</p>';
+    h += '<div class="use"><span class="ref">เทียบกับสัปดาห์ที่หนักที่สุด <input type="number" min="0" data-cref="1" value="' + (+S.auRef > 0 ? S.auRef : '') + '" placeholder="' + (r || 'AU') + '"> AU = ระดับ 10</span>'
+      + '<span>ระดับที่เสนอ <b class="lv">' + (lv || '–') + '</b> / 10 <span class="muted">(Load การฝึกตอนนี้ ' + (S.load[cw] || '–') + ')</span></span>'
+      + '<span class="row"><button type="button" class="pri" data-cuse="1"' + (lv ? '' : ' disabled') + '>ใช้ค่านี้กับ Load การฝึก</button><button type="button" data-csave="1">บันทึกมื้อฝึก</button><button type="button" data-cclose="1">ปิด</button></span></div>';
+    h += '<p class="rpe-tip"><b>RPE</b> คือความหนักที่นักกีฬารู้สึกทั้งมื้อ (CR-10) ตอนวางแผนใช้ค่าที่คาดการณ์ หลังฝึกให้นักกีฬาให้คะแนนจริงภายใน 30 นาที · ระดับ 1–10 เทียบกับสัปดาห์ที่หนักที่สุดของ Macrocycle (ถ้าไม่กำหนด ระบบใช้สัปดาห์ที่คำนวณแล้วที่สูงสุด) · อ้างอิง Foster et al. (2001) <i>JSCR 15</i>(1), 109–115</p>';
+    $('dlg').innerHTML = h;
+  }
+  function commitDraft() { S.srpe = S.srpe || {}; var clean = draft.filter(function (x) { return (+x.min || 0) > 0 || x.n; }); if (clean.length) S.srpe[cw] = clean; else delete S.srpe[cw]; }
+  document.addEventListener('click', function (ev) { var t = ev.target;
+    var b = t.closest('[data-srpe]'); if (b) { openCalc(+b.dataset.srpe); return; }
+    if (t.id === 'ovl') { closeCalc(); return; }
+    if (t.closest('[data-cadd]')) { var last = draft[draft.length - 1]; draft.push({ d: last ? Math.min(6, (+last.d || 0) + 1) : 0, n: '', min: '', rpe: '' }); drawCalc(); }
+    else if (t.closest('[data-cx]')) { draft.splice(+t.closest('[data-cx]').dataset.cx, 1); drawCalc(); }
+    else if (t.closest('[data-csave]')) { commitDraft(); save(); closeCalc(); refreshSummary(); }
+    else if (t.closest('[data-cuse]')) { var a = weekAU(cw, draft), r = +S.auRef > 0 ? +S.auRef : Math.max(refAU(), a.total); commitDraft(); if (r > 0 && a.total > 0) S.load[cw] = Math.max(1, Math.min(10, Math.round(a.total / r * 10))); save(); closeCalc(); refreshSummary(); }
+    else if (t.closest('[data-cclose]')) closeCalc();
+  });
+  document.addEventListener('input', function (ev) { var t = ev.target, d = t.dataset || {}; if (cw < 0) return;
+    if (d.cn != null) draft[+d.cn].n = t.value.slice(0, 60);
+    else if (d.cm != null) { draft[+d.cm].min = t.value === '' ? '' : Math.max(0, Math.min(600, +t.value)); drawCalcKeep(t); }
+    else if (d.cref != null) { S.auRef = t.value === '' ? '' : Math.max(0, +t.value); drawCalcKeep(t); } });
+  document.addEventListener('change', function (ev) { var t = ev.target, d = t.dataset || {}; if (cw < 0) return;
+    if (d.cd != null) { draft[+d.cd].d = +t.value; drawCalc(); } else if (d.cr != null) { draft[+d.cr].rpe = t.value === '' ? '' : +t.value; drawCalc(); } });
+  document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && cw >= 0) closeCalc(); });
+  function drawCalcKeep(el) { var key = Object.keys(el.dataset)[0], val = el.dataset[key], pos = el.selectionStart; drawCalc(); var n = document.querySelector('#dlg [data-' + key.replace(/[A-Z]/g, function (m) { return '-' + m.toLowerCase(); }) + '="' + val + '"]'); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (e) {} } }
   var drag = null;
   document.addEventListener('pointerdown', function (ev) { var c = ev.target.closest('.bc'); if (!c) return; ev.preventDefault(); drag = c.dataset.row; paint(c, levelAt(c, ev.clientY)); c.focus({ preventScroll: true }); });
   document.addEventListener('pointermove', function (ev) { if (!drag) return; var el = document.elementFromPoint(ev.clientX, ev.clientY), c = el && el.closest('.bc'); if (c && c.dataset.row === drag) paint(c, levelAt(c, ev.clientY)); });
