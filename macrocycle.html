@@ -51,7 +51,8 @@
   /* แผนภูมิ */
   .tlw { overflow-x: auto; border: 1px solid #d6dbe5; border-radius: 12px; background: #fff; }
   .tl { display: grid; min-width: 100%; user-select: none; -webkit-user-select: none; position: relative; }
-  .tl > div { border-right: 1px solid #eef0f4; }
+  .tl > div { border-right: 1px solid #e3e7ee; border-bottom: 1px solid #dde2ea; }
+  .tl .z:not(.mo):not(.wk):not(.dt):not(.ms) { background-color: #f4f6fa; } .tl .lab.z { background: #eef1f6; }
   .tl .lab { position: sticky; left: 0; z-index: 6; background: #fff; font: 500 12.5px 'Prompt', sans-serif; color: var(--brand-navy); padding: 3px 8px; border-right: 1px solid #c9cfdb; display: flex; flex-direction: column; justify-content: center; line-height: 1.25; }
   .tl .lab small { font: 400 11px 'Sarabun', sans-serif; color: #6b7690; }
   .tl .lab.bio { border-left: 4px solid var(--c); }
@@ -462,6 +463,7 @@
   function fitOn() { if (printing) return true; var v = null; try { v = localStorage.getItem('tp-macro-fit'); } catch (e) {} return v == null ? innerWidth >= 1000 : v === '1'; }
   document.addEventListener('click', function (ev) { if (!ev.target.closest('#bFit')) return; try { localStorage.setItem('tp-macro-fit', fitOn() ? '0' : '1'); } catch (e) {} renderChart(); });
   /* สองรูปแบบ (ผู้ใช้ขอลองทั้งคู่): 'a' = แผนภูมิแท่ง + สมรรถภาพทางกลไก · 'wa' = Annual plan ของ WA · ทั้งสองแบบ Load อยู่บนสุด */
+  function zebra(g) { if (!g) return; var r = 0; [].forEach.call(g.children, function (c) { if (c.classList.contains('sec')) { r = 0; return; } if (c.classList.contains('lab')) r++; c.classList.toggle('z', r % 2 === 0); }); }   // แถวสลับสีแบบตาราง Excel (ผู้ใช้เลือก 2026-10-17)
   function renderChart() {
     var N = nW(), tl = $('tl'), colW = N > 30 ? 24 : 34, lw = innerWidth < 600 ? 104 : 150, view = S.view === 'wa' ? 'wa' : 'a';
     var majorW = {}; S.events.forEach(function (e) { if (e.type === 'comp' && e.pri <= 2) majorW[weekOf(e.date)] = 1; });
@@ -508,7 +510,7 @@
     var h = view === 'wa'
       ? B.month() + B.load() + B.week() + B.comp(true) + B.cycles(true) + '<div class="sec"><span>เป้าหมายของแต่ละ Mesocycle (WA: Physical · Technical · Tactical · Psych)</span></div>' + B.obj()
       : B.month() + B.load() + B.week() + B.comp(false) + B.cycles(false) + B.bio();
-    tl.innerHTML = h;
+    tl.innerHTML = h; zebra(tl);
     drawLoadLine(); renderHead();
     $('legend').innerHTML = '<span><i style="background:linear-gradient(90deg,#5c8a4a 0 33%,#3f6fa8 33% 66%,#8f1d1d 66%)"></i>Load การฝึก (สีตาม Phase) + เส้นแนวโน้ม</span><span><i style="background:rgba(143,29,29,.12);border:1px solid #e3c9c9"></i>สัปดาห์รายการหลัก</span>'
       + '<span><span class="im i1">1</span> <span class="im i2">2</span> รายการหลัก (Major)</span><span><span class="im i3">3</span> รายการรอง (Minor 3–5)</span><span><span class="pill pF">T</span> ทดสอบสมรรถภาพ</span><span><span class="pill pP">P</span> ทดสอบสรีรวิทยา</span>'

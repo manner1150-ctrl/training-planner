@@ -51,7 +51,8 @@
   /* ตาราง Microcycle */
   .mw { overflow-x: auto; border: 1px solid #d6dbe5; border-radius: 12px; background: #fff; }
   .mt { display: grid; min-width: 100%; user-select: none; -webkit-user-select: none; }
-  .mt > div { border-right: 1px solid #eef0f4; border-bottom: 1px solid #eef0f4; }
+  .mt > div { border-right: 1px solid #e3e7ee; border-bottom: 1px solid #dde2ea; }
+  .mt .z:not(.hd) { background-color: #f4f6fa; } .mt .lab.z { background: #eef1f6; }
   .mt .lab { position: sticky; left: 0; z-index: 3; background: #fff; font: 500 12.5px 'Prompt', sans-serif; color: var(--brand-navy); padding: 4px 8px; border-right: 1px solid #c9cfdb; display: flex; flex-direction: column; justify-content: center; line-height: 1.25; }
   .mt .lab small { font: 400 11px 'Sarabun', sans-serif; color: #6b7690; }
   .mt .lab.k { border-left: 4px solid var(--c); }
@@ -173,6 +174,8 @@
 
 <script src="plan-sample.js"></script>
 <script>
+  function zebra(g) { if (!g) return; var r = 0; [].forEach.call(g.children, function (c) { if (c.classList.contains('sec')) { r = 0; return; } if (c.classList.contains('lab')) r++; c.classList.toggle('z', r % 2 === 0); }); }   // แถวสลับสีแบบตาราง Excel (ผู้ใช้เลือก 2026-10-17)
+
 (function () {
   var KEY = 'tp-macro-v1', SEL = 'tp-meso-sel';
   var PERIOD = { prep: { n: 'ช่วงเตรียม', en: 'Preparation' }, comp: { n: 'ช่วงแข่งขัน', en: 'Competition' }, trans: { n: 'ช่วงเปลี่ยนผ่าน', en: 'Transition' } };
@@ -293,7 +296,7 @@
       + '<div><small>Load สูงสุด</small><b>' + (mx || '–') + '</b>' + (mx ? ' <span class="muted">สัปดาห์ ' + (mxW + 1) + '</span>' : '') + '</div>'
       + '<div><small>หน่วยฝึกรวม</small><b>' + (units || '–') + '</b></div>'
       + '<div><small>รูปแบบ Load</small><b style="font-size:15px">' + esc(pattern(Ls)) + '</b></div></div><ul class="hints" id="hints">' + hints(m, wks) + '</ul></section>';
-    app.innerHTML = h;
+    app.innerHTML = h; zebra(app.querySelector('.mt'));
     drawLoadLine();
   }
   function drawLoadLine() { var mt = document.querySelector('.mt'); if (!mt) return; var old = mt.querySelector('svg.ldl'); if (old) old.remove();
