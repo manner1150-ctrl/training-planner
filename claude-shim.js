@@ -95,6 +95,8 @@
     var host = document.querySelector('.switches'); if (!host || document.getElementById('tpAuthBtn')) return;
     // ลิงก์กลับหน้าแรกของเว็บ (index.html = หน้าแรก, planner.html = โปรแกรม) — มีเฉพาะเว็บ ไม่อยู่ในฉบับ claude.ai
     if (!document.getElementById('tpHomeBtn')) { var h = document.createElement('a'); h.id = 'tpHomeBtn'; h.className = 'btn small'; h.href = 'index.html'; h.textContent = '🏠 หน้าแรก'; h.style.textDecoration = 'none'; h.style.display = 'inline-flex'; h.style.alignItems = 'center'; host.insertBefore(h, host.firstChild); }
+    // ลิงก์ไปแผนรายปี (Macrocycle) — ระดับแผนที่อยู่เหนือ Microcycle 7 วัน สลับไปมาได้
+    if (!document.getElementById('tpMacroBtn')) { var mb = document.createElement('a'); mb.id = 'tpMacroBtn'; mb.className = 'btn small'; mb.href = 'macrocycle.html'; mb.textContent = '📅 Macrocycle'; mb.title = 'แผนการฝึกรายปี'; mb.style.textDecoration = 'none'; mb.style.display = 'inline-flex'; mb.style.alignItems = 'center'; host.insertBefore(mb, document.getElementById('tpHomeBtn').nextSibling); }
     var b = document.createElement('button'); b.id = 'tpAuthBtn'; b.className = 'btn small'; b.type = 'button';
     if (!configured) { b.textContent = 'ยังไม่ได้ตั้งค่า Firebase'; b.disabled = true; host.appendChild(b); return; }
     b.textContent = 'กำลังตรวจสอบ…'; host.appendChild(b);
