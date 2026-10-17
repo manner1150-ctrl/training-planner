@@ -39,6 +39,15 @@
   .try { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; background: var(--brand-navy); color: #fff; border-radius: 16px; padding: 16px 20px; margin: 18px 0; }
   .try b { font-family: 'Prompt', sans-serif; font-size: 17px; }
   .try a { background: var(--brand-gold); color: #1d1a10; text-decoration: none; font-family: 'Prompt', sans-serif; font-weight: 600; padding: 10px 16px; border-radius: 10px; }
+  /* ตารางตัวอย่าง Microcycle: สีตามสมรรถภาพชุดเดียวกับโปรแกรม (แข็งแรง กรมท่า · ความเร็ว แดง · อดทน เขียว · ประสานงาน ส้มเหลือง · อ่อนตัว เขียวอมฟ้า · ฟื้นฟู เทา)
+     และสีระบบพลังงานชุดเดียวกับชิ้นงานความเร็ว (ATP-CP แดง · Lactate อำพัน · Aerobic เขียว) */
+  .fc, .es { display: block; border-radius: 6px; padding: 2px 6px; margin: 3px 0; font-weight: 600; font-size: 13px; line-height: 1.35; }
+  .f-str { background: #142c66; color: #fff; } .f-spd { background: #ad1820; color: #fff; } .f-end { background: #237a3c; color: #fff; }
+  .f-co { background: #d97706; color: #2b1600; } .f-fx { background: #12857e; color: #fff; } .f-rec { background: #d3d1c7; color: #2c2c2a; }
+  .f-rest { color: #4b5873; background: #f1f2ee url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cline x1='0' y1='100' x2='100' y2='0' stroke='%23a9aeab' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat 0 0/100% 100%; border: 1px solid #dfe4ee; padding: 8px 6px; }
+  .es { border: 1.5px solid; } .e-pc { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; } .e-la { background: #FAEEDA; border-color: #BA7517; color: #633806; } .e-ae { background: #EAF3DE; border-color: #639922; color: #27500A; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 2px; }
+  .legend .fc, .legend .es { display: inline-block; margin: 0; font-size: 12.5px; }
   .src { font-size: 14px; color: #4b5873; }
   .src li { margin-bottom: 4px; }
   footer { max-width: 860px; margin: 0 auto; padding: 16px; border-top: 1px solid #e3e7ef; color: #6b7690; font-size: 13px; text-align: center; }
@@ -134,15 +143,17 @@
   </section>
 
   <section class="k" id="s6"><h2><span class="no">6</span>ตัวอย่าง Microcycle</h2>
+    <div class="legend" aria-label="สีของสมรรถภาพ"><span class="fc f-str">แข็งแรง</span><span class="fc f-spd">ความเร็ว</span><span class="fc f-end">อดทน</span><span class="fc f-co">ประสานงาน</span><span class="fc f-fx">อ่อนตัว</span><span class="fc f-rec">ฟื้นฟู</span><span class="fc f-rest">พัก</span></div>
+    <div class="legend" aria-label="สีของระบบพลังงาน"><span class="es e-pc">ATP-CP</span><span class="es e-la">Lactate</span><span class="es e-ae">Aerobic</span></div>
     <h3>นักกีฬาเยาวชนหรือมือใหม่ (อายุการฝึกน้อยกว่า 4 ปี)</h3>
     <div class="tbl"><table><thead><tr><th class="l">วัน</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead><tbody>
-      <tr><td class="l">เน้นสมรรถภาพ</td><td>อดทน</td><td>อดทน + ฟื้นฟู</td><td>ความเร็ว ประสานงาน อ่อนตัว</td><td>พัก</td><td>แข็งแรง ความเร็ว ประสานงาน</td><td>พัก</td><td>ความเร็ว ประสานงาน อ่อนตัว</td></tr>
-      <tr><td class="l">ระบบพลังงาน</td><td>Aerobic</td><td>Aerobic</td><td>Lactate, ATP-CP</td><td>Aerobic</td><td>Lactate, ATP-CP</td><td>Aerobic</td><td>Aerobic, Lactate</td></tr>
+      <tr><td class="l">เน้นสมรรถภาพ</td><td><span class="fc f-end">อดทน</span></td><td><span class="fc f-end">อดทน</span><span class="fc f-rec">ฟื้นฟู</span></td><td><span class="fc f-spd">ความเร็ว</span><span class="fc f-co">ประสานงาน</span><span class="fc f-fx">อ่อนตัว</span></td><td><span class="fc f-rest">พัก</span></td><td><span class="fc f-str">แข็งแรง</span><span class="fc f-spd">ความเร็ว</span><span class="fc f-co">ประสานงาน</span></td><td><span class="fc f-rest">พัก</span></td><td><span class="fc f-spd">ความเร็ว</span><span class="fc f-co">ประสานงาน</span><span class="fc f-fx">อ่อนตัว</span></td></tr>
+      <tr><td class="l">ระบบพลังงาน</td><td><span class="es e-ae">Aerobic</span></td><td><span class="es e-ae">Aerobic</span></td><td><span class="es e-la">Lactate</span><span class="es e-pc">ATP-CP</span></td><td><span class="es e-ae">Aerobic</span></td><td><span class="es e-la">Lactate</span><span class="es e-pc">ATP-CP</span></td><td><span class="es e-ae">Aerobic</span></td><td><span class="es e-ae">Aerobic</span><span class="es e-la">Lactate</span></td></tr>
     </tbody></table></div>
     <h3>นักกีฬาอาวุโสประเภทความอดทน (อายุการฝึก 8 ปีขึ้นไป)</h3>
     <div class="tbl"><table><thead><tr><th class="l">วัน</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead><tbody>
-      <tr><td class="l">เน้นสมรรถภาพ</td><td>อดทน</td><td>แข็งแรง / อดทน</td><td>ความเร็ว ประสานงาน อ่อนตัว</td><td>อดทน + ฟื้นฟู</td><td>แข็งแรง ความเร็ว ประสานงาน</td><td>อดทน + ฟื้นฟู</td><td>ความเร็ว ประสานงาน อ่อนตัว</td></tr>
-      <tr><td class="l">ระบบพลังงาน</td><td>Aerobic</td><td>ATP-CP / Aerobic</td><td>Lactate, ATP-CP</td><td>Aerobic</td><td>Lactate, ATP-CP</td><td>Aerobic</td><td>Lactate</td></tr>
+      <tr><td class="l">เน้นสมรรถภาพ</td><td><span class="fc f-end">อดทน</span></td><td><span class="fc f-str">แข็งแรง</span><span class="fc f-end">อดทน</span></td><td><span class="fc f-spd">ความเร็ว</span><span class="fc f-co">ประสานงาน</span><span class="fc f-fx">อ่อนตัว</span></td><td><span class="fc f-end">อดทน</span><span class="fc f-rec">ฟื้นฟู</span></td><td><span class="fc f-str">แข็งแรง</span><span class="fc f-spd">ความเร็ว</span><span class="fc f-co">ประสานงาน</span></td><td><span class="fc f-end">อดทน</span><span class="fc f-rec">ฟื้นฟู</span></td><td><span class="fc f-spd">ความเร็ว</span><span class="fc f-co">ประสานงาน</span><span class="fc f-fx">อ่อนตัว</span></td></tr>
+      <tr><td class="l">ระบบพลังงาน</td><td><span class="es e-ae">Aerobic</span></td><td><span class="es e-pc">ATP-CP</span><span class="es e-ae">Aerobic</span></td><td><span class="es e-la">Lactate</span><span class="es e-pc">ATP-CP</span></td><td><span class="es e-ae">Aerobic</span></td><td><span class="es e-la">Lactate</span><span class="es e-pc">ATP-CP</span></td><td><span class="es e-ae">Aerobic</span></td><td><span class="es e-la">Lactate</span></td></tr>
     </tbody></table></div>
     <p class="note">ข้อสังเกต: นักกีฬาเยาวชนมีวันพักเต็มวัน 2 วัน ส่วนนักกีฬาอาวุโสใช้ "อดทน + ฟื้นฟู" แทน · นักกีฬากลุ่มพลังมักมีวันพักเต็มวัน 1 วันต่อ Microcycle</p>
   </section>
