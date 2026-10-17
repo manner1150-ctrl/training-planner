@@ -52,7 +52,7 @@
   .tlw { overflow-x: auto; border: 1px solid #d6dbe5; border-radius: 12px; background: #fff; }
   .tl { display: grid; min-width: 100%; user-select: none; -webkit-user-select: none; position: relative; }
   .tl > div { border-right: 1px solid #eef0f4; }
-  .tl .lab { position: sticky; left: 0; z-index: 3; background: #fff; font: 500 12.5px 'Prompt', sans-serif; color: var(--brand-navy); padding: 3px 8px; border-right: 1px solid #c9cfdb; display: flex; flex-direction: column; justify-content: center; line-height: 1.25; }
+  .tl .lab { position: sticky; left: 0; z-index: 6; background: #fff; font: 500 12.5px 'Prompt', sans-serif; color: var(--brand-navy); padding: 3px 8px; border-right: 1px solid #c9cfdb; display: flex; flex-direction: column; justify-content: center; line-height: 1.25; }
   .tl .lab small { font: 400 11px 'Sarabun', sans-serif; color: #6b7690; }
   .tl .lab.bio { border-left: 4px solid var(--c); }
   .tl .c { font-size: 11px; text-align: center; color: #5b6476; display: flex; align-items: center; justify-content: center; min-height: 24px; }
@@ -76,15 +76,25 @@
   .tl .bc:hover { background-color: #f4f7fc; }
   .tl .bc:focus { outline: 2px solid var(--brand-gold); outline-offset: -2px; }
   .tl .bc i { display: block; width: 100%; max-width: 30px; border-radius: 3px 3px 0 0; }
-  .tl .ld { height: 120px; background-image: repeating-linear-gradient(to top, transparent 0 23px, #eef0f4 23px 24px); }
+  .tl .ld { height: 88px; background-image: repeating-linear-gradient(to top, transparent 0 calc(20% - 1px), #eef0f4 calc(20% - 1px) 20%); }
   .tl .ld i { background: var(--pc, #4f6d8f); }
-  .tl .sh { height: 90px; background-image: repeating-linear-gradient(to top, transparent 0 17px, #f4efe0 17px 18px); }
+  .tl .sh { height: 62px; background-image: repeating-linear-gradient(to top, transparent 0 calc(20% - 1px), #f4efe0 calc(20% - 1px) 20%); }
   .tl .sh b { position: absolute; left: 50%; width: 9px; height: 9px; margin-left: -4.5px; border-radius: 50%; background: #d9a520; box-shadow: 0 0 0 2px #fff; z-index: 2; }
   .tl .sh b.pk { width: 13px; height: 13px; margin-left: -6.5px; background: #8f1d1d; }
   .tl .bo { height: 50px; background-image: repeating-linear-gradient(to top, transparent 0 9px, #f1f3f7 9px 10px); }
   .tl .v { position: absolute; top: 1px; left: 0; right: 0; text-align: center; font: 600 10px 'Prompt', sans-serif; color: #4f6d8f; }
   .tl .cw { box-shadow: inset 0 0 0 9999px rgba(143, 29, 29, .06); }
   .tl .now { box-shadow: inset 0 -3px 0 var(--brand-gold); }
+  .undo { position: fixed; right: 16px; bottom: 16px; z-index: 40; display: flex; gap: 6px; background: #fff; border: 1px solid #d6dbe5; border-radius: 14px; padding: 6px; box-shadow: 0 6px 18px rgba(10,42,102,.14); }
+  .undo button { min-height: 40px; padding: 6px 12px; }
+  .undo button:disabled { opacity: .4; cursor: default; }
+  @media print { .undo { display: none !important; } }
+  .tl .ld i { position: relative; }
+  .tl .mk { position: absolute; left: 50%; transform: translateX(-50%); top: 7px; display: flex; flex-direction: column; align-items: center; gap: 2px; z-index: 3; }
+  .tl .mk.up { top: auto; bottom: calc(100% + 7px); }
+  .tl .mk .im { box-shadow: 0 0 0 2px #fff; }
+  .tl .mk .i3, .tl .mk .i4, .tl .mk .i5 { box-shadow: inset 0 0 0 1.5px #1d2433, 0 0 0 2px #fff; }
+  .tl .mkb { position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 2px; align-items: center; }
   svg.ldl { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; z-index: 1; }
   svg.ldl polyline { fill: none; stroke: #1d2433; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; opacity: .85; }
   svg.ldl .o { fill: #1d2433; } svg.ldl .i { fill: #fff; }
@@ -217,6 +227,8 @@
   </div>
 </main>
 <div class="pop" id="pop" hidden></div>
+<div class="undo noprint" role="group" aria-label="ย้อนกลับและทำซ้ำ"><button type="button" id="bUndo" title="ย้อนกลับ (Ctrl+Z)" disabled>↶ ย้อนกลับ</button><button type="button" id="bRedo" title="ทำซ้ำ (Ctrl+Y)" disabled>↷ ทำซ้ำ</button></div>
+
 
 <footer><b>Run Your Best #Godwit</b> · คณะพลศึกษา มหาวิทยาลัยการกีฬาแห่งชาติ วิทยาเขตอุดรธานี<br><span class="author">จัดทำและเรียบเรียงโดย <b>ปริญญา นาเหนือ (PARINYA NANUA)</b> · อาจารย์ประจำคณะพลศึกษา มหาวิทยาลัยการกีฬาแห่งชาติ วิทยาเขตอุดรธานี</span><br>หลักการอ้างอิง World Athletics (WA) CECS Level II · 2.3 Macro- &amp; Mesocycle</footer>
 
@@ -268,7 +280,16 @@
     S.events.forEach(function (e) { if (e.type === 'comp' && OLD_PRI[e.pri]) e.pri = OLD_PRI[e.pri]; if (e.type === 'comp') e.pri = +e.pri || 3; });
     delete S.emph; delete S.level;
   }
-  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+  function save(merge) { var str = JSON.stringify(S); if (lastStr !== null && str !== lastStr) histPush(lastStr, merge === true); lastStr = str; try { localStorage.setItem(KEY, str); } catch (e) {} }
+  /* ย้อนกลับ / ทำซ้ำ (ผู้ใช้ขอ 2026-10-17): เก็บสถานะก่อนบันทึกแต่ละครั้ง · การพิมพ์ต่อเนื่องภายใน 0.8 วินาทีนับเป็นขั้นเดียว · Ctrl+Z / Ctrl+Y (ในช่องพิมพ์ใช้ undo ของเบราว์เซอร์) */
+  var HIST = [], FUT = [], lastStr = null, lastT = 0;
+  function histPush(prev, merge) { var now = Date.now(); if (!(merge && now - lastT < 800 && HIST.length)) { HIST.push(prev); if (HIST.length > 80) HIST.shift(); } lastT = now; FUT = []; updUndo(); }
+  function updUndo() { var u = document.getElementById('bUndo'), r = document.getElementById('bRedo'); if (u) { u.disabled = !HIST.length; u.textContent = '↶ ย้อนกลับ' + (HIST.length ? ' (' + HIST.length + ')' : ''); } if (r) r.disabled = !FUT.length; }
+  function typing(el) { return el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)); }
+  document.addEventListener('keydown', function (ev) { if (!(ev.ctrlKey || ev.metaKey) || ev.altKey || typing(ev.target)) return; var k = ev.key.toLowerCase();
+    if (k === 'z' && !ev.shiftKey) { ev.preventDefault(); undoStep(-1); } else if (k === 'y' || (k === 'z' && ev.shiftKey)) { ev.preventDefault(); undoStep(1); } });
+  document.addEventListener('click', function (ev) { if (ev.target.closest('#bUndo')) undoStep(-1); else if (ev.target.closest('#bRedo')) undoStep(1); });
+  function undoStep(d) { var from = d < 0 ? HIST : FUT, to = d < 0 ? FUT : HIST; if (!from.length) return; to.push(lastStr); var str = from.pop(); lastStr = str; try { localStorage.setItem(KEY, str); } catch (e) {} load(); fillInfo(); renderAll(); updUndo(); }
   function $(id) { return document.getElementById(id); }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
@@ -344,7 +365,7 @@
   }
 
   /* ---------- แผนภูมิ */
-  var LH = 120, SH = 90, BH = 50;
+  var LH = 88, SH = 62, BH = 50;
   function weekInfo(w) {
     var a = addDays(S.start, w * 7), b = addDays(S.start, w * 7 + 6), wp = weekPhase()[w], wm = weekMeso()[w];
     var ev = S.events.filter(function (e) { return weekOf(e.date) === w; }).map(function (e) { return e.type === 'comp' ? 'แข่ง (' + e.pri + ') ' + e.name : (e.type === 'fit' ? 'ทดสอบสมรรถภาพ' : 'ทดสอบสรีรวิทยา') + (e.tests && e.tests.length ? ': ' + e.tests.join(', ') : ''); });
@@ -364,7 +385,7 @@
     B.month = function () { var h = lab('เดือน'), runs = [], cur = null;
       for (var w = 0; w < N; w++) { var d = addDays(S.start, w * 7 + 3), m = d.getMonth() + '-' + d.getFullYear(); if (!cur || cur.m !== m) { cur = { m: m, n: 0, t: TH_M[d.getMonth()] + ' ' + String(d.getFullYear() + 543).slice(2) }; runs.push(cur); } cur.n++; }
       runs.forEach(function (r) { h += '<div class="c mo" style="grid-column:span ' + r.n + '">' + (r.n >= 2 ? r.t : '') + '</div>'; }); return h; };
-    B.load = function () { var h = lab('Load การฝึก', 'ปริมาณ × ความหนัก 1–10');
+    B.load = function () { var h = lab('Load การฝึก', 'สัญลักษณ์บนแท่ง = แข่ง / ทดสอบ');
       for (var w = 0; w < N; w++) { var L = S.load[w] || 0; h += '<div class="bc ld' + (majorW[w] ? ' cw' : '') + '" data-row="load" data-w="' + w + '" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="10" aria-valuenow="' + L + '" aria-label="Load การฝึก สัปดาห์ ' + (w + 1) + '">' + barHTML('load', L, w) + '</div>'; }
       h += lab('ความพร้อมทางกีฬา', 'Athletic shape 0–10');
       for (w = 0; w < N; w++) { var s = S.shape[w] || 0; h += '<div class="bc sh' + (majorW[w] ? ' cw' : '') + '" data-row="shape" data-w="' + w + '" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="10" aria-valuenow="' + s + '" aria-label="ความพร้อมทางกีฬา สัปดาห์ ' + (w + 1) + '">' + barHTML('shape', s, w) + '</div>'; }
@@ -373,11 +394,8 @@
     B.week = function () { var nowW = weekOf(mondayOf(new Date())), h = lab('Microcycle', 'แตะเพื่อดูวันที่');
       for (var w = 0; w < N; w++) { var wi = weekInfo(w); h += '<div class="c wk' + (w === nowW ? ' now' : '') + '" data-wk="' + w + '" tabindex="0" title="' + esc(wi.t + ' · ' + wi.d) + '">' + (w + 1) + '</div>'; }
       h += lab('เริ่ม (จันทร์)', 'วว/ดด'); for (w = 0; w < N; w++) { var a = addDays(S.start, w * 7); h += '<div class="c dt">' + pad(a.getDate()) + '/' + pad(a.getMonth() + 1) + '</div>'; } return h; };
-    B.comp = function (full) { var h = lab('การแข่งขัน', 'ระดับความสำคัญ 1–5');
-      for (var w = 0; w < N; w++) h += '<div class="c' + (majorW[w] ? ' cw' : '') + '">' + (byW[w] || []).filter(function (e) { return e.type === 'comp'; }).map(imp).join('') + '</div>';
+    B.comp = function (full) { var h = '', w;
       if (full) { h += lab('รายการแข่งขัน'); for (w = 0; w < N; w++) h += '<div class="c cd' + (majorW[w] ? ' cw' : '') + '">' + esc((byW[w] || []).filter(function (e) { return e.type === 'comp'; }).map(function (e) { return e.name; }).join(' / ')) + '</div>'; }
-      h += lab('การทดสอบ', 'T สมรรถภาพ · P สรีรวิทยา');
-      for (w = 0; w < N; w++) h += '<div class="c tst">' + (byW[w] || []).filter(function (e) { return e.type !== 'comp'; }).map(function (e) { return '<span title="' + esc(thDate(e.date) + (e.name ? ' · ' + e.name : '') + (e.tests && e.tests.length ? ' · ' + e.tests.join(', ') : '')) + '">' + tst(e) + '</span>'; }).join('') + '</div>';
       if (full) { h += lab('การติดตามผล', 'พิมพ์รหัส เช่น W P B'); for (w = 0; w < N; w++) h += '<div class="c tx" contenteditable="true" spellcheck="false" data-mon="' + w + '" aria-label="การติดตามผล สัปดาห์ ' + (w + 1) + '">' + esc(S.mon[w] || '') + '</div>'; }
       return h; };
     var ms = [], g = 0; S.periods.forEach(function (p) { (p.meso || []).forEach(function (m) { ms.push({ n: +m || 0, g: g++ }); }); });
@@ -405,10 +423,12 @@
   }
   /* สีแท่ง Load ตาม Phase ของสัปดาห์นั้น (ผู้ใช้ขอ 2026-10-17) */
   function phColor(w) { var pi = weekPhase()[w]; return pi != null ? PHASE[S.periods[pi].k].c : '#4f6d8f'; }
+  /* สัญลักษณ์การแข่งขัน (1–5) และการทดสอบ (T/P) บนแท่ง Load ของสัปดาห์นั้น (ผู้ใช้ขอ 2026-10-17) */
+  function markers(w) { return S.events.filter(function (e) { return weekOf(e.date) === w; }).sort(function (a, b) { return (a.type === 'comp' ? a.pri : 9) - (b.type === 'comp' ? b.pri : 9); }).map(function (e) { return '<span title="' + esc(thDate(e.date) + ' · ' + (e.type === 'comp' ? 'แข่ง ระดับ ' + e.pri + ' ' + e.name : (e.type === 'fit' ? 'ทดสอบสมรรถภาพ' : 'ทดสอบสรีรวิทยา') + (e.tests && e.tests.length ? ': ' + e.tests.join(', ') : ''))) + '">' + (e.type === 'comp' ? imp(e) : tst(e)) + '</span>'; }).join(''); }
   function peakWeek() { var mx = 0, pw = -1; for (var w = 0; w < nW(); w++) if ((S.shape[w] || 0) > mx) { mx = S.shape[w]; pw = w; } return pw; }
   function barHTML(row, v, w) {
+    if (row === 'load') { var mk = markers(w); if (!v) return mk ? '<span class="mkb">' + mk + '</span>' : ''; return '<span class="v">' + v + '</span><i style="height:' + (v / 10 * (LH - 14)) + 'px;--pc:' + phColor(w) + '">' + (mk ? '<span class="mk' + (v <= 3 ? ' up' : '') + '">' + mk + '</span>' : '') + '</i>'; }
     if (!v) return '';
-    if (row === 'load') return '<span class="v">' + v + '</span><i style="height:' + (v / 10 * (LH - 14)) + 'px;--pc:' + phColor(w) + '"></i>';
     if (row === 'shape') return '<b class="' + (w === peakWeek() ? 'pk' : '') + '" style="bottom:' + (v / 10 * (SH - 12) + 2) + 'px"></b>';
     var b = S.bio.filter(function (x) { return x.id === row; })[0]; return '<i style="height:' + (v / 5 * BH) + 'px;background:' + (b ? b.c : '#999') + '"></i>';
   }
@@ -449,7 +469,7 @@
     else if (d.mon != null) S.mon[+d.mon] = v.slice(0, 6);
     else if (d.pg != null) S.pgoal[+d.pg] = v.slice(0, 120);
     else if (d.obj) { var a = d.obj.split(':'); S.obj[a[0]] = S.obj[a[0]] || {}; S.obj[a[0]][a[1]] = v.slice(0, 80); }
-    else return; save(); });
+    else return; save(true); });
   document.addEventListener('keydown', function (ev) { var d = ev.target.dataset || {}; if ((d.tag != null || d.mon != null || d.obj || d.pg != null) && ev.key === 'Enter') { ev.preventDefault(); ev.target.blur(); } }, true);
   /* วันที่ของ Microcycle: ชี้หรือแตะเลขสัปดาห์ */
   var pop = $('pop'), popW = -1;
@@ -532,13 +552,13 @@
   $('bPrint').addEventListener('click', function () { window.print(); });
   $('bExport').addEventListener('click', function () { var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(S, null, 1)], { type: 'application/json' })); a.download = 'annual-plan-' + (S.code || 'plan') + '.json'; document.body.appendChild(a); a.click(); a.remove(); });
   $('bImport').addEventListener('click', function () { $('fImport').click(); });
-  $('fImport').addEventListener('change', function () { var f = this.files[0]; if (!f) return; f.text().then(function (t) { try { var o = JSON.parse(t); if (!o || !Array.isArray(o.periods)) throw 0; localStorage.setItem(KEY, JSON.stringify(o)); load(); fillInfo(); renderAll(); } catch (e) { alert('ไฟล์ไม่ถูกต้อง'); } }); this.value = ''; });
+  $('fImport').addEventListener('change', function () { var f = this.files[0]; if (!f) return; f.text().then(function (t) { try { var o = JSON.parse(t); if (!o || !Array.isArray(o.periods)) throw 0; localStorage.setItem(KEY, JSON.stringify(o)); load(); save(); fillInfo(); renderAll(); } catch (e) { alert('ไฟล์ไม่ถูกต้อง'); } }); this.value = ''; });
   /* แผนตัวอย่าง: กดกี่ครั้งก็ได้ข้อมูลตัวอย่างเดิม · ล้าง = เริ่มแผนจริงว่างเปล่า (ถามก่อนเสมอ) */
   function isEmpty() { return !S.events.length && !S.periods.length && !S.load.some(Boolean) && !S.code; }
   document.addEventListener('click', function (ev) {
     if (ev.target.closest('[data-sample]')) {
       if (!S.sample && !isEmpty() && !confirm('แทนที่แผนที่ทำไว้ในเครื่องนี้ด้วยแผนตัวอย่าง? (กด "ส่งออกไฟล์" เก็บแผนเดิมไว้ก่อนได้)')) return;
-      localStorage.setItem(KEY, JSON.stringify(SAMPLE)); load(); fillInfo(); renderAll(); $('sbar').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      localStorage.setItem(KEY, JSON.stringify(SAMPLE)); load(); save(); fillInfo(); renderAll(); $('sbar').scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else if (ev.target.closest('[data-clear]')) {
       if (!isEmpty() && !confirm(S.sample ? 'ล้างแผนตัวอย่างเพื่อเริ่มวางแผนจริง?' : 'ล้างแผนทั้งหมดในเครื่องนี้? (กด "ส่งออกไฟล์" เก็บไว้ก่อนได้)')) return;
       S = blank(); save(); fillInfo(); renderAll(); $('sbar').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -548,7 +568,7 @@
     $('sbarTxt').textContent = on ? 'กำลังแสดงแผนตัวอย่าง (นักกระโดดไกล) — ลองแก้ไขได้ เมื่อพร้อมวางแผนจริงให้กด "ล้างเพื่อเริ่มทำจริง" · กดดูแผนตัวอย่างอีกครั้งเพื่อดึงข้อมูลเดิมกลับมา' : 'ใช้แผนตัวอย่างเพื่อเรียนรู้รูปแบบ แล้วล้างเพื่อวางแผนจริงของนักกีฬาเอง'; }
   addEventListener('resize', function () { renderChart(); });
 
-  load(); bindInfo(); renderTestPick(); renderAll();
+  load(); lastStr = JSON.stringify(S); bindInfo(); renderTestPick(); renderAll(); updUndo();
   if (document.fonts) document.fonts.ready.then(function () { drawShape(); drawLoadLine(); });
 })();
 </script>
