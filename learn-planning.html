@@ -149,5 +149,8 @@
 </main>
 <footer><b>Run Your Best #Godwit</b> · คณะพลศึกษา มหาวิทยาลัยการกีฬาแห่งชาติ วิทยาเขตอุดรธานี<br><span class="author">จัดทำและเรียบเรียงโดย <b>ปริญญา นาเหนือ (PARINYA NANUA)</b> · อาจารย์ประจำคณะพลศึกษา มหาวิทยาลัยการกีฬาแห่งชาติ วิทยาเขตอุดรธานี</span><br><span class="copy">© 2569 ปริญญา นาเหนือ · สงวนลิขสิทธิ์</span></footer>
 <script>function drawLL(){document.querySelectorAll(".tbl.wl").forEach(t=>{const r=t.querySelector("svg.lline");r&&r.remove();const c=t.getBoundingClientRect(),l=e=>e.toFixed(1),o=[...t.querySelectorAll("td.ld .ltop")].map(e=>{const n=e.getBoundingClientRect();return[n.left+n.width/2-c.left+t.scrollLeft,n.top+n.height/2-c.top+t.scrollTop]});o.length<2||t.insertAdjacentHTML("beforeend",`<svg class="lline" width="${t.scrollWidth}" height="${t.scrollHeight}" aria-hidden="true"><polyline points="${o.map(e=>l(e[0])+","+l(e[1])).join(" ")}"/>${o.map(e=>`<circle class="o" cx="${l(e[0])}" cy="${l(e[1])}" r="5"/><circle class="i" cx="${l(e[0])}" cy="${l(e[1])}" r="2"/>`).join("")}</svg>`)})}addEventListener("resize",drawLL),addEventListener("load",drawLL),document.fonts&&document.fonts.ready.then(drawLL),drawLL();</script>
+<script src="i18n-dict.js"></script>
+<script src="i18n-dict2.js"></script>
+<script src="i18n.js"></script>
 </body>
 </html>
