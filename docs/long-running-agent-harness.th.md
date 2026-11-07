@@ -2,6 +2,7 @@
 
 > สรุปเชิงลึกจากเอกสารหนึ่งหน้าของ Claude เรื่อง *"Harnesses for Long-Running Agents — Keeping an AI coding for hours without losing the plot: why agents quit halfway, and the four files that stop it"*
 > แนวคิดเดียวกับบทความวิศวกรรมของ Anthropic เรื่อง *Effective harnesses for long-running agents* (พ.ย. 2025)
+> อ่านต่อ: [Graph Engineering](./graph-engineering.th.md) — ชั้นที่อยู่เหนือ harness และ loop
 
 ---
 
